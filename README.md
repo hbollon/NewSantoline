@@ -1,5 +1,7 @@
 # Projet Santoline
 
+<p align="center"><strong>This project was imported from old repository. The ReadMe is obsolete and must be updated!</strong></p>
+
 ## Récupérer le projet
 
 ### Dépendances
