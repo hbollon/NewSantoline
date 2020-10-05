@@ -1,0 +1,17 @@
+
+src/*.tif
+src/*.prj
+src/*.xml
+src/*.asc
+src/algo/resultatSimulation.json
+
+**/.idea/
+**/__pycache__/
+**/cmake-build-debug/
+**/.vscode/
+
+paths.json
+
+data/communication/*
+!data/communication/parametreAlgo-copy.json
+data/maps/map.json

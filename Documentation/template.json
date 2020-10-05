@@ -1,0 +1,291 @@
+Dans ce fichier, vous trouverez l'ensemble des "règles" établie pour effectuer
+une communication correct avec le "centraliseur", avec la partie qui fait 
+l'interface entre les différentes partie.
+
+La casses des attributs est importante. Celle des paramètres ne l'est pas.
+
+Dans strictement tout les cas, l'attribut "type" dans tout les JSON est nécessaire,
+sans cet attribut le centraliseur ne saura pas interpréter correctement la commande
+passée.
+
+Tout en bas de ce fichier, vous trouverez un jeu d'exemple valide pour l'ensemble des 
+commandes explicité ici.
+
+# Paramètres d'algorithme : 
+
+Voici le JSON qui permet de définir les différents paramètres de l'algorithme.
+
+{ 
+	"type" : "parametre algorithme", 
+	"json": {
+		"paramSim": {
+			"temperature": 1,
+			"waterReserve": 2,
+			"duration": 2,
+			"nbProcess": 1,
+			"algorithm": "nom de l'algorithme",
+			"dimension": 25
+		}	
+	}
+}
+Dans l'absolue, le centraliseur n'a pas besoin de recevoir ce message, dans la mesure
+ou des valeurs par défauts sont prévue.
+Les valeurs sont les suivantes : 
+
+	- temperature : 30
+	
+	- waterReserve : 40
+	
+	- duration : 1
+	
+	- nbProcess : 1
+	
+	- algorithm : "Maillage Fixe"
+	
+	- dimension : 25
+	
+Les valeurs sont exprimés dans les unités suivantes : 
+	- temperature : flottant qui exprime des degrés celsius.
+	
+	- waterReserve : flottant qui exprime un pourcentage (compris entre 0 et 100, 
+les deux bornes incluses.)
+
+	- duration : flottant qui exprime une durée en heure (pour 30 minutes, 
+il faut donc mettre 0.5)
+
+	- nbProcess : entier compris entre 1 et le nombre de processus de votre 
+ordinateur (plus devrait marcher, mais ça n'apporte rien, et je dirais même que ça 
+a tendance à ralentir l'ensemble.)
+
+	- algorithm : Texte brut qui représente l'algorithme à utiliser. 
+	Les valeurs possibles sont pour le moment : 
+	
+		- "Maillage Fixe" ou "Algo Maillage Fixe",
+		
+		- "Maillage Dynamique" ou "Algo Maillage Dynamique", 
+		
+		- "Optimal" ou "Algo Optimal".
+		
+	Pour rappelle, la casse n'est pas importante. 
+
+	- dimension : flottant qui exprime la dimension des cellules en mètres.
+
+Les valeurs ont le sens suivant : 
+	- temperature : représente la temperature de l'air au niveau du sol.
+	
+	- waterReserve : représente le taux d'humidité du sol.
+	
+	- duration : représente la durée de la simulation à effectuer.
+	
+	- nbProcess : représente le nombre de processus à utiliser pour effectuer 
+la simulation.
+
+	- algorithm : représente l'algorithme à utiliser pour la simulation.
+	
+	- dimension : représente la dimension des cellules.
+
+# Paramètres pour épilobe. 
+
+Vous trouverez ici les paramètres pour effectuer la génération des cartes des vents 
+qui se fait via l'utilitaire épilobe.
+
+{
+    "epilobe": {
+        "axe d'origine" : "est",
+        "direction": 2,
+        "force" : 10, 
+        "nbProcess": 1,
+        "origine" : [0,0],
+        "dimension" : [10,10]
+}
+
+Le centraliseur n'a pas besoin de ce message, toute les valeurs ont des valeurs par 
+défaut dans le centraliseur.
+
+Les vents sont par défauts considéré comme venant du sud. Pour toute autre origine, 
+il faut le spécifier via l'option "axe d'origine".
+
+Les valeurs par défauts des attributs sout les suivantes : 
+	- axe d'origine : sud
+	
+	- direction : 0
+	
+	- force : 10
+	
+	- nbProcess : 1
+	
+	
+Les unités et le sens des attributs sont les suivants : 
+	- axe d'origine : Simplement du texte, avec pour valeur possible : 
+"nord", "sud", "est", "ouest". Cet attribut décrit quel axe il faut considéré 
+comme origine pour le vents.
+
+	- direction : flottant qui représente l'angle en degrés qui décrit la direction du vent. 
+Les valeurs peuvent être comprise entre 0 et 360, les deux bornes comprises.
+
+	- force : flottant qui représente la force du vent en mètres par seconde (m/s)
+	
+	- nbProcess : entier qui représente le nombre de processus à utiliser pour 
+la génération du vent.
+
+	- origine : L'origine de la zone à découper.
+	
+	- dimension : Les dimension de la zone à découper. 
+
+
+# Actions des sapeurs pompiers
+
+A faire, rien n'est défini vraiment, rien n'est vraiment utilisé. Ce paramètres
+et lu et est interpreté, mais ne fait strictement rien et n'a aucun impacte dans
+la génération d'une simulation de feu.
+
+{
+	"type" : "actions",
+	"actionSP": {
+		"nom": "action",
+		"points": [
+			[	
+				1, 2
+			]
+		]
+    }
+}
+
+
+# Contour de feu
+
+Cette commande à pour simple but de faire transiter un contour.
+Cela peut être un contour de feu initial dans le sens interface -> centraliseur, 
+mais ça peut aussi être un contour 
+
+{
+	"type" : "contour",
+	"contour": [
+		[
+			1, 2
+		], 
+		[
+			3, 4
+		]	
+	]
+}
+
+La desciption ici va être très simple : 
+
+contour est un tableau de tableau. Le premier tableau permet d'avoir un ensemble
+et les autres tableau eux servent à contenir les coordonnées des points.
+Les coordonnées des points sont exprimés avec des flottants.
+
+Dans l'exemple donné ci-dessus, [1, 2] est un point, et [3, 4] un deuxième point.
+
+
+# Lancer une simulation
+
+Cette commande ne peut pas être plus explicite : elle permet de lancer la simulation
+de feu de forêt.
+
+Si pour une raison où une autre, le centraliseur n'a pas pu effectuer la simulation, 
+un message d'erreur sera renvoyé. 
+
+{
+	"type" : "lancer simulation"
+}
+
+
+# Message d'erreur
+
+Ceci n'est pas vraiment une commande, mais plus le résultat de commandes.
+Dans des cas particulier où l'un des processus qui communique n'a pas pu
+effectuer la tâche qui lui incombait, celui ci va retourner le message suivant.
+
+{
+	"type" : "erreur",
+	"message" : "message de l'erreur."
+}
+
+Cependant, je ne sais pas encore s'il est utile (et/ou) nécessaire de faire des 
+messages d'erreur spécifique qui puissent être pris en charge par le code, où si des 
+messages générique écrit par l'utilisateur suffise, et que la prise en charge soit 
+minime. A réfléchir.
+
+# Message de réponse
+
+Les messages de réponse sont de simple message qui peuvent transiter dans les deux 
+sens, ce sont des messages qui on pour but de prévenir la personne qui fait la requête 
+que la requête à bien été reçu et est en cours de traitement.
+
+{
+	"type" : "reponse", 
+	"contenu" : { 
+		"type" : "ack",
+		"valeur" : "200"
+	}
+}
+
+Le contenu permet de retourner certaines valeurs lors de la réponse, comme par exemple 
+un ensemble de point, voir peut être une erreur (si on fait ça, les messages d'erreur 
+en eux même ne sont plus une obligation... A voir ce qui est mieux.)
+
+Les types valide sont pour le moment : 
+
+	- ack : qui signifie tout simplement l'acquittement d'un message, 
+sans valeur avec un sens. Dans ce cas, la valeur sera de 200, simple référence 
+au monde d'internet, mais celà n'a pas d'influence ou d'impact quelconque.).
+
+	- contour : ce qui signifie que la réponse est un contour, donc un 
+ensemble de point. La valeur sera sous la forme décrite pour la commande contour.
+
+# Exemple complet et valide de chaque commande
+
+{ 
+	"type" : "parametre algorithme", 
+	"json": {
+		"paramSim": {
+			"temperature": 30,
+			"waterReserve": 40,
+			"duration": 1,
+			"nbProcess": 1,
+			"algorithm": 1,
+			"dimension": 25
+		}	
+	}
+}
+
+{
+	"type" : "parametre epilobe",
+	"epilobe": {
+		"axe d'origine" : "est",
+		"direction": 45,
+		"force" : 13, 
+		"nbProcess": 1,
+		"origine" : [0,0],
+		"dimension" : [10,10]
+	}
+}
+
+{
+	"type" : "actions",
+	"actionSP": {
+		"nom": "action",
+		"points": [
+			[0, 0], 
+			[1, 0], 
+			[1, 1], 
+			[0, 1]
+		]
+    }
+}
+
+{
+	"type" : "contour",
+	"contour": [
+		[1, 1], 
+		[1, 10],
+		[10, 10],
+		[10, 1]
+	]
+}
+
+{
+	"type" : "lancersimulation"
+}

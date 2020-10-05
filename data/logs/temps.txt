@@ -1,0 +1,1 @@
+Temps de l'algo = 5.916 secondes 
