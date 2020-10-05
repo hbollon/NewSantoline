@@ -15,3 +15,6 @@ paths.json
 data/communication/*
 !data/communication/parametreAlgo-copy.json
 data/maps/map.json
+
+# Exclude tif data files 
+*.tif
