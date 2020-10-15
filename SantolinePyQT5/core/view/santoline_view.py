@@ -715,7 +715,10 @@ class Santoline(QMainWindow, observable.Observer):
             if i%densite==0:
             # print("i: " + str(i) + "%" + str(densite) + " = " + str(i % densite))
                 for case in col:
-                    if j%densite==0:
+                    print(case)
+                    if j%densite==0 and (case is not None and case != 0) :
+                        print("Process: ")
+                        print(case)
                         # print("j: " + str(j) + "%" + str(densite) + " = " + str(j % densite))
                         feature = QgsFeature()
                         feature.setGeometry(QgsGeometry.fromPointXY(case[0]))
