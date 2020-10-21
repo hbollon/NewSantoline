@@ -108,6 +108,8 @@ class Santoline(QMainWindow, observable.Observer):
         self.secondToolbar_ = self.addToolBar("Second tool bar")
         self.secondToolbar_.setMovable(False)
         self.secondToolbar_.setFloatable(False)
+
+        
         
         self.addToolBarBreak()
         self.left_toolbar_ = self.addToolBar("Left tool bar")
@@ -440,11 +442,9 @@ class Santoline(QMainWindow, observable.Observer):
         self.windSlopeLayer_ = self.setWindLayer('255,0,0,255', self.densite, "windslope")
 
     def zoomAvant(self):
-
         self.canvas_.zoomByFactor(0.8)
 
     def zoomArriere(self):
-
         self.canvas_.zoomByFactor(1.2)
 
 
@@ -1096,7 +1096,7 @@ class Santoline(QMainWindow, observable.Observer):
     ###---Procedures de chargement du fond de carte---###
 
     def change(self, departement):
-        datas = "{}\\{}".format(os.path.expanduser("~\\Documents"), departement)
+        datas = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '../../..', "data/altimetrics/departements", departement))
         ext = ".jp2"
         self.thread_ = MapLoader(self, datas, ext)
         self.thread_.end.connect(self.finish)

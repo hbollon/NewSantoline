@@ -18,3 +18,7 @@ data/maps/map.json
 
 # Exclude tif data files 
 *.tif
+
+
+# Exclude departements folder
+data/altimetrics/departements/*
