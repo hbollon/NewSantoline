@@ -716,7 +716,7 @@ class Santoline(QMainWindow, observable.Observer):
             # print("i: " + str(i) + "%" + str(densite) + " = " + str(i % densite))
                 for case in col:
                     print(case)
-                    if j%densite==0 and (case is not None and case != 0) :
+                    if j%densite==0 and (case is not None and case != 0):
                         print("Process: ")
                         print(case)
                         # print("j: " + str(j) + "%" + str(densite) + " = " + str(j % densite))

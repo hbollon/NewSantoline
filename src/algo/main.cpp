@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
         Algo algo(parametreAlgo, carteVent);
         json resultat1 = algo.simulation("2");
         json resultat2 = algo.simulation("1");
-        string adress = "C:\\Users\\Utilisateur\\Desktop\\dev\\Projet\\newsantoline\\data\\communication\\resultatSimulation2.json";
+        string adress = "C:\\Users\\hbollon\\NewSantoline_test2\\newsantoline\\data\\communication\\resultatSimulation2.json";
         std::ofstream outputResultatSimulation(argv[3]);
         outputResultatSimulation << std::setw(4) << resultat1 << std::endl;
         cout << "simulation done, " << argv[3] << " filled!" << endl;

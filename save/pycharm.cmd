@@ -13,4 +13,4 @@ set PYTHONHOME=%OSGEO4W_ROOT%\apps\Python36
 
 set PATH=C:\Program Files\Git\bin;%PATH%
 
-start "PyCharm aware of QGIS" /B "C:\Program Files\JetBrains\PyCharm Community Edition 2020.2.3\bin\pycharm64.exe" %*
+start "PyCharm aware of QGIS" /B "C:\Program Files\JetBrains\PyCharm 2018.2.4\bin\pycharm64.exe" %*
