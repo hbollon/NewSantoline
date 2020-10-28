@@ -13,7 +13,7 @@
 #include "Choc.hpp"
 #include "EllipseOpt.hpp"
 #include "json.hpp"
-#include "SommetCase.h"
+#include "CoinCase.h"
 
 using json = nlohmann::json;
 
@@ -28,11 +28,11 @@ private:
     /*Listes auxiliaires*/
     vector<string> listeCellulesBrulees;/*listaux(1)*///Liste des cellules brulees, les cellules qui ont ete active + celles qui sont activent en ce moment
     map<string,vector<string>>  listePointsDansCellule;/*listaux(2)*/
-    std::map<std::string, double> listeCellulesActivesSousContour;/*listaux(3)*///Liste des cellules active actuellement
+    std::map<std::string, double> listePointsActifs;/*listaux(3)*///Liste des cellules active actuellement
     string aPropager;/*ListAux(4)*/
     std::vector<Choc> listeChoc;/*listaux(5)*/
 
-    map<string,SommetCase> listeSommets;/*LIstaux(7)*/
+    map<string,CoinCase> listeCoins;/*LIstaux(7)*/
 
     int kmax = 20;
     int compteurId =0;
@@ -43,15 +43,15 @@ private:
 
 
     bool affichage = false;//Bool  qui sert a activer l'affichage
-    bool initialisationListff = true;//Bool qui indique que la fonction s'execute lors de l'initialisation de la listff
 
 public:
     /*Fonctions principales*/
     std::vector<Point3D> propagation(std::vector<Point2D> listE, json m, json p, ofstream& sortie, ofstream& infos_algo, ofstream& etat_final_liste_sommets);
     void initListff(std::vector<Point2D> listPointE);
-    void initialiserEllipse(json j, ofstream& sortie, int largeur, int hauteur, int water, int temp,double tempsPropa);
+    void initialiserEllipse(json j, ofstream& sortie, int largeur, int hauteur, int water, int temp);
     void uneIteration(std::string num);
     int propage(string ind, vector<vector<VitesseOpt>> vits);
+    bool chocDansCellule(PointOpt mvt, string ind);
 
     /*Fonctions d'insertion de point*/
     void rajoutePoint(string indice);
@@ -69,22 +69,21 @@ public:
     void supprimePlus(std::string ind, std::string num);
 
     /*Fonction de gestion des vitesses*/
+    double azero(Vector2D tau, VitesseOpt Vit);
     VitesseOpt vitessea0(double a0, Vector2D tau, Point2D coordonne);
     VitesseOpt vitesseMax(Vector2D direction, Point2D coordonne);
     std::vector<std::vector<VitesseOpt>> vitesseRajoutes(Point2D coordonne, Vector2D v0, Vector2D v1, int kmax);
     std::pair<double,std::vector<std::vector<VitesseOpt>>> vitesseChocOuPas(VitesseOpt vip, VitesseOpt vis);
     VitesseOpt vitesse0(Point2D p, Point2D s);
-    void vitesseBord(std::vector<VitesseOpt> vitsp, std::vector<VitesseOpt> vitss);
-    std::vector<std::vector<VitesseOpt>> vitesseBord2(VitesseOpt vit, Point2D ijn, std::string cote);
     pair<bool,vector<vector<VitesseOpt>>> vitesseChocNew(vector<vector<VitesseOpt>> vits, Vector2D tauperp);
     pair<bool,vector<vector<VitesseOpt>>> vitesseNew1(vector<vector<VitesseOpt>> vits, Vector2D tauperp);
     pair<bool,vector<vector<VitesseOpt>>> vitesseSommetNew(vector<vector<VitesseOpt>> vits, Vector2D tauperp);
     VitesseOpt vitesse(VitesseOpt vb, Point2D ij);
 
-    /*Fonction de gestion des arretes*/
-    bool testAreteBrulee(PointOpt point);
-    void actualiseSommet(string ind);
-    void initialiserSommetContourDepart(PointOpt mvt);
+    /*Fonction de gestion des bordures*/
+    bool testBordureBrulee(PointOpt point);
+    void actualiseCoin(string ind);
+    void initialiserCoinContourDepart(PointOpt mvt);
 
     /*Fonctions de gestion*/
     bool saisieEstSensHoraire(vector<Point2D>);
@@ -93,6 +92,7 @@ public:
     Point2D coordinateToCoordinateCalc(const Point2D &p);
     Point2D indextoCoordinate(const Point2D &p) const;
     std::string numero (Point2D ij);
+    void setXminYmin(json carteVent);
 
     /*Fonctions pour l'application de test*/
     void sauvegarde_liste_vitesses(ofstream& contour_final_detail) const;
@@ -104,13 +104,13 @@ public:
     /*Fonctions d'affichage*/
     void affiche(std::vector<vector<VitesseOpt>> v);
     void affiche(std::pair<double,std::vector<vector<VitesseOpt>>> v);
-    void affiche(std::pair<Point3D,Vector2D> v);
+
 
     /*Autre*/
-    double azero(Vector2D tau, VitesseOpt Vit);
-    void chocDansCellule(PointOpt mvt);
     string getMinlisteCellulesBrulees();
     PointOpt findPts(vector<PointOpt>,string);
+    float det(Vector2D v1, Vector2D v2);
+    void triDesChocs();
 
 };
 

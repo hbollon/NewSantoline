@@ -35,14 +35,20 @@ EllipseOpt.hpp
 C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/EllipseOpt.hpp
 json.hpp
 C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/json.hpp
-SommetCase.h
-C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/SommetCase.h
+CoinCase.h
+C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/CoinCase.h
 
 C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/Choc.hpp
 Point.h
 C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/Point.h
 string
 -
+
+C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/CoinCase.h
+string
+-
+Vecteur.h
+C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/Vecteur.h
 
 C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/EllipseOpt.hpp
 Point.h
@@ -67,12 +73,6 @@ Point.h
 C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/Point.h
 vector
 -
-
-C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/SommetCase.h
-string
--
-Vecteur.h
-C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/Vecteur.h
 
 C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/Utils.h
 math.h
@@ -435,4 +435,22 @@ limits
 -
 type_traits
 -
+
+C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/main.cpp
+iostream
+-
+fstream
+-
+iomanip
+-
+Vecteur.h
+C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/Vecteur.h
+Point.h
+C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/Point.h
+EllipseOpt.hpp
+C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/EllipseOpt.hpp
+AlgoOpt.hpp
+C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/AlgoOpt.hpp
+json.hpp
+C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/json.hpp
 

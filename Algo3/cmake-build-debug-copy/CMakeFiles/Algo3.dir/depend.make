@@ -4,10 +4,10 @@
 CMakeFiles/Algo3.dir/AlgoOpt.cpp.obj: ../AlgoOpt.cpp
 CMakeFiles/Algo3.dir/AlgoOpt.cpp.obj: ../AlgoOpt.hpp
 CMakeFiles/Algo3.dir/AlgoOpt.cpp.obj: ../Choc.hpp
+CMakeFiles/Algo3.dir/AlgoOpt.cpp.obj: ../CoinCase.h
 CMakeFiles/Algo3.dir/AlgoOpt.cpp.obj: ../EllipseOpt.hpp
 CMakeFiles/Algo3.dir/AlgoOpt.cpp.obj: ../Point.h
 CMakeFiles/Algo3.dir/AlgoOpt.cpp.obj: ../PointOpt.hpp
-CMakeFiles/Algo3.dir/AlgoOpt.cpp.obj: ../SommetCase.h
 CMakeFiles/Algo3.dir/AlgoOpt.cpp.obj: ../Utils.h
 CMakeFiles/Algo3.dir/AlgoOpt.cpp.obj: ../Vecteur.h
 CMakeFiles/Algo3.dir/AlgoOpt.cpp.obj: ../VitesseOpt.hpp
@@ -16,6 +16,12 @@ CMakeFiles/Algo3.dir/AlgoOpt.cpp.obj: ../json.hpp
 CMakeFiles/Algo3.dir/Choc.cpp.obj: ../Choc.cpp
 CMakeFiles/Algo3.dir/Choc.cpp.obj: ../Choc.hpp
 CMakeFiles/Algo3.dir/Choc.cpp.obj: ../Point.h
+
+CMakeFiles/Algo3.dir/CoinCase.cpp.obj: ../CoinCase.cpp
+CMakeFiles/Algo3.dir/CoinCase.cpp.obj: ../CoinCase.h
+CMakeFiles/Algo3.dir/CoinCase.cpp.obj: ../Point.h
+CMakeFiles/Algo3.dir/CoinCase.cpp.obj: ../Utils.h
+CMakeFiles/Algo3.dir/CoinCase.cpp.obj: ../Vecteur.h
 
 CMakeFiles/Algo3.dir/EllipseOpt.cpp.obj: ../EllipseOpt.cpp
 CMakeFiles/Algo3.dir/EllipseOpt.cpp.obj: ../EllipseOpt.hpp
@@ -33,12 +39,6 @@ CMakeFiles/Algo3.dir/PointOpt.cpp.obj: ../Utils.h
 CMakeFiles/Algo3.dir/PointOpt.cpp.obj: ../Vecteur.h
 CMakeFiles/Algo3.dir/PointOpt.cpp.obj: ../VitesseOpt.hpp
 
-CMakeFiles/Algo3.dir/SommetCase.cpp.obj: ../Point.h
-CMakeFiles/Algo3.dir/SommetCase.cpp.obj: ../SommetCase.cpp
-CMakeFiles/Algo3.dir/SommetCase.cpp.obj: ../SommetCase.h
-CMakeFiles/Algo3.dir/SommetCase.cpp.obj: ../Utils.h
-CMakeFiles/Algo3.dir/SommetCase.cpp.obj: ../Vecteur.h
-
 CMakeFiles/Algo3.dir/Utils.cpp.obj: ../Utils.cpp
 CMakeFiles/Algo3.dir/Utils.cpp.obj: ../Utils.h
 
@@ -55,10 +55,10 @@ CMakeFiles/Algo3.dir/VitesseOpt.cpp.obj: ../VitesseOpt.hpp
 
 CMakeFiles/Algo3.dir/main.cpp.obj: ../AlgoOpt.hpp
 CMakeFiles/Algo3.dir/main.cpp.obj: ../Choc.hpp
+CMakeFiles/Algo3.dir/main.cpp.obj: ../CoinCase.h
 CMakeFiles/Algo3.dir/main.cpp.obj: ../EllipseOpt.hpp
 CMakeFiles/Algo3.dir/main.cpp.obj: ../Point.h
 CMakeFiles/Algo3.dir/main.cpp.obj: ../PointOpt.hpp
-CMakeFiles/Algo3.dir/main.cpp.obj: ../SommetCase.h
 CMakeFiles/Algo3.dir/main.cpp.obj: ../Utils.h
 CMakeFiles/Algo3.dir/main.cpp.obj: ../Vecteur.h
 CMakeFiles/Algo3.dir/main.cpp.obj: ../VitesseOpt.hpp

@@ -29,10 +29,10 @@ int main(int argc, char* argv[]) {
     json parametreAlgo, carteVent;
 
     // On récupère les json spécifiés par argv[1] et argv[2]
-    //R"(C:\Users\dubos\Desktop\Projet\parametreAlgo.json)"
-    //R"(C:\Users\dubos\Desktop\Projet\map.json)"
 
     std::ifstream inputParametreAlgo(argv[1]),inputCarteVent(argv[2]);
+    //std::ifstream inputParametreAlgo(R"(c:\Users\dubos\Desktop\Projet\back\parametreAlgo.json)"),inputCarteVent(R"(c:\Users\dubos\Desktop\Projet\back\map.json)");
+
     inputParametreAlgo >> parametreAlgo;
     inputCarteVent >> carteVent;
 

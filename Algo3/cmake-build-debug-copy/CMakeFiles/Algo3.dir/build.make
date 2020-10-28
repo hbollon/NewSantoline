@@ -173,18 +173,18 @@ CMakeFiles/Algo3.dir/Choc.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Algo3.dir/Choc.cpp.s"
 	C:\PROGRA~2\MINGW-~1\I686-8~1.0-W\mingw32\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\dubos\Desktop\Projet\newsantoline\Algo3\Choc.cpp -o CMakeFiles\Algo3.dir\Choc.cpp.s
 
-CMakeFiles/Algo3.dir/SommetCase.cpp.obj: CMakeFiles/Algo3.dir/flags.make
-CMakeFiles/Algo3.dir/SommetCase.cpp.obj: ../SommetCase.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\dubos\Desktop\Projet\newsantoline\Algo3\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/Algo3.dir/SommetCase.cpp.obj"
-	C:\PROGRA~2\MINGW-~1\I686-8~1.0-W\mingw32\bin\G__~1.EXE  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\Algo3.dir\SommetCase.cpp.obj -c C:\Users\dubos\Desktop\Projet\newsantoline\Algo3\SommetCase.cpp
+CMakeFiles/Algo3.dir/CoinCase.cpp.obj: CMakeFiles/Algo3.dir/flags.make
+CMakeFiles/Algo3.dir/CoinCase.cpp.obj: ../CoinCase.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\dubos\Desktop\Projet\newsantoline\Algo3\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/Algo3.dir/CoinCase.cpp.obj"
+	C:\PROGRA~2\MINGW-~1\I686-8~1.0-W\mingw32\bin\G__~1.EXE  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\Algo3.dir\CoinCase.cpp.obj -c C:\Users\dubos\Desktop\Projet\newsantoline\Algo3\CoinCase.cpp
 
-CMakeFiles/Algo3.dir/SommetCase.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Algo3.dir/SommetCase.cpp.i"
-	C:\PROGRA~2\MINGW-~1\I686-8~1.0-W\mingw32\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\dubos\Desktop\Projet\newsantoline\Algo3\SommetCase.cpp > CMakeFiles\Algo3.dir\SommetCase.cpp.i
+CMakeFiles/Algo3.dir/CoinCase.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Algo3.dir/CoinCase.cpp.i"
+	C:\PROGRA~2\MINGW-~1\I686-8~1.0-W\mingw32\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\dubos\Desktop\Projet\newsantoline\Algo3\CoinCase.cpp > CMakeFiles\Algo3.dir\CoinCase.cpp.i
 
-CMakeFiles/Algo3.dir/SommetCase.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Algo3.dir/SommetCase.cpp.s"
-	C:\PROGRA~2\MINGW-~1\I686-8~1.0-W\mingw32\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\dubos\Desktop\Projet\newsantoline\Algo3\SommetCase.cpp -o CMakeFiles\Algo3.dir\SommetCase.cpp.s
+CMakeFiles/Algo3.dir/CoinCase.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Algo3.dir/CoinCase.cpp.s"
+	C:\PROGRA~2\MINGW-~1\I686-8~1.0-W\mingw32\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\dubos\Desktop\Projet\newsantoline\Algo3\CoinCase.cpp -o CMakeFiles\Algo3.dir\CoinCase.cpp.s
 
 # Object files for target Algo3
 Algo3_OBJECTS = \
@@ -197,7 +197,7 @@ Algo3_OBJECTS = \
 "CMakeFiles/Algo3.dir/AlgoOpt.cpp.obj" \
 "CMakeFiles/Algo3.dir/EllipseOpt.cpp.obj" \
 "CMakeFiles/Algo3.dir/Choc.cpp.obj" \
-"CMakeFiles/Algo3.dir/SommetCase.cpp.obj"
+"CMakeFiles/Algo3.dir/CoinCase.cpp.obj"
 
 # External object files for target Algo3
 Algo3_EXTERNAL_OBJECTS =
@@ -211,7 +211,7 @@ Algo3.exe: CMakeFiles/Algo3.dir/VitesseOpt.cpp.obj
 Algo3.exe: CMakeFiles/Algo3.dir/AlgoOpt.cpp.obj
 Algo3.exe: CMakeFiles/Algo3.dir/EllipseOpt.cpp.obj
 Algo3.exe: CMakeFiles/Algo3.dir/Choc.cpp.obj
-Algo3.exe: CMakeFiles/Algo3.dir/SommetCase.cpp.obj
+Algo3.exe: CMakeFiles/Algo3.dir/CoinCase.cpp.obj
 Algo3.exe: CMakeFiles/Algo3.dir/build.make
 Algo3.exe: CMakeFiles/Algo3.dir/linklibs.rsp
 Algo3.exe: CMakeFiles/Algo3.dir/objects1.rsp
