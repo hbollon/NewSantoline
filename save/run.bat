@@ -10,7 +10,7 @@ call "%OSGEO4W_ROOT%\bin\py3_env.bat"
 path %OSGEO4W_ROOT%\apps\qgis\bin;C:\MinGW\bin;%PATH%
 set QGIS_PREFIX_PATH=%OSGEO4W_ROOT:\=/%/apps/qgis
 set GDAL_FILENAME_IS_UTF8=YES
-set GDAL_DRIVER_PATH =
+set GDAL_DRIVER_PATH=
 rem Set VSI cache to be used as buffer, see #6448
 set VSI_CACHE=TRUE
 set VSI_CACHE_SIZE=1000000
