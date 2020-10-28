@@ -329,7 +329,7 @@ class Santoline(QMainWindow, observable.Observer):
         self.reloadMap.setVisible(False)
         self.reloadMap.triggered.connect(self.reload)
 
-        alignmentGroup2 = QActionGroup(self);
+        alignmentGroup2 = QActionGroup(self)
         alignmentGroup2.addAction(self.afficheVents)
         alignmentGroup2.addAction(self.afficheVentsPentes)
         alignmentGroup2.addAction(self.affichePente)
@@ -355,7 +355,6 @@ class Santoline(QMainWindow, observable.Observer):
         
         self.departements_choices_window_.controller_.view_.valider_.clicked.connect(
             lambda: self.controller_.map(self.departements_choices_window_.controller_.model_.departement_courant))
-
 
         self.windMatrix_=self.windMatrixInit('..\\data\\maps\\map.json')
 
@@ -699,6 +698,7 @@ class Santoline(QMainWindow, observable.Observer):
                 alpha1 = self.vector_to_angle(x1,y1)
                 alpha2 = self.vector_to_angle(x2,y2)
                 windMatrix[int((wind['x'] - xOrigin) / 25)][int((wind['y'] - yOrigin) / 25)] = [point,alpha,alpha1,alpha2]
+                windMatrix[int((wind['x'] - xOrigin) / 25)-1][int((wind['y'] - yOrigin) / 25)-1] = [point,alpha,alpha1,alpha2]
         return windMatrix
 
     def setWindLayer(self,color,densite, type):
