@@ -651,9 +651,9 @@ class Santoline(QMainWindow, observable.Observer):
 
     def matrixInit(self,largeur, hauteur):
         matrix=[]
-        for i in range(0,int(largeur)):
+        for i in range(0,int(hauteur)):
             matrix.append([])
-            for j in range(0,int(hauteur)):
+            for j in range(0,int(largeur)):
                 matrix[i].append(0)
         return matrix
 
@@ -676,10 +676,11 @@ class Santoline(QMainWindow, observable.Observer):
     def windMatrixInit(self,path):
         with open("..\\src\\Epilobe\\params.json ") as g:
             params= json.load(g)
-        largeur=params['dimension'][1]
-        hauteur=params['dimension'][0]
+        largeur=params['dimension'][0]
+        hauteur=params['dimension'][1]
+        print(f"largeur/25: {largeur/25}, hauteur/25: {hauteur/25}")
 
-        windMatrix = self.matrixInit(largeur/25, hauteur/25)
+        windMatrix = self.matrixInit(largeur/25 + 1, hauteur/25 + 1)
         if largeur>0:
             with open(path, 'r') as f:
                 windMap = json.load(f)
@@ -697,7 +698,8 @@ class Santoline(QMainWindow, observable.Observer):
                 alpha = self.vector_to_angle(x,y)
                 alpha1 = self.vector_to_angle(x1,y1)
                 alpha2 = self.vector_to_angle(x2,y2)
-                windMatrix[int((wind['x'] - xOrigin) / 25)-1][int((wind['y'] - yOrigin) / 25)-1] = [point,alpha,alpha1,alpha2]
+                print(f"x: {int((wind['x'] - xOrigin) / 25)}, y: {int((wind['y'] - yOrigin) / 25)}")
+                windMatrix[int((wind['x'] - xOrigin) / 25)][int((wind['y'] - yOrigin) / 25)] = [point,alpha,alpha1,alpha2]
         return windMatrix
 
     def setWindLayer(self,color,densite, type):

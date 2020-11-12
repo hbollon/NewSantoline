@@ -7,6 +7,7 @@ from ..model import algorithm_model, canvas_model
 from ..libs import file_connector
 from . import controller, canvas_controller
 from ..model import canvas_model
+from subprocess import PIPE
 
 import json
 import threading
@@ -102,17 +103,27 @@ class AlgorithmController(controller.AController):
             
             data = var.readlines()
         else:
-            var = subprocess.Popen([
+            # var = subprocess.Popen([
+            #     "..\\src\\algo\\cmake-build-debug\\algo.exe",
+            #     "..\\data\\communication\\parametreAlgo.json",
+            #     "..\\data\\maps\\map.json",
+            #     "..\\data\\communication\\resultatSimulation.json"
+            # ],
+            # shell=True,
+            # stdout=subprocess.PIPE,
+            # universal_newlines=True).stdout
+
+            # data = var.readlines()
+
+            sub = subprocess.run([
                 "..\\src\\algo\\cmake-build-debug\\algo.exe",
                 "..\\data\\communication\\parametreAlgo.json",
                 "..\\data\\maps\\map.json",
                 "..\\data\\communication\\resultatSimulation.json"
-            ],
-            shell=True,
-            stdout=subprocess.PIPE,
-            universal_newlines=True).stdout
+            ], 
+            shell=True, stdout=PIPE, stderr=PIPE)
 
-            data = var.readlines()
+            print(f"Output:\n{sub.stdout}\nErr:\n{sub.stderr}\nReturnCode: {sub.returncode}")
 
         # recuperer le resultat de simulation
         resultatSimulation = []
