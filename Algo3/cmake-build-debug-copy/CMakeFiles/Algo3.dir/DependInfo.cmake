@@ -6,10 +6,10 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_CXX
   "C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/AlgoOpt.cpp" "C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/cmake-build-debug/CMakeFiles/Algo3.dir/AlgoOpt.cpp.obj"
   "C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/Choc.cpp" "C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/cmake-build-debug/CMakeFiles/Algo3.dir/Choc.cpp.obj"
+  "C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/CoinCase.cpp" "C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/cmake-build-debug/CMakeFiles/Algo3.dir/CoinCase.cpp.obj"
   "C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/EllipseOpt.cpp" "C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/cmake-build-debug/CMakeFiles/Algo3.dir/EllipseOpt.cpp.obj"
   "C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/Point.cpp" "C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/cmake-build-debug/CMakeFiles/Algo3.dir/Point.cpp.obj"
   "C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/PointOpt.cpp" "C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/cmake-build-debug/CMakeFiles/Algo3.dir/PointOpt.cpp.obj"
-  "C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/SommetCase.cpp" "C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/cmake-build-debug/CMakeFiles/Algo3.dir/SommetCase.cpp.obj"
   "C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/Utils.cpp" "C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/cmake-build-debug/CMakeFiles/Algo3.dir/Utils.cpp.obj"
   "C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/Vecteur.cpp" "C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/cmake-build-debug/CMakeFiles/Algo3.dir/Vecteur.cpp.obj"
   "C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/VitesseOpt.cpp" "C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/cmake-build-debug/CMakeFiles/Algo3.dir/VitesseOpt.cpp.obj"
