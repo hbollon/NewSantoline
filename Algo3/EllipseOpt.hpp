@@ -24,7 +24,7 @@ public:
 
 
 private:
-    Point2D m_coordonne{};
+    Point2D m_coordonne{};/*Coord du point d'ignition*/
     Vector2D m_vecteur;
     float m_a;
     float m_b;

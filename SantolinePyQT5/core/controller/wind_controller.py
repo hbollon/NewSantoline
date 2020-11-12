@@ -4,6 +4,8 @@ from pathlib import Path
 from ..model import *
 from ..libs import file_io
 from . import controller
+from subprocess import PIPE
+import subprocess
 
 import json
 import os
@@ -57,15 +59,22 @@ class WindController(controller.AController):
 
         filename = newArchPath + "\\Epilobe\\params.json"
         connector.write(filename, json.dumps(self.windModel_.jsonify()))
+        print(json.dumps(self.windModel_.jsonify()))
 
-        parser_commande = newArchPath + "\\Epilobe\\cmake-build-debug\\Epilobe.exe " \
-                          +  "..\\paths.json " \
+        parser_commande = newArchPath + "\\Epilobe\\Epilobe.exe " \
+                          +  "C:\\Users\\hbollon\\NewSantoline\\paths.json " \
                           + newArchPath + "\\Epilobe\\params.json " \
                           + str((self.windModel_.direction_ + 180.)%360.) \
                           + " " \
                           + str(round(self.windModel_.speed_, 1))
-        os.system(parser_commande)
 
+        print(parser_commande)
+
+        sub = subprocess.run(parser_commande, 
+            shell=True, stdout=PIPE, stderr=PIPE)
+
+        print(f"Output:\n{sub.stdout}\nErr:\n{sub.stderr}\nReturnCode: {sub.returncode}")
+        
         if os.path.isfile("..\\data\\maps\\map.json"):
             print("Carte des vents générée")
 

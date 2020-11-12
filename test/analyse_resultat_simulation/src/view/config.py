@@ -26,10 +26,9 @@ RATE_OF_SPREAD_WIDTH = 2
 BURNING_POINTS_ARE_SHOWN = True
 
 # when set to false, you don't see any propagation speed
-PROPAGATION_SPEED_IS_SHOWN = False
-
+PROPAGATION_SPEED_IS_SHOWN = True
 PROPAGATION_SPEED_WIDTH = 2
-ZOOM_PROPAGATION_SPEED = 1
+ZOOM_PROPAGATION_SPEED = 2.5
 
 INITIAL_OUTLINE_WIDTH = 4
 DOT_SIZE = 7
@@ -63,4 +62,4 @@ BURNING_POINT_COLOR = "firebrick"
 NOT_BURNING_POINT_COLOR = "black"
 
 # nb of empty squares (axe x,y) around useful squares
-NB_SQUARES_SUP = 1
+NB_SQUARES_SUP = 4

@@ -5,7 +5,6 @@ from qgis.core import *#QgsRasterLayer, QgsApplication
 from qgis.PyQt.QtWidgets import *#QMainWindow, QWidget, QTabWidget, QPushButton
 from qgis.PyQt.QtCore import *#QSize
 from qgis.PyQt.QtGui import *#QFrame
-# sys.path.append("/Users/leizhang/Desktop/projet801/Point.py")
 # from Point import Point
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QApplication, QGridLayout, QLabel, QPushButton
@@ -51,7 +50,7 @@ class Example(QgsMapCanvasItem):
 
         self.setMouseTracking(True)
         self.setLayout(grid)
-        self.setGeometry(200, 100, 1000, 600)   # taille par défautt de la fenetre
+        self.setGeometry(200, 100, 1000, 600)   # taille par défaut de la fenetre
         self.setWindowTitle('Zhang Lei')
         self.show()
 
@@ -82,7 +81,7 @@ class Example(QgsMapCanvasItem):
             text = "fini"
             self.labelPositionCurseur.setText(text)
 
-    # fonction qui réagit à l'évènement : raffraichisssement de la fenetre
+    # fonction qui réagit à l'évènement : raffraichissement de la fenetre
     def paintEvent(self, event):
         # pour dessiner tous les graphes precedents
         if self.nbGraphe >= 2:

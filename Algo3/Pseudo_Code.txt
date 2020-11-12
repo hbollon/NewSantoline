@@ -1,0 +1,91 @@
+Fonction algorithmeOptimal(json carteDonneesTerrain, json parametresAlgorithme, liste listePointsContourInitial)
+{
+    carteEllipse : matrice d'ellipses
+    listff : liste de points optimaux
+    aPropager : point optimal
+    tempsPropagationFinale : double
+    nouvelleVitesse : vitesse optimale
+
+    DEBUT
+
+        tempsPropagationFinale = parametresAlgorithme["durée"]
+
+        pour i allant de 0 à hauteur(carteEllipse) faire :
+            pour j allant de 0 à largeur(carteEllipse) faire :
+                carteEllipse[i][j] = new Ellipse
+            finpour
+        finpour
+
+        si estDansSensHoraire(listePointsContourInitial faire :
+            listePointsContourInitial = inverserSens(listePointsContourInitial)
+        finsi
+
+        pour i allant de 0 à taille(listePointsContourInitial) faire :
+            changementEchelle(listePointsContourInitial[i].coordonnees)
+        finpour
+
+        listePointsContourInitial = ajoutPointsContourInitialSiNecessaire(listePointsContourInitial)
+
+        pour i allant de 0 à taille(listePointsContourInitial) faire :
+            creation pointOptimal(listePointsContourInitial[i])
+            listff.ajouter(pointOptimal)
+        finpour
+
+        pour i allant de 0 à taille(listff) faire :
+            propagation(listff[i])
+        finpour
+        aPropager = pointTempsMinimim(listff)
+
+        pour i allant de 0 à taille(listff) faire :
+            miseAJourTempsIgnitionCoinDeCase(listff[i])
+        finpour
+
+
+        tant que aPropager.tempsPropagation < tempsPropagationFinale faire :
+
+            si aPropager.indice == 0 faire :
+                nouvelleVitesse = calculVitesseNormal(aPropager.listeVitesses, aPropager.tau)
+            finsi
+            si aPropager.indice == 1 faire :
+                nouvelleVitesse = calculVitesseChoc(aPropager.listeVitesses, aPropager.tau)
+            finsi
+            si aPropager.indice == 2 faire :
+                nouvelleVitesse = calculVitesseCoin(aPropager.listeVitesses, aPropager.tau)
+            finsi
+            si aPropager.indice == 3 faire :
+                nouvelleVitesse = aPropager.listeVitesses
+            finsi
+
+            nouveauPoint = propagation(aPropager, nouvelleVitesse)
+            suppressionCroisements(nouveauPoint)
+
+            si(neSePropagePasSurBordureDejaBrulee(nouveauPoint)
+                listff.ajouter(nouveauPoint)
+            finsi
+            aPropager = pointTempsMinimim(listff)
+
+            pour chaque nouveauPoint faire :
+                ajouterPointsEntre(nouveauPoint.precedent,nouveauPoint)
+            finpour
+
+            pour chaque nouveauPoint faire :
+                miseAJourTempsIgnitionCoinDeCase(nouveaupoint)
+            finpour
+
+        fintantque
+
+        pointFinal = changementEchelle(aPropager)
+        premierPoint = aPropager
+        contourFeuFinal.ajouter(pointFinal)
+        pointFinal = premierPoint.suivant
+
+        tant que pointFinal.getid != premier.getid faire :
+            pointFinal = changementEchelle(aPropager)
+            contourFeuFinal.ajouter(pointFinal)
+            pointFinal = premierPoint.suivant
+        fintantque
+
+        return contourFeuFinal
+    FIN
+
+}

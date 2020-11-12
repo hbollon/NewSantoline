@@ -176,6 +176,33 @@ Choc.cpp.s:
 	$(MAKE) -f CMakeFiles\Algo3.dir\build.make CMakeFiles/Algo3.dir/Choc.cpp.s
 .PHONY : Choc.cpp.s
 
+CoinCase.obj: CoinCase.cpp.obj
+
+.PHONY : CoinCase.obj
+
+# target to build an object file
+CoinCase.cpp.obj:
+	$(MAKE) -f CMakeFiles\Algo3.dir\build.make CMakeFiles/Algo3.dir/CoinCase.cpp.obj
+.PHONY : CoinCase.cpp.obj
+
+CoinCase.i: CoinCase.cpp.i
+
+.PHONY : CoinCase.i
+
+# target to preprocess a source file
+CoinCase.cpp.i:
+	$(MAKE) -f CMakeFiles\Algo3.dir\build.make CMakeFiles/Algo3.dir/CoinCase.cpp.i
+.PHONY : CoinCase.cpp.i
+
+CoinCase.s: CoinCase.cpp.s
+
+.PHONY : CoinCase.s
+
+# target to generate assembly for a file
+CoinCase.cpp.s:
+	$(MAKE) -f CMakeFiles\Algo3.dir\build.make CMakeFiles/Algo3.dir/CoinCase.cpp.s
+.PHONY : CoinCase.cpp.s
+
 EllipseOpt.obj: EllipseOpt.cpp.obj
 
 .PHONY : EllipseOpt.obj
@@ -256,33 +283,6 @@ PointOpt.s: PointOpt.cpp.s
 PointOpt.cpp.s:
 	$(MAKE) -f CMakeFiles\Algo3.dir\build.make CMakeFiles/Algo3.dir/PointOpt.cpp.s
 .PHONY : PointOpt.cpp.s
-
-SommetCase.obj: SommetCase.cpp.obj
-
-.PHONY : SommetCase.obj
-
-# target to build an object file
-SommetCase.cpp.obj:
-	$(MAKE) -f CMakeFiles\Algo3.dir\build.make CMakeFiles/Algo3.dir/SommetCase.cpp.obj
-.PHONY : SommetCase.cpp.obj
-
-SommetCase.i: SommetCase.cpp.i
-
-.PHONY : SommetCase.i
-
-# target to preprocess a source file
-SommetCase.cpp.i:
-	$(MAKE) -f CMakeFiles\Algo3.dir\build.make CMakeFiles/Algo3.dir/SommetCase.cpp.i
-.PHONY : SommetCase.cpp.i
-
-SommetCase.s: SommetCase.cpp.s
-
-.PHONY : SommetCase.s
-
-# target to generate assembly for a file
-SommetCase.cpp.s:
-	$(MAKE) -f CMakeFiles\Algo3.dir\build.make CMakeFiles/Algo3.dir/SommetCase.cpp.s
-.PHONY : SommetCase.cpp.s
 
 Utils.obj: Utils.cpp.obj
 
@@ -407,6 +407,9 @@ help:
 	@echo ... Choc.obj
 	@echo ... Choc.i
 	@echo ... Choc.s
+	@echo ... CoinCase.obj
+	@echo ... CoinCase.i
+	@echo ... CoinCase.s
 	@echo ... EllipseOpt.obj
 	@echo ... EllipseOpt.i
 	@echo ... EllipseOpt.s
@@ -416,9 +419,6 @@ help:
 	@echo ... PointOpt.obj
 	@echo ... PointOpt.i
 	@echo ... PointOpt.s
-	@echo ... SommetCase.obj
-	@echo ... SommetCase.i
-	@echo ... SommetCase.s
 	@echo ... Utils.obj
 	@echo ... Utils.i
 	@echo ... Utils.s

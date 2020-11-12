@@ -92,6 +92,12 @@
 		<Unit filename="C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/Choc.hpp">
 			<Option target="Algo3"/>
 		</Unit>
+		<Unit filename="C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/CoinCase.cpp">
+			<Option target="Algo3"/>
+		</Unit>
+		<Unit filename="C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/CoinCase.h">
+			<Option target="Algo3"/>
+		</Unit>
 		<Unit filename="C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/EllipseOpt.cpp">
 			<Option target="Algo3"/>
 		</Unit>
@@ -108,12 +114,6 @@
 			<Option target="Algo3"/>
 		</Unit>
 		<Unit filename="C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/PointOpt.hpp">
-			<Option target="Algo3"/>
-		</Unit>
-		<Unit filename="C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/SommetCase.cpp">
-			<Option target="Algo3"/>
-		</Unit>
-		<Unit filename="C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/SommetCase.h">
 			<Option target="Algo3"/>
 		</Unit>
 		<Unit filename="C:/Users/dubos/Desktop/Projet/newsantoline/Algo3/Utils.cpp">

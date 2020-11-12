@@ -108,6 +108,8 @@ class Santoline(QMainWindow, observable.Observer):
         self.secondToolbar_ = self.addToolBar("Second tool bar")
         self.secondToolbar_.setMovable(False)
         self.secondToolbar_.setFloatable(False)
+
+        
         
         self.addToolBarBreak()
         self.left_toolbar_ = self.addToolBar("Left tool bar")
@@ -327,7 +329,7 @@ class Santoline(QMainWindow, observable.Observer):
         self.reloadMap.setVisible(False)
         self.reloadMap.triggered.connect(self.reload)
 
-        alignmentGroup2 = QActionGroup(self);
+        alignmentGroup2 = QActionGroup(self)
         alignmentGroup2.addAction(self.afficheVents)
         alignmentGroup2.addAction(self.afficheVentsPentes)
         alignmentGroup2.addAction(self.affichePente)
@@ -353,7 +355,6 @@ class Santoline(QMainWindow, observable.Observer):
         
         self.departements_choices_window_.controller_.view_.valider_.clicked.connect(
             lambda: self.controller_.map(self.departements_choices_window_.controller_.model_.departement_courant))
-
 
         self.windMatrix_=self.windMatrixInit('..\\data\\maps\\map.json')
 
@@ -440,11 +441,9 @@ class Santoline(QMainWindow, observable.Observer):
         self.windSlopeLayer_ = self.setWindLayer('255,0,0,255', self.densite, "windslope")
 
     def zoomAvant(self):
-
         self.canvas_.zoomByFactor(0.8)
 
     def zoomArriere(self):
-
         self.canvas_.zoomByFactor(1.2)
 
 
@@ -652,9 +651,9 @@ class Santoline(QMainWindow, observable.Observer):
 
     def matrixInit(self,largeur, hauteur):
         matrix=[]
-        for i in range(0,int(largeur)):
+        for i in range(0,int(hauteur)):
             matrix.append([])
-            for j in range(0,int(hauteur)):
+            for j in range(0,int(largeur)):
                 matrix[i].append(0)
         return matrix
 
@@ -677,10 +676,11 @@ class Santoline(QMainWindow, observable.Observer):
     def windMatrixInit(self,path):
         with open("..\\src\\Epilobe\\params.json ") as g:
             params= json.load(g)
-        largeur=params['dimension'][1]
-        hauteur=params['dimension'][0]
+        largeur=params['dimension'][0]
+        hauteur=params['dimension'][1]
+        print(f"largeur/25: {largeur/25}, hauteur/25: {hauteur/25}")
 
-        windMatrix = self.matrixInit(largeur/25, hauteur/25)
+        windMatrix = self.matrixInit(largeur/25 + 1, hauteur/25 + 1)
         if largeur>0:
             with open(path, 'r') as f:
                 windMap = json.load(f)
@@ -698,6 +698,7 @@ class Santoline(QMainWindow, observable.Observer):
                 alpha = self.vector_to_angle(x,y)
                 alpha1 = self.vector_to_angle(x1,y1)
                 alpha2 = self.vector_to_angle(x2,y2)
+                print(f"x: {int((wind['x'] - xOrigin) / 25)}, y: {int((wind['y'] - yOrigin) / 25)}")
                 windMatrix[int((wind['x'] - xOrigin) / 25)][int((wind['y'] - yOrigin) / 25)] = [point,alpha,alpha1,alpha2]
         return windMatrix
 
@@ -1096,7 +1097,7 @@ class Santoline(QMainWindow, observable.Observer):
     ###---Procedures de chargement du fond de carte---###
 
     def change(self, departement):
-        datas = "{}\\{}".format(os.path.expanduser("~\\Documents"), departement)
+        datas = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '../../..', "data/altimetrics/departements", departement))
         ext = ".jp2"
         self.thread_ = MapLoader(self, datas, ext)
         self.thread_.end.connect(self.finish)

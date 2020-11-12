@@ -22,6 +22,17 @@ PointOpt::PointOpt(Point2D p, double t, Vector2D tau, std::string ancetre, std::
                         listeVitesse.push_back(vits);
                         ++(*compt);
 }
+PointOpt::PointOpt(Point2D p, double t, Vector2D tau, std::string ancetre, std::string suivant, std::string precedent,
+                   std::string indice, vector<vector<VitesseOpt>> vit, int *compt, string conditionInsertion)
+        :coordonne(p),t(t),tau(std::move(tau)),indice(std::move(indice)),ancetre(std::move(ancetre)),
+         precedent(std::move(precedent)),suivant(std::move(suivant)),id(std::to_string(*compt)),creation(std::move(conditionInsertion))
+{
+    for(auto vits : vit)
+    {
+       listeVitesse.push_back(vits);
+    }
+    ++(*compt);
+}
 
 PointOpt::PointOpt(Point2D p, double t, Vector2D tau,std::string indice, int * compt, std::string conditionInsertion):
 tau(std::move(tau)),indice(std::move(indice)),coordonne(p),t(t), id(std::to_string(*compt)),creation(std::move(conditionInsertion)){++(*compt);}

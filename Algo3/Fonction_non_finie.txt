@@ -1,0 +1,469 @@
+Ce fichier contient les fonctions qui avaient été commencé puis mit en pause.
+Ces fonctions devaient être terminées et utilisées plus tard mais le projet n'est pas allé jusque-là.
+Elles ne sont donc pas forcément validées et terminées mais le début de leur programmation se trouve ici.
+
+
+/***********************************************************************************************************/
+vector<vector<VitesseOpt>> AlgoOpt::vitesseBord2(VitesseOpt vit, Point2D ijn, string cote){
+    if(vit.indice()!=0){
+        cout<<"VIT n'est pas une vitesse optimale dans vitessebord2"<<endl;
+        exit (EXIT_FAILURE);
+    }
+    Point2D ij = vit.coordonne();
+    Vector2D tauperp =ijn-ij;
+    Vector2D tau = Vector2D (-tauperp.y(), tauperp.x());
+    vector<vector<VitesseOpt>> vits;
+    vector<vector<VitesseOpt>> vitb;
+    vector<vector<VitesseOpt>> listv;
+    vector<vector<VitesseOpt>> result;
+
+
+    if(cote == "p"){
+        tau = Vector2D(-tau.x(),-tau.y());
+    }
+    Vector2D taun = Vector2D(-tau.x(),-tau.y());
+    Vector2D ta = vit.tau();
+    double aux = det(tau,ta);
+    int signe = -1;
+    if(aux>=0){
+        signe =1;
+    }
+    Vector2D vi = vit.vecteur();
+    double auxv = tauperp.dot(vi);
+    if(abs(aux>0)){
+        VitesseOpt vitbn = vitesseMax(signe*tau,ijn);
+        if(auxv < 0){
+            VitesseOpt vitbo = vitesseMax(signe*tau, ij);
+            Vector2D vtemp = (vitbn.vecteur()-vitbo.vecteur());
+            double test = signe * vtemp.dot(tau);
+            if(test>0){
+                VitesseOpt v = vitesse(vitbn, ij);
+                vector<VitesseOpt> temp1;
+                temp1.push_back(vitbn);
+                vits.push_back(temp1);
+                vector<VitesseOpt> temp2;
+                temp1.push_back(v);
+                vits.push_back(temp2);
+
+            }
+            else if (test <0){
+                VitesseOpt v = vitesse(vitbo,ijn);
+                vector<VitesseOpt> vitb;
+                vitb.push_back(vitbo);
+                vitb.push_back(v);
+            }
+            else{
+                VitesseOpt v = vitesse(vitbn,ij);
+                vector<VitesseOpt> temp1;
+                temp1.push_back(vitbn);
+                vits.push_back(temp1);
+                vector<VitesseOpt> temp2;
+                temp1.push_back(v);
+                vits.push_back(temp2);
+            }
+
+        }
+        else{
+            double auxx =det(vi,ta)/aux;
+            Vector2D vita = auxx*tau;
+            vector<VitesseOpt> temp;
+            temp.push_back(vit);
+            listv.push_back(temp);
+            VitesseOpt vb = VitesseOpt(vita,ta,vit.coordonne(),listv.size());
+            if(auxx<0){
+                VitesseOpt vbn = vitesseMax(taun,ijn);
+                double test = -(vbn.vecteur()-vita).dot(tau);
+                if (test>=0){
+                    VitesseOpt v = vitesse(vbn,ij);
+                    vector<VitesseOpt> temp1;
+                    temp1.push_back(vbn);
+                    vits.push_back(temp1);
+                    vector<VitesseOpt> temp2;
+                    temp2.push_back(v);
+                    vits.push_back(temp2);                }
+                else{
+                    VitesseOpt v = vitesse(vbn,ijn);
+                    vector<VitesseOpt> temp2;
+                    temp2.push_back(v);
+                    vits.push_back(temp2);                }
+            }
+            else{
+                double test = -(vitbn.vecteur()-vita).dot(tau);
+                if(test>=0){
+                    VitesseOpt v = vitesse(vitbn,ij);
+                    vector<VitesseOpt> vitb;
+                    vitb.push_back(vitbn);
+                    vitb.push_back(v);
+                    if(cote =="p"){
+                        vector<vector<VitesseOpt>> vitc = vitesseChocOuPas(vit,v).second;
+                        vector<vector<VitesseOpt>> listvn = vitesseRajoutes(ijn,tau,tauperp,kmax);
+                        vector<VitesseOpt> temp1;
+                        temp1.push_back(v);
+                        listvn.insert(listvn.begin(), temp1);
+                        vector<VitesseOpt> temp2;
+                        temp2.push_back(vitbn);
+                        listvn.insert(listvn.begin(),temp2);
+                        vits.insert(vits.begin(),vitc.begin(),vitc.end());
+                        vits.insert(vits.begin(),listvn.begin(),vitc.end());
+                    }
+                    else{
+                        vector<vector<VitesseOpt>> vitc = vitesseChocOuPas(v,vit).second;
+                        vector<vector<VitesseOpt>> listvn = vitesseRajoutes(ijn,tauperp,tau,kmax);
+                        vector<VitesseOpt> temp1;
+                        temp1.push_back(v);
+                        listvn.insert(listvn.begin(),temp1);
+                        vector<VitesseOpt> temp2;
+                        temp2.push_back(vitbn);
+                        listvn.insert(listvn.begin(),temp2);
+                        vits.insert(vits.begin(),listvn.begin(),vitc.end());
+                        vits.insert(vits.begin(),vitc.begin(),vitc.end());
+                    }
+
+                }
+                else{
+                    VitesseOpt v = vitesse(vb,ijn);
+                    vector<VitesseOpt> vitb;
+                    vitb.push_back(vb);
+                    vitb.push_back(v);
+                    vector<VitesseOpt> vits;
+                    vits.push_back(v);
+                }
+
+            }
+        }
+    }
+    else{
+        VitesseOpt v = vitesse0(ij,ijn);
+        vector<VitesseOpt> vits;
+        vits.push_back(v);
+        vector<VitesseOpt> vitb;
+
+    }
+//    result.push_back(vits);
+//    result.push_back(vitb);
+//    result.push_back(listv);
+
+    return result;
+}
+
+/***********************************************************************************************************/
+
+void AlgoOpt::vitesseBord(vector<VitesseOpt> vitsp, vector<VitesseOpt> vitss){
+    vector<VitesseOpt> listv;
+    vector<VitesseOpt> vits;
+    VitesseOpt vp = *vitsp.end();
+    VitesseOpt vs = *vitss.begin();
+    if(vs.indice()!=0){
+        cout<<"erreur dans vitesseBord indice vs != 0"<<endl;
+        exit (EXIT_FAILURE);
+
+    }
+    if(vp.indice()!=0){
+        cout<<"erreur dans vitesseBord indice vp != 0"<<endl;
+        exit (EXIT_FAILURE);
+
+    }
+    Point2D ijp = vp.coordonne();
+    Point2D ijs = vs.coordonne();
+    Vector2D tauperp =ijs-ijp;
+    Vector2D tau = Vector2D(tauperp.y(), -tauperp.x());
+    Vector2D ta = vp.tau();
+    string typ;
+    string tys;
+    double aux =det(tau,ta);
+    Vector2D vi = vp.vecteur();
+    double auxp = vi.dot(tauperp);
+    double auxv = tauperp.dot(vi);
+    VitesseOpt vnbs = VitesseOpt();
+    VitesseOpt vnbp = VitesseOpt();
+
+    if(abs(aux)>0){
+        if(auxv<0){
+            VitesseOpt vnbp = vitesseMax(tau, ijp);
+            typ = "n";
+        }
+        else{
+            double auxx = det(vi,ta)/aux;
+            Vector2D vita = auxx*tau;
+            listv.push_back(vp);
+            VitesseOpt vnbp = VitesseOpt(vita,ta,vp.coordonne(),listv.size());
+            if(auxx<0){
+                VitesseOpt vps = vitesse(vnbp, ijs);
+                typ = "bbpp";
+            }
+            else{
+                typ = "n";
+            }
+        }
+    }
+    else{
+        cout<<"le front provenant de P est parallele au bord"<<endl;
+        typ="bbppp";
+        if(auxv<0){
+            VitesseOpt vps = vitesse0(ijs, ijp);
+
+        }
+        else{
+            VitesseOpt vps = vitesse0(ijp,ijs);
+        }
+    }
+
+    ta =vs.tau();
+    aux = det(tau,ta);
+    vi = vs.vecteur();
+    auxv = Vector2D(-tauperp.x(),-tauperp.y()).dot(vi);
+    if(abs(aux)>0){
+        if(auxv<0){
+            VitesseOpt vnbs = vitesseMax(tau,ijs);
+            tys = "n";
+        }
+        else{
+            double auxx = det(vi,ta)/aux;
+            Vector2D vita = auxx*tau;
+            listv.push_back(vs);
+            VitesseOpt vnbs = VitesseOpt(vita,ta,vs.coordonne(),listv.size());
+            if(auxx<0){
+                VitesseOpt vsp= vitesse(vnbs,ijp);
+                tys = "bbps";
+            }
+            else{
+                tys="n";
+            }
+        }
+    }
+    else{
+        cout<<"le front provenant de S est parallele au bord"<<endl;
+        tys = "bbpsp";
+        if(auxv < 0){
+            VitesseOpt vsp = vitesse0(ijp,ijs);
+        }
+        else{
+            VitesseOpt vsp = vitesse0(ijs,ijp);
+        }
+
+    }
+
+    if( typ == "n" && tys =="n"){
+        double test = vnbs.vecteur().norm() - vnbp.vecteur().norm();
+        if(test>0){
+            VitesseOpt vr = vitesse(vnbs,ijp);
+            vector<VitesseOpt> vnb;
+            vnb.push_back(vnbs);
+            vnb.push_back(vr);
+            pair<double,vector<VitesseOpt>> mypair = vitesseChocOuPas(vp,vr);
+            vector<VitesseOpt> vitc = mypair.second;
+            if(tau.dot(vitc.begin()->vecteur())>=0){
+                Vector2D vit = vitss.begin()->vecteur();
+                if(det(vnbs.vecteur(),vit)>0){
+                    vits.insert(vits.begin(),vitc.begin(),vitc.end());
+                    vits.insert(vits.begin(),vnb.begin(),vnb.end());
+                    vits.insert(vits.begin(),vitss.begin(),vitss.end());
+                }
+                else{
+                    vitss.erase(vitss.begin());
+                    vits.insert(vits.begin(),vitc.begin(),vitc.end());
+                    vits.insert(vits.begin(),vnb.begin(),vnb.end());
+                    vits.insert(vits.begin(),vitss.begin(),vitss.end());
+                }
+            }
+            else{
+                vitesseBord2();
+                vits=;
+            }
+        }
+        else if(test< 0){
+            VitesseOpt vr= vitesse(vnbp,ijs);
+            vector<VitesseOpt> vnb;
+            vnb.push_back(vnbp);
+            vnb.push_back(vr);
+            pair<double,vector<VitesseOpt>> mypair = vitesseChocOuPas(vr,vs);
+            vector<VitesseOpt> vitc = mypair.second;
+            if(tau.dot(vitc.begin()->vecteur())){
+                Vector2D vit = vitsp.end()->vecteur();
+                if(det(vnbp.vecteur(),vit)<0){
+                    vits.insert(vits.begin(),vitc.begin(),vitc.end());
+                    vits.insert(vits.begin(),vnb.begin(),vnb.end());
+                    vits.insert(vits.begin(),vitss.begin(),vitss.end());
+
+
+                }
+                else{
+                    vitessebord2;
+                    vits=;
+                }
+            }
+            else{
+                vitessebord2;
+                vits = vitrr;
+            }
+
+        }
+        else {
+            VitesseOpt vr = vitesse(vnbp,ijs);
+            vnb = ;
+            pair<double,vector<VitesseOpt>> mypair = vitesseChocOuPas(vr,vs);
+            vector<VitesseOpt> vitc = mypair.second;
+            if(tau.dot(vitc.begin()->vecteur())>=0){
+                Vector2D vit = vitsp.end()->vecteur();
+                if(det(vnbp.vecteur(),vit)<0){
+                    vits =;
+                }
+                else{
+                    vitsp.erase(vitsp.end());
+                    vits =;
+                }
+            }
+            else{
+                vitessebord2;
+                vits = vitrs;
+            }
+        }
+    }
+    else if(typ != "n" && tys =="n"){
+        vitc =vitesseChocOuPas(vs,vps).second;
+        vits = vitc;
+    }
+    else if(typ=="n" && tys != "n"){
+        vitc = vitesseChocOuPas(vsp, vp);
+        vits = vitc;
+    }
+    else if(typ == "bbppp" && tys=="bbpsp"){
+        Vector2D vtemp = (vsp-vps);
+        if(vtemp.norm()==0){
+            if((vsp.coordonne()-ijs)==0){
+                vits = vitss;
+            }
+            else{
+                vits = vitsp;
+            }
+        }
+        else{
+            cout<<"dans vitessebord, il faut supprimer le point"<<endl;
+        }
+    }
+    else{
+        cout<<"tys: "<<tys<<" typ: "<<typ<<endl;
+    }
+
+}
+
+/***********************************************************************************************************/
+
+void AlgoOpt::chocDansCellule(PointOpt mvt){
+    PointOpt ancetre = *mvt.ancetre;
+    PointOpt *c = &listff.at(listeChoc.begin()->indic);
+    vector<vector<VitesseOpt>> vits = mvt.listeVitesse;
+    vector<vector<VitesseOpt>> vitsc = c->listeVitesse;
+    vector<vector<VitesseOpt>> vitc;
+    PointOpt precedent = PointOpt(&compteurId);
+    PointOpt suivant = PointOpt(&compteurId);
+    int indchoc;
+    Point3D mc = Point3D();
+    VitesseOpt v = *vits.begin()->begin();
+    VitesseOpt vc = *vitsc.begin()->begin();
+    Vector2D t = v.tau();
+    Vector2D tc = vc.tau();
+    double test = det(t,tc);
+
+    if(test<0){
+        if(vits.size()==3){
+            v = *(vits.begin()+1)->begin();
+        }
+        if (vitsc.size()==3){
+            vc = *(vitsc.begin()+1)->begin();
+        }
+        vitc = vitesseChocOuPas(v,vc).second;
+        PointOpt precedent = *ancetre.precedent;
+        PointOpt suivant = *c->suivant;
+
+    }
+    else{
+        PointOpt precedent = *c->precedent;
+        if(vits.size()==3){
+            v = *(vits.begin()+2)->begin();
+        }
+        if(vitsc.size()==3){
+            vc = *(vits.begin()+1)->begin();
+        }
+        vitc = vitesseChocOuPas(vc,v).second;
+        precedent = *(c->precedent);
+        PointOpt suivant = * (ancetre.suivant);
+
+    }
+    VitesseOpt vitemp = *vitc.begin()->begin();
+    Vector2D vetemp =  (vitemp.vecteur());
+    vetemp = Vector2D(-vetemp.x(), -vetemp.y());
+    vitemp.vecteur() = vetemp;
+    pair<Point3D, Vector2D> mnp = mnplusun(mc,vitemp);
+    bool test2 = false;
+    Point2D ijc = vitc.begin()->begin()->coordonne() + mnp.second;
+    string num = numero(ijc);
+    int nbre = listeCellulesActives.count(num);
+    if(nbre == 1){
+        vector<PointOpt *> tabcel = listeCellulesActives.at(num);
+        for (auto &ind:tabcel){
+            if(ind->indice=="1"){
+                Point2D mvttt = ind->coordonne;
+                Point2D ptemp = Point2D(mnp.first.x(), mnp.first.y());
+                Vector2D vtemp =(mvttt-ptemp);
+                if (vtemp.norm()==0){
+                    PointOpt * indchoc = ind;
+                    test2 = true;
+                }
+            }
+
+        }
+    }
+    if(!test2){
+        mnp.first.z()=mc.z() -(mnp.first.z()-mc.z());
+        mvt = PointOpt(mnp.first,Vector2D(mnp.second.x(),mnp.second.y()),"3", &compteurId);
+        mvt.precedent=&precedent;
+        mvt.suivant=&suivant;
+        insere(mvt,"p",false);
+        listff.end()->second.precedent= &precedent;
+        listff.end()->second.suivant= &suivant;
+        indchoc = listff.size();
+    }
+    suivant.precedent=&listff.end()->second;
+    precedent.suivant=&listff.end()->second;
+    supprimePlus("a changer", "a changer");
+
+}
+
+
+/***********************************************************************************************************/
+
+pair<bool,vector<vector<VitesseOpt>>> AlgoOpt::vitesseSommetNew(vector<vector<VitesseOpt>> vits, Vector2D tauperp){
+    if(vits.size()!=2){
+        cout<<"erreur 1 dans vitessseSommetNew"<<endl;
+        exit (EXIT_FAILURE);
+    }
+    Vector2D vb = vits.begin()->begin()->vecteur();
+    Point2D ijb = vits.begin()->begin()->coordonne();
+    Vector2D vr = (vits.begin()+1)->begin()->vecteur();
+    Point2D ijr = (vits.begin()+1)->begin()->coordonne();
+    Vector2D tau = ijb - ijr;
+    Point2D ijpo;
+    Point2D ijso;
+    VitesseOpt vso;
+    VitesseOpt vpo;
+
+    if(det(vb,tau)<=0){
+        tau = Vector2D(-tau.x(), -tau.y());
+        vpo = *vits.begin()->begin();
+        vso = *(vits.begin()+1)->begin();
+        ijpo = ijb;
+        ijso = ijr;
+    }
+    else{
+        vso = *vits.begin()->begin();
+        vpo = *(vits.begin()+1)->begin();
+        ijpo = ijr;
+        ijso = ijb;
+    }
+    tauperp = Vector2D(tau.y(),-tau.x());
+    Point2D ijpn=ijpo+tauperp;
+    Point2D ijsn=ijso+tauperp;
+
+    //A finir
+}

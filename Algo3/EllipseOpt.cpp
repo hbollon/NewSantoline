@@ -27,7 +27,6 @@ m_coordonne(p) {
                                        -(epsilon/(1+epsilon))*rateOfSpread.y(),
                                        -(epsilon/(1+epsilon))*rateOfSpread.z());
 
-
     Point2D pointIgnition2D = Point2D(pointIgnition3D.x(),pointIgnition3D.y());
 
     Vector2D vecteurAuxPetit = Vector2D(sqrt((1-epsilon) / (1+epsilon)) * petitAxe.x(),
@@ -71,9 +70,6 @@ m_coordonne(p) {
 
         }
         else{
-
-
-
             m_coordonne = pointIgnition2D;
             m_vecteur = ax2;
             m_a=normax2;
