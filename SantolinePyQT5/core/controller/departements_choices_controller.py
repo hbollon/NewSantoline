@@ -2,6 +2,7 @@ from ..model import *
 from . import controller
 
 import re
+import os
 
 class Departements_Choices_Controller(controller.AController):
     def __init__(self, view):
@@ -10,14 +11,14 @@ class Departements_Choices_Controller(controller.AController):
         self.initDepartements()
     
     def initDepartements(self):
-        self.model_.addDepartement("Alpes Maritimes (06)")
-        self.model_.addDepartement("Var (83)")
+        for dep in next(os.walk('../data/altimetrics/departements'))[1]:
+            self.model_.addDepartement(dep)
         
     def itemSelectionChanged_event(self):
-        matches = re.search('[0-9]+',self.view_.listWidget.selectedItems()[0].text())
+        print(self.view_.listWidget.selectedItems()[0].text())
+        matches = self.view_.listWidget.selectedItems()[0].text()
         if matches : 
-            departement = matches.group(0)
-            self.model_.departementCourant(departement)
+            self.model_.departementCourant(matches)
     
     def accept(self, departement):
         self.close()
