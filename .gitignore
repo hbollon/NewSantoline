@@ -22,3 +22,4 @@ data/maps/map.json
 
 # Exclude departements folder
 data/altimetrics/departements/*
+src/Epilobe/params.json
