@@ -87,7 +87,7 @@ class AlgorithmController(controller.AController):
         # lancer le programme algo avec les parametre algo et la carte de vent et la sortie est le resultat  de simulation
 
         if self.algorithmModel_.algorithm_=="3":
-            var = subprocess.Popen([
+            sub = subprocess.run([
                 "..\\Algo3\\cmake-build-debug\\Algo3.exe",
                 "..\\data\\communication\\parametreAlgo.json",
                 "..\\data\\maps\\map.json",
@@ -96,25 +96,11 @@ class AlgorithmController(controller.AController):
                 "..\\data\\communication\\points.json",
                 "..\\data\\communication\\infos.json",
 				"..\\data\\communication\\listeSommets.json"
-            ],
-            shell=True,
-            stdout=subprocess.PIPE,
-            universal_newlines=True).stdout
-            
-            data = var.readlines()
+            ], 
+            shell=True, stdout=PIPE, stderr=PIPE)
+
+            print(f"Output:\n{sub.stdout}\nErr:\n{sub.stderr}\nReturnCode: {sub.returncode}")
         else:
-            # var = subprocess.Popen([
-            #     "..\\src\\algo\\cmake-build-debug\\algo.exe",
-            #     "..\\data\\communication\\parametreAlgo.json",
-            #     "..\\data\\maps\\map.json",
-            #     "..\\data\\communication\\resultatSimulation.json"
-            # ],
-            # shell=True,
-            # stdout=subprocess.PIPE,
-            # universal_newlines=True).stdout
-
-            # data = var.readlines()
-
             sub = subprocess.run([
                 "..\\src\\algo\\cmake-build-debug\\algo.exe",
                 "..\\data\\communication\\parametreAlgo.json",

@@ -387,7 +387,9 @@ void AlgoOpt::initialiserEllipse(json cartevent, ofstream& sortie, int largeur, 
         }
     }
 
+    std::cout << "l390" << std::endl;
     setXminYmin(cartevent);
+    std::cout << "l392" << std::endl;
 
     for (const auto &it : cartevent) {
 
@@ -399,7 +401,7 @@ void AlgoOpt::initialiserEllipse(json cartevent, ofstream& sortie, int largeur, 
         Point2D mapCoordinate = Point2D(it["x"], it["y"]);
         Point2D index = coordinateToIndex(Point2D(mapCoordinate.x(), mapCoordinate.y()));
 
-
+        std::cout << "l403 " << std::endl;
         float lb = 1 + 0.0012 * pow((2.237 * windSlope.norm()), 2.154);
         float epsilon = sqrt(1 - (1 / (lb*lb)));
 
@@ -420,8 +422,10 @@ void AlgoOpt::initialiserEllipse(json cartevent, ofstream& sortie, int largeur, 
                             {"great_axis", e.a()},
                             {"small_axis", e.b()}});
 
-
-        carteEllipse[(int)index.x()].at((int)index.y()) = e;
+        std::cout << "l424 " << (int)index.x() << " " << (int)index.y() << std::endl;
+        if((int)index.x() < carteEllipse.size() && (int)index.y() < carteEllipse[(int)index.x()].size())
+            carteEllipse[(int)index.x()][(int)index.y()] = e;
+        std::cout << "l426" << std::endl;
     }
     sortie << jsonVent << endl;
     cout << "Carte des ellipses initialisee !"<<endl;
