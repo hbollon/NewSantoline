@@ -9,6 +9,7 @@ import os
 from qgis.core import QgsApplication, QgsPoint
 from core.view import santoline_view
 import random
+import json
 
 import core.libs
 
@@ -23,6 +24,52 @@ def main():
     app.initQgis()
     santoline_view.Santoline()
     sys.exit(app.exec_())
+
+def createJsonPath():
+    full_path = os.path.realpath(__file__)
+    currentDirectory = os.path.dirname(full_path)
+
+    dataDirectory = str(currentDirectory).replace('\SantolinePyQT5','') + "\data"
+    windMapDirectory = str(dataDirectory) + "\maps"
+    asctojsonparserDirectory = str(currentDirectory).replace('\SantolinePyQT5','') + "\src\AscToJsonParser"
+
+    #getting qgis path
+    programFiles = "C:/Program Files"
+    programFilesDirectory = next(os.walk(programFiles))[1];
+    qgisVersions = []
+    for name in programFilesDirectory:
+        if(name.startswith("QGIS")):
+            qgisVersions.append(name)
+    if not qgisVersions :
+        raise Exception('Aucune version QGIS!')
+    qgisLastVersion = qgisVersions[len(qgisVersions)-1];
+    qgisDirectory = str(programFiles).replace('/','\\') + "\\" +str(qgisLastVersion)
+
+    #getting WindNinja path
+    windNinja = "C:/WindNinja"
+    windNinjaDirectory = next(os.walk(windNinja))[1];
+    windNinjaVersions = []
+    for name in windNinjaDirectory:
+        if(name.startswith("WindNinja")):
+            windNinjaVersions.append(name)
+    if not windNinjaVersions :
+        raise Exception('Aucune version WindNinja!')
+    windNinjaLastVersion = windNinjaVersions[len(windNinjaVersions)-1];
+    windNinjaDirectory = str(windNinja).replace('/','\\') + "\\" +str(windNinjaLastVersion)
+
+    #Create json
+    data = {
+        "data_path" : dataDirectory,
+        "qgis_path" : qgisDirectory,
+        "windninja_path" : windNinjaDirectory,
+        "asctojsonparser_path": asctojsonparserDirectory,
+        "wind_map_generation_path" : windMapDirectory
+    }
+
+    #write Json
+    with open('../paths.json', 'w') as outfile:
+        json.dump(data, outfile)
             
 if (__name__ == "__main__"):
+    createJsonPath()
     main()
