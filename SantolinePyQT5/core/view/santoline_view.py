@@ -647,23 +647,14 @@ class Santoline(QMainWindow, observable.Observer):
 
         return result
 
-
-
     def matrixInit(self,largeur, hauteur):
-        matrix=[]
-        for i in range(0,int(hauteur)):
-            matrix.append([])
-            for j in range(0,int(largeur)):
-                matrix[i].append(0)
-        return matrix
+        return [[0 for y in range(hauteur)] for x in range(largeur)]
 
     def vector_to_angle(self,x,y):
         if x == 0 and y == 0:
             alpha = 0
-
         elif x == 0:
             alpha = 90 - ((y / abs(y)) * 90)
-
         elif y == 0:
             alpha = (x / abs(x)) * 90
         elif y < 0:
@@ -674,13 +665,13 @@ class Santoline(QMainWindow, observable.Observer):
         return (alpha + 180) % 360
 
     def windMatrixInit(self,path):
-        with open("..\\src\\Epilobe\\params.json ") as g:
+        with open("..\\src\\Epilobe\\params.json") as g:
             params= json.load(g)
-        largeur=params['dimension'][0]
-        hauteur=params['dimension'][1]
+        largeur=params['dimension'][1]
+        hauteur=params['dimension'][0]
         print(f"largeur/25: {largeur/25}, hauteur/25: {hauteur/25}")
 
-        windMatrix = self.matrixInit(largeur/25 + 1, hauteur/25 + 1)
+        windMatrix = self.matrixInit(int(largeur/25) + 1, int(hauteur/25) + 1)
         if largeur>0:
             with open(path, 'r') as f:
                 windMap = json.load(f)
@@ -692,12 +683,14 @@ class Santoline(QMainWindow, observable.Observer):
                 y = wind['wind'][1]
                 x1 = wind['windSlope'][0]
                 y1 = wind['windSlope'][1]
-                x2 =wind['slope_vector'][0]
-                y2 =wind['slope_vector'][1]
+                x2 = wind['slope_vector'][0]
+                y2 = wind['slope_vector'][1]
                 point = QgsPointXY(wind['x'], wind['y'])
                 alpha = self.vector_to_angle(x,y)
                 alpha1 = self.vector_to_angle(x1,y1)
                 alpha2 = self.vector_to_angle(x2,y2)
+                print("wind[x]: " + str(wind['x']) + " wind[y]: " + str(wind['y']))
+                print("xOrigin: " + str(xOrigin) + " yOrigin: " + str(yOrigin))
                 print(f"x: {int((wind['x'] - xOrigin) / 25)}, y: {int((wind['y'] - yOrigin) / 25)}")
                 windMatrix[int((wind['x'] - xOrigin) / 25)][int((wind['y'] - yOrigin) / 25)] = [point,alpha,alpha1,alpha2]
         return windMatrix

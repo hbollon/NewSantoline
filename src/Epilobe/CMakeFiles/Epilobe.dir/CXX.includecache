@@ -6,6 +6,10 @@
 
 #IncludeRegexTransform: 
 
+C:/Users/hbollon/NewSantoline/src/Epilobe/Epilobe.cpp
+Epilobe.h
+C:/Users/hbollon/NewSantoline/src/Epilobe/Epilobe.h
+
 C:/Users/hbollon/NewSantoline/src/Epilobe/Epilobe.h
 string
 -
@@ -25,10 +29,6 @@ iostream
 -
 string
 -
-
-C:/Users/hbollon/NewSantoline/src/Epilobe/main.cpp
-Epilobe.h
-C:/Users/hbollon/NewSantoline/src/Epilobe/Epilobe.h
 
 C:/Users/hbollon/NewSantoline/src/Utils/Configuration.h
 utility
