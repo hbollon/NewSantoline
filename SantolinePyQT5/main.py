@@ -15,25 +15,8 @@ import core.libs
 
 import threading
 
-def main():
-    current_path = os.path.dirname(os.path.realpath(__file__))
-    os.chdir(current_path)
-    l = list(map(lambda arg: bytes(arg, 'utf-8'), sys.argv))
-    QgsApplication.setPrefixPath("C:\\Program Files\\QGIS 3.2\\apps\\qgis", True)
-    app = QgsApplication(l, True)
-    app.initQgis()
-    santoline_view.Santoline()
-    sys.exit(app.exec_())
-
-def createJsonPath():
-    full_path = os.path.realpath(__file__)
-    currentDirectory = os.path.dirname(full_path)
-
-    dataDirectory = str(currentDirectory).replace('\SantolinePyQT5','') + "\data"
-    windMapDirectory = str(dataDirectory) + "\maps"
-    asctojsonparserDirectory = str(currentDirectory).replace('\SantolinePyQT5','') + "\src\AscToJsonParser"
-
     #getting qgis path
+def getQGISDirectory():
     programFiles = "C:/Program Files"
     programFilesDirectory = next(os.walk(programFiles))[1];
     qgisVersions = []
@@ -44,6 +27,18 @@ def createJsonPath():
         raise Exception('Aucune version QGIS!')
     qgisLastVersion = qgisVersions[len(qgisVersions)-1];
     qgisDirectory = str(programFiles).replace('/','\\') + "\\" +str(qgisLastVersion)
+    return qgisDirectory
+
+
+def createJsonPath():
+    full_path = os.path.realpath(__file__)
+    currentDirectory = os.path.dirname(full_path)
+
+    dataDirectory = str(currentDirectory).replace('\SantolinePyQT5','') + "\data"
+    windMapDirectory = str(dataDirectory) + "\maps"
+    asctojsonparserDirectory = str(currentDirectory).replace('\SantolinePyQT5','') + "\src\AscToJsonParser"
+
+    qgisDirectory = getQGISDirectory()
 
     #getting WindNinja path
     windNinja = "C:/WindNinja"
@@ -69,6 +64,17 @@ def createJsonPath():
     #write Json
     with open('../paths.json', 'w') as outfile:
         json.dump(data, outfile)
+
+def main():
+    current_path = os.path.dirname(os.path.realpath(__file__))
+    os.chdir(current_path)
+    l = list(map(lambda arg: bytes(arg, 'utf-8'), sys.argv))
+    qgisDirectory = getQGISDirectory() + "\\apps\\qgis"
+    QgsApplication.setPrefixPath(qgisDirectory.replace("\\", "\\\\"), True)
+    app = QgsApplication(l, True)
+    app.initQgis()
+    santoline_view.Santoline()
+    sys.exit(app.exec_())
             
 if (__name__ == "__main__"):
     createJsonPath()
