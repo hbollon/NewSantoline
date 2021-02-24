@@ -10,6 +10,7 @@ from qgis.core import QgsApplication, QgsPoint
 from core.view import santoline_view
 import random
 import json
+import shutil
 
 import core.libs
 
@@ -65,6 +66,21 @@ def createJsonPath():
     with open('../paths.json', 'w') as outfile:
         json.dump(data, outfile)
 
+def initEnvironment():
+    files = {
+        "../src/Epilobe/params.json": "../data/templates/params.json",
+        "../data/maps/map.json": None,
+        "../data/communication/parametreAlgo.json": None
+    }
+
+    for file, template in files.items():
+        if os.path.isfile(file):
+            os.remove(file)
+        if template == None:
+            open(file, 'a').close()
+        else:
+            shutil.copy(template, file)
+
 def main():
     current_path = os.path.dirname(os.path.realpath(__file__))
     os.chdir(current_path)
@@ -78,4 +94,5 @@ def main():
             
 if (__name__ == "__main__"):
     createJsonPath()
+    initEnvironment()
     main()

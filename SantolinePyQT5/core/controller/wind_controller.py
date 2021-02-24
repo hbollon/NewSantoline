@@ -24,16 +24,10 @@ class WindController(controller.AController):
     # def height(self, height):
     #     self.windModel_.height(height)
 
-    def north(self,distance):
+    def distance(self,distance):
         self.windModel_.north(distance)
-
-    def south(self,distance):
         self.windModel_.south(distance)
-
-    def east(self,distance):
         self.windModel_.east(distance)
-
-    def west(self,distance):
         self.windModel_.west(distance)
 
     def direction(self, direction):

@@ -9,10 +9,7 @@ from ..controller import *
 
 class WindWindow(input_popup_view.InputPopup):
     def __init__(self,santolineView):
-        self.nord_spinbox_ = None
-        self.sud_spinbox_ = None
-        self.est_spinbox_ = None
-        self.ouest_spinbox = None
+        self.distance = None
         self.direction_left_direction_spinbox_ = None
         self.vitesse_ms_spinbox_ = None
         self.vitesse_kmh_spinbox_ = None
@@ -32,49 +29,17 @@ class WindWindow(input_popup_view.InputPopup):
         parametres_zone = QGroupBox("Zone", self)
         parametres_layout = QVBoxLayout(parametres_zone)
 
-
-
-
         nord_zone = QWidget(self)
         nord_layout = QHBoxLayout(nord_zone)
-        nord_label = QLabel("Distance nord (mètres)", nord_zone)
-        self.nord_spinbox_ = QSpinBox(nord_zone)
-        self.nord_spinbox_.setMaximum(1000000)
+        nord_label = QLabel("Distance", nord_zone)
+        self.distance = QSpinBox(nord_zone)
+        self.distance.setMaximum(1000000)
         nord_layout.addWidget(nord_label)
-        nord_layout.addWidget(self.nord_spinbox_)
+        nord_layout.addWidget(self.distance)
         nord_zone.setLayout(nord_layout)
 
-        sud_zone = QWidget(self)
-        sud_layout = QHBoxLayout(sud_zone)
-        sud_label = QLabel("Distance sud (mètres)", sud_zone)
-        self.sud_spinbox_ = QSpinBox(sud_zone)
-        self.sud_spinbox_.setMaximum(1000000)
-        sud_layout.addWidget(sud_label)
-        sud_layout.addWidget(self.sud_spinbox_)
-        sud_zone.setLayout(sud_layout)
-
-        est_zone = QWidget(self)
-        est_layout = QHBoxLayout(est_zone)
-        est_label = QLabel("Distance est (mètres)", est_zone)
-        self.est_spinbox_ = QSpinBox(est_zone)
-        self.est_spinbox_.setMaximum(1000000)
-        est_layout.addWidget(est_label)
-        est_layout.addWidget(self.est_spinbox_)
-        est_zone.setLayout(est_layout)
-
-        ouest_zone = QWidget(self)
-        ouest_layout = QHBoxLayout(ouest_zone)
-        ouest_label = QLabel("Distance ouest (mètres)", ouest_zone)
-        self.ouest_spinbox_ = QSpinBox(ouest_zone)
-        self.ouest_spinbox_.setMaximum(1000000)
-        ouest_layout.addWidget(ouest_label)
-        ouest_layout.addWidget(self.ouest_spinbox_)
-        ouest_zone.setLayout(ouest_layout)
-
         parametres_layout.addWidget(nord_zone)
-        parametres_layout.addWidget(sud_zone)
-        parametres_layout.addWidget(est_zone)
-        parametres_layout.addWidget(ouest_zone)
+
         parametres_zone.setLayout(parametres_layout)
 
         direction_vent = QGroupBox("Direction", self)
@@ -154,10 +119,7 @@ class WindWindow(input_popup_view.InputPopup):
         self.setLayout(body)
 
         # Event binding
-        self.nord_spinbox_.valueChanged.connect(self.controller_.north)
-        self.sud_spinbox_.valueChanged.connect(self.controller_.south)
-        self.est_spinbox_.valueChanged.connect(self.controller_.east)
-        self.ouest_spinbox_.valueChanged.connect(self.controller_.west)
+        self.distance.valueChanged.connect(self.controller_.distance)
         self.direction_left_direction_spinbox_.valueChanged.connect(self.controller_.direction)
         self.vitesse_ms_spinbox_.valueChanged.connect(self.controller_.speed)
         self.vitesse_kmh_spinbox_.valueChanged.connect(self.controller_.speedkmh)
