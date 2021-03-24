@@ -6,7 +6,7 @@ using namespace std;
 
 json Algo::simulation(){
 
-    std::cout<<"debut simulation \n";
+    std::cout<<"debut simulation!! \n";
 
     json resultat;
 
@@ -383,7 +383,6 @@ vector<vector<Point3D>> Algo::propagation(ListeBurningPoint& burningPointInitiau
     //on l'initialise avec la valeur intervalle qui est un attribut de la classe Algo
     //celle-ci est recuperee dans le fichier parametreAlgo.json au moment de l'instanciation de de Algo
     int durationInte = intervalle;
-    cout << "b" << endl;
 
     //Tant que le prochain point a mettre en feu a une date d'ignition inferieur a la duree de la simulation on parcours la vicinity
     while (pointAMettreEnFeu.second.second.z() < duration)
@@ -596,9 +595,6 @@ vector<vector<Point3D>> Algo::propagationFixe(ListeBurningPoint& burningPointIni
     }
     //Enfin on ajoute le dernier contour
     contour.push_back( trier(get_contour(betterVicinity, listeObstacles,duration)));
-
-    std::cout << "betterVicinity = " << betterVicinity.size() << std::endl;
-    std::cout << "contour = " << contour.begin()->size() << std::endl;
 
     return contour;
 }

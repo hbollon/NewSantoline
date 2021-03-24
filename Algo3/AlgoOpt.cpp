@@ -64,13 +64,7 @@ vector<Point3D> AlgoOpt::propagation(vector<Point2D> listE, json cartevent, json
     while(listff.at(aPropager).t <= tfinal) {
         if(compt == iterationAffichage) affichage = true;
 
-        if(ancientmin > listff.at(aPropager).t) {
-            cout << "Le temps min precedent est plus grand que le temps min actuel !" << endl;
-            cout <<"Ancien tmin : "<<ancientmin<<", tmin : "<<listff.at(aPropager).t<<endl;
-        }
-
         ancientmin = listff.at(aPropager).t;
-        cout << "----" << compt << "----" << endl;
         if(affichage) cout << "APropager : "<<aPropager<<endl;
 
         uneIteration(aPropager);
@@ -96,7 +90,6 @@ vector<Point3D> AlgoOpt::propagation(vector<Point2D> listE, json cartevent, json
         compt++;
     }
 
-    cout << "-------------------------------------------------------" << endl;
     cout << "t : " <<listff.at(aPropager).t << "  temps : " << tempsPropagation / 3600.0 <<endl;
 
 
@@ -142,7 +135,6 @@ vector<Point3D> AlgoOpt::propagation(vector<Point2D> listE, json cartevent, json
         nb_points_parc++;
     }
 
-    cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"<<endl;
     /*sert tester que l'id du point actuel correpond bien au suivant du point preceddent et au precedent du point suivant*/
     for(int position = 0; position < id.size(); position++)
         if(position == 0)
@@ -164,8 +156,6 @@ vector<Point3D> AlgoOpt::propagation(vector<Point2D> listE, json cartevent, json
                 }
             }
         }
-    cout <<"Taille de id : "<< id.size()<<", taille de suivant : "<< suivant.size() <<", taille de precedent : " <<precedent.size()<<endl;
-    cout << "Taille listff fin " << listff.size()<<", nb_points_parc : "<<nb_points_parc << endl;
 
 
     if(nb_points_parc>=listff.size()){
@@ -196,7 +186,6 @@ vector<Point3D> AlgoOpt::propagation(vector<Point2D> listE, json cartevent, json
 }
 
 void AlgoOpt::uneIteration(string ind){
-    if(affichage) cout << "Debut UneIteration, ind : "<< ind << endl;
     PointOpt mvt = listff.at(ind);
     Point2D mm = mvt.coordonne;
     vector<vector<VitesseOpt>> vits = mvt.listeVitesse;
@@ -370,7 +359,6 @@ void AlgoOpt::initialiserEllipse(json cartevent, ofstream& sortie, int largeur, 
     /*Les coordonnées d'une cellule correspondent au coin en bas à gauche d'une cellule*/
     json jsonVent = nullptr;
 
-    cout<<"init!"<<endl;
     int largeurCarteEllipse = largeur/tailleCellule;
     int hauteurCarteEllipse = hauteur/tailleCellule;
     carteEllipse = vector<vector<EllipseOpt >> (largeurCarteEllipse);
@@ -387,9 +375,7 @@ void AlgoOpt::initialiserEllipse(json cartevent, ofstream& sortie, int largeur, 
         }
     }
 
-    std::cout << "l390" << std::endl;
     setXminYmin(cartevent);
-    std::cout << "l392" << std::endl;
 
     for (const auto &it : cartevent) {
 
@@ -401,7 +387,6 @@ void AlgoOpt::initialiserEllipse(json cartevent, ofstream& sortie, int largeur, 
         Point2D mapCoordinate = Point2D(it["x"], it["y"]);
         Point2D index = coordinateToIndex(Point2D(mapCoordinate.x(), mapCoordinate.y()));
 
-        std::cout << "l403 " << std::endl;
         float lb = 1 + 0.0012 * pow((2.237 * windSlope.norm()), 2.154);
         float epsilon = sqrt(1 - (1 / (lb*lb)));
 
@@ -422,10 +407,8 @@ void AlgoOpt::initialiserEllipse(json cartevent, ofstream& sortie, int largeur, 
                             {"great_axis", e.a()},
                             {"small_axis", e.b()}});
 
-        std::cout << "l424 " << (int)index.x() << " " << (int)index.y() << std::endl;
         if((int)index.x() < carteEllipse.size() && (int)index.y() < carteEllipse[(int)index.x()].size())
             carteEllipse[(int)index.x()][(int)index.y()] = e;
-        std::cout << "l426" << std::endl;
     }
     sortie << jsonVent << endl;
     cout << "Carte des ellipses initialisee !"<<endl;
@@ -444,15 +427,11 @@ void AlgoOpt::initListff(vector<Point2D> listPointE) {
         Point2D pTemp = Point2D(it->x(), it->y());
         if(pTemp.x() - floor(pTemp.x()) < seuil)
         {
-            cout << "pTemp.x() : " << pTemp.x() << endl;
             pTemp.x() = pTemp.x() + 0.001;
-            cout << "pTemp.x() : " << pTemp.x() << endl;
         }
         if(pTemp.y() - floor(pTemp.y()) < seuil)
         {
-            cout << "pTemp.y() : " << pTemp.y() << endl;
             pTemp.y() = pTemp.y() + 0.001;
-            cout << "pTemp.y() : " << pTemp.y() << endl;
         }
         PointOpt p = PointOpt(pTemp,0,Vector2D(0,0),"0", &compteurId,"Point de initListff");
         p.ancetre = p.getId();
@@ -2104,14 +2083,12 @@ void AlgoOpt:: affiche(std::vector<vector<VitesseOpt>> v){
 
     int i =0;
     for(auto &it:v){
-        std::cout<<"###### Vitesse: "<<i<<" ######"<<std::endl;
         it.begin()->affiche();
         i++;
     }
 }
 
 void AlgoOpt:: affiche(std::pair<double,std::vector<vector<VitesseOpt>>> v){
-    std::cout<<"List Indic: "<<v.first<<std::endl;
     affiche(v.second);
 
 }

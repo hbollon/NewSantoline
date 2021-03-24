@@ -15,7 +15,6 @@ class Departements_Choices_Controller(controller.AController):
             self.model_.addDepartement(dep)
         
     def itemSelectionChanged_event(self):
-        print(self.view_.listWidget.selectedItems()[0].text())
         matches = self.view_.listWidget.selectedItems()[0].text()
         if matches : 
             self.model_.departementCourant(matches)

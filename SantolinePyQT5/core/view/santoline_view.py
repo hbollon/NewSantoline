@@ -1,15 +1,15 @@
 from random import randrange
 
-from qgis.gui import *#QgsMapCanvas
-from qgis.core import *#QgsRasterLayer, QgsApplication
-from qgis.PyQt.QtWidgets import *#QMainWindow, QWidget, QTabWidget, QPushButton
-from qgis.PyQt.QtCore import *#QSize
-from qgis.PyQt.QtGui import *#QFrame
+from qgis.gui import * #QgsMapCanvas
+from qgis.core import * #QgsRasterLayer, QgsApplication
+from qgis.PyQt.QtWidgets import * #QMainWindow, QWidget, QTabWidget, QPushButton
+from qgis.PyQt.QtCore import * #QSize
+from qgis.PyQt.QtGui import * #QFrame
 import math
 
 from core.view import reglage_view
 from . import wind_view, algorithm_view, departements_choices_view, reglage_view
-from ..controller import *
+from ..controller import * #canvas_controller ...
 from ..libs import *
 from win32api import GetSystemMetrics
 
@@ -87,11 +87,13 @@ class Santoline(QMainWindow, observable.Observer):
         self.propagationLayer_ = None
         self.propagationLayer2_ = None
         self.windMatrix_=None
-        self.densite=2
+        self.densite=9
         self.layers = []
         self.windmapdisplayed = False
 
         self.initUI()
+
+        print(self.densite)
 
     def initUI(self):
         self.setWindowTitle("Santoline")
@@ -108,8 +110,6 @@ class Santoline(QMainWindow, observable.Observer):
         self.secondToolbar_ = self.addToolBar("Second tool bar")
         self.secondToolbar_.setMovable(False)
         self.secondToolbar_.setFloatable(False)
-
-        
         
         self.addToolBarBreak()
         self.left_toolbar_ = self.addToolBar("Left tool bar")
@@ -167,6 +167,7 @@ class Santoline(QMainWindow, observable.Observer):
         actionZoomOut.setCheckable(False)
         toolZoomOut.setAction(actionZoomOut)
         actionZoomOut.triggered.connect(self.zoomArriere )
+
 
         # Simulation
         self.simulation = QToolButton(self.secondToolbar_)
@@ -358,7 +359,7 @@ class Santoline(QMainWindow, observable.Observer):
 
         self.windMatrix_=self.windMatrixInit('..\\data\\maps\\map.json')
 
-        self.slopeLayer_ = self.setWindLayer('255,150,0,255', self.densite, "slope")
+        self.slopeLayer_ = self.setWindLayer('255,0,0,255', self.densite, "slope")
         self.windLayer_ = self.setWindLayer('0,0,255,255', self.densite, "wind")
         self.windSlopeLayer_ = self.setWindLayer('255,0,0,255', self.densite, "windslope")
 
@@ -366,16 +367,6 @@ class Santoline(QMainWindow, observable.Observer):
 
         self.show()
 
-
-    ###---Procedures d'affichage des barres d'outils---###
-
-    # def afficheCanvasVents(self):
-    #     print(self.canvas_.scale())
-    #     self.layers.reverse()
-    #     self.canvas_.setLayers(self.layers)
-    #     self.canvas_.refresh()
-    #     if (self.canvas_.scale() < 1400000000):
-    #         self.windmapdisplayed =True
 
     def cleanToolbar(self, toolbar) :
         for action in toolbar.actions():
@@ -517,7 +508,7 @@ class Santoline(QMainWindow, observable.Observer):
             self.layers.remove(self.windLayer_)
         else:
             self.layers.insert(0,self.windLayer_)
-
+            self.roseVents.setVisible(True)
         if self.slopeLayer_ in self.layers :
             self.layers.remove(self.slopeLayer_)
         if self.windSlopeLayer_ in self.layers :
@@ -542,7 +533,6 @@ class Santoline(QMainWindow, observable.Observer):
         self.roseLayer_.updateExtents()
 
     def propagationLayerInit(self, points,color1,color2):
-
         layer = QgsVectorLayer("Point?field=contour:double", "Propagation Layer", "memory")
         symbol = QgsMarkerSymbol.createSimple({'name': 'point', 'color': '255,0,0,255','size':'0.6', 'outline_color': '255,0,0,255', 'outline_width': '0'})
         layer.renderer().setSymbol(symbol)
@@ -689,9 +679,9 @@ class Santoline(QMainWindow, observable.Observer):
                 alpha = self.vector_to_angle(x,y)
                 alpha1 = self.vector_to_angle(x1,y1)
                 alpha2 = self.vector_to_angle(x2,y2)
-                print("wind[x]: " + str(wind['x']) + " wind[y]: " + str(wind['y']))
-                print("xOrigin: " + str(xOrigin) + " yOrigin: " + str(yOrigin))
-                print(f"x: {int((wind['x'] - xOrigin) / 25)}, y: {int((wind['y'] - yOrigin) / 25)}")
+                # print("wind[x]: " + str(wind['x']) + " wind[y]: " + str(wind['y']))
+                # print("xOrigin: " + str(xOrigin) + " yOrigin: " + str(yOrigin))
+                # print(f"x: {int((wind['x'] - xOrigin) / 25)}, y: {int((wind['y'] - yOrigin) / 25)}")
                 windMatrix[int((wind['x'] - xOrigin) / 25)][int((wind['y'] - yOrigin) / 25)] = [point,alpha,alpha1,alpha2]
         return windMatrix
 
@@ -707,13 +697,8 @@ class Santoline(QMainWindow, observable.Observer):
         for col in self.windMatrix_:
             j = 0
             if i%densite==0:
-            # print("i: " + str(i) + "%" + str(densite) + " = " + str(i % densite))
                 for case in col:
-                    print(case)
                     if j%densite==0 and (case is not None and case != 0):
-                        print("Process: ")
-                        print(case)
-                        # print("j: " + str(j) + "%" + str(densite) + " = " + str(j % densite))
                         feature = QgsFeature()
                         feature.setGeometry(QgsGeometry.fromPointXY(case[0]))
                         feature.setFields(fields)
@@ -794,25 +779,18 @@ class Santoline(QMainWindow, observable.Observer):
         self.rubber_eau_ABE_.setColor(QColor(0, 110, 255, 255))
         self.rubber_eau_ABE_.setWidth(3)
         self.rubber_eau_ABE_.setLineStyle(Qt.DotLine)
-
-
         if len(list_points) > 1:
-
             dernier_point2 = QgsPointXY(list_points[len(list_points) - 2].x(), list_points[len(list_points) - 2].y())
             dernier_point = QgsPointXY(list_points[len(list_points) - 1].x(), list_points[len(list_points) - 1].y())
             p1 = QgsPointXY(dernier_point2.x(), dernier_point2.y())
             p2 = QgsPointXY(dernier_point.x(), dernier_point.y())
             largeur = p2.x() - p1.x()
             hauteur = p2.y() - p1.y()
-
             dernierSegment = []
             dernierSegment.append(p1)
             dernierSegment.append(p2)
             longueur = math.sqrt(largeur ** 2 + hauteur ** 2)
             nb_point = int(longueur / 15)
-
-
-
             self.eau_ABE_marker2 = QgsVertexMarker(self.canvas_)
             self.eau_ABE_marker2.setCenter(p1)
             self.eau_ABE_marker2.setColor(QColor(255, 255, 255))
@@ -820,7 +798,6 @@ class Santoline(QMainWindow, observable.Observer):
             self.eau_ABE_marker2.setIconType(QgsVertexMarker.ICON_BOX)
             self.eau_ABE_marker2.setPenWidth(4)
             self.eau_ABE_marker2.updatePosition()
-
             self.eau_ABE_marker = QgsVertexMarker(self.canvas_)
             self.eau_ABE_marker.setCenter(p1)
             self.eau_ABE_marker.setColor(QColor(0, 110, 255))
@@ -829,13 +806,10 @@ class Santoline(QMainWindow, observable.Observer):
             self.eau_ABE_marker.setIconType(QgsVertexMarker.ICON_BOX)
             self.eau_ABE_marker.setPenWidth(2)
             self.eau_ABE_marker.updatePosition()
-
-
             for i in range(0, nb_point):
                 dx = largeur / nb_point
                 dy = hauteur / nb_point
                 p = QgsPointXY(dernier_point.x() - dx * i, dernier_point.y() - dy * i)
-
                 self.eau_ABE_marker2 = QgsVertexMarker(self.canvas_)
                 self.eau_ABE_marker2.setCenter(p)
                 self.eau_ABE_marker2.setColor(QColor(255, 255, 255))
@@ -843,7 +817,6 @@ class Santoline(QMainWindow, observable.Observer):
                 self.eau_ABE_marker2.setIconType(QgsVertexMarker.ICON_BOX)
                 self.eau_ABE_marker2.setPenWidth(4)
                 self.eau_ABE_marker2.updatePosition()
-
                 self.eau_ABE_marker = QgsVertexMarker(self.canvas_)
                 self.eau_ABE_marker.setCenter(p)
                 self.eau_ABE_marker.setColor(QColor(0, 110, 255))
@@ -863,7 +836,6 @@ class Santoline(QMainWindow, observable.Observer):
         self.rubber_eau_HBE_.setColor(QColor(0, 110, 255, 255))
         self.rubber_eau_HBE_.setWidth(3)
         self.rubber_eau_HBE_.setLineStyle(Qt.DotLine)
-
 
         if len(list_points) > 1:
             dernier_point2 = QgsPointXY(list_points[len(list_points) - 2].x(), list_points[len(list_points) - 2].y())
@@ -1115,6 +1087,7 @@ class MapLoader(QThread):
 
     def __init__(self, santoline_view, datas, ext):
         QThread.__init__(self)
+        print(santoline_view)
         self.datas_ = datas
         self.ext_ = ext
         
@@ -1122,12 +1095,13 @@ class MapLoader(QThread):
         self.wait()
         
     def run(self):
+        # get list of all files which finish with .ext into datas folder 
         list = useful.allFiles(self.datas_, self.ext_)
+        # check if list of files is not empty
         if (len(list) == 0 ):
             return
             
         layers = []
-        total_len = len(list)
         def runner():
             try:
                 while (len(list) > 0):
@@ -1136,7 +1110,7 @@ class MapLoader(QThread):
                     if (not layer.isValid()):
                         raise IOError("Fail to open the layer {}".format(i))
                     layers.append(layer)
-                    self.progress.emit(100 - int((len(list) / total_len) * 100.))
+                    self.progress.emit(100 - int((len(list) / len(list)) * 100.))
             except IndexError: # catch if we pop an empty list.
                 pass
                 
