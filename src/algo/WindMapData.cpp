@@ -7,8 +7,6 @@ using  namespace std;
 void parsedWindMap::initialize(const json& carteVent, int water, double temp, double exentricite, double rateOfSpread, int width, int height) {
     // resize _matrix bound to windMap size
     this->_matrix = std::vector<std::vector<Data*>*> (carteVent.size());
-    std::cout<<"carteDesVents size:"<<carteVent.size()<<std::endl;
-    std::cout<<"max size "<<this->_matrix.max_size()<<std::endl;
     int size = carteVent.size();
 
     for(long i = 0 ; i <  width; i++){
@@ -21,7 +19,6 @@ void parsedWindMap::initialize(const json& carteVent, int water, double temp, do
         catch (std::bad_alloc& ba)
         {
             std::cout << "erreur init map" << std::endl;
-            std::cout<< " i = "<<i<<std::endl;
         }
 
     }

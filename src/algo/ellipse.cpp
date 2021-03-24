@@ -74,10 +74,6 @@ double AEllipse::get_lb() const {
 double AEllipse::get_e() const { return sqrt(1 - (1 / pow(get_lb(), 2))); }
 
 double AEllipse::get_rc_norm() const {
-    std::cout << "get_rc_norm ==> " << m_rateOfSpread*(180.0 * exp(0.06 * m_temperature) *
-           tanh((100.0 - m_water_level) / 150.0) *
-           (1.0 + 2.0 * (0.8483 + tanh(( (get_c().norm()*3.6) / 30.0) - 1.25)))) 
-           << std::endl;
     return m_rateOfSpread*(180.0 * exp(0.06 * m_temperature) *
            tanh((100.0 - m_water_level) / 150.0) *
            (1.0 + 2.0 * (0.8483 + tanh(( (get_c().norm()*3.6) / 30.0) - 1.25))));
