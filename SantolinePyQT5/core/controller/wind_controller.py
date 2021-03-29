@@ -55,7 +55,7 @@ class WindController(controller.AController):
         connector.write(filename, json.dumps(self.windModel_.jsonify()))
         print(json.dumps(self.windModel_.jsonify()))
 
-        parser_commande = newArchPath + "\\Epilobe\\Epilobe.exe " \
+        parser_commande = newArchPath + "\\Epilobe\\cmake\\Epilobe.exe " \
                           +  "C:\\Users\\hbollon\\NewSantoline\\paths.json " \
                           + newArchPath + "\\Epilobe\\params.json " \
                           + str((self.windModel_.direction_ + 180.)%360.) \

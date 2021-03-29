@@ -1,3 +1,0 @@
-C:\Users\dubos\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\192.7142.39\bin\cmake\win\bin\cmake.exe -E remove -f CMakeFiles\Algo3.dir/objects.a
-C:\PROGRA~2\MINGW-~1\I686-8~1.0-W\mingw32\bin\ar.exe cr CMakeFiles\Algo3.dir/objects.a @CMakeFiles\Algo3.dir\objects1.rsp
-C:\PROGRA~2\MINGW-~1\I686-8~1.0-W\mingw32\bin\G__~1.EXE -g  -static -Wl,--whole-archive CMakeFiles\Algo3.dir/objects.a -Wl,--no-whole-archive  -o Algo3.exe -Wl,--out-implib,libAlgo3.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\Algo3.dir\linklibs.rsp
