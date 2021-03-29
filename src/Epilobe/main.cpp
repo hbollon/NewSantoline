@@ -1,11 +1,10 @@
 #include "Epilobe.h"
 
 int main (int argc, char *argv[]) {
-    std::cout<<"puuuuuuuteuh"<<std::endl;
-
-    if(argc < 5 ){
-        cout << "Epilobe attend 4 arguments : les chemins de paths.json et de params.json "
-                "et la direction, la vitesse du vent";
+    cout << "argc: " << argc << endl;
+    if(argc < 6 ){
+        cout << "Epilobe attend 5 arguments : les chemins de paths.json, params.json et du fichier .tif associé au département,"
+                "la direction et la vitesse du vent";
         return 1;
     }
     cout<<1<<endl;
@@ -17,10 +16,10 @@ int main (int argc, char *argv[]) {
     cout<<4<<endl;
     Epilobe m_epilobe;
     cout<<5<<endl;
-    m_epilobe.generate();
+    m_epilobe.generate(argv[3]);
     cout<<6<<endl;
     string commande = config->asctojsonparser_path + "\\AscToJsonParser " + config->wind_map_generation_path + " "
-            + argv[3] + " " + argv[4] + " " + config->data_path;
+            + argv[4] + " " + argv[5] + " " + config->data_path;
     cout<<7<<endl;
     system(commande.c_str());
     cout<<8<<endl;

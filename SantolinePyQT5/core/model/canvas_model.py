@@ -114,7 +114,6 @@ class CanvasModel(model.AModel):
         except:
             pass
 
-
     def clearPointContour(self):
         self.contour_feu_ = []
         self.propagation_ = []
@@ -131,8 +130,6 @@ class CanvasModel(model.AModel):
         self.largage_retardant_ABE=[[]]
         self.largage_retardant_HBE=[[]]
         self.notifyObservers()
-        
-
         
     def map(self, departement):
         self.mapchange_ = self.map_ != departement

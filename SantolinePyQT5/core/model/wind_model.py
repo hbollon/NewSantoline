@@ -49,9 +49,9 @@ class WindModel(model.AModel):
         self.process_ = process
         self.notifyObservers()
         
-    def jsonify(self):
+    def jsonify(self, tifPath):
 
-        ds = gdal.Open('..\\data\\var.tif')
+        ds = gdal.Open(tifPath)
         width = ds.RasterXSize
         height = ds.RasterYSize
         gt = ds.GetGeoTransform()

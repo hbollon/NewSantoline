@@ -21,7 +21,7 @@ public:
 
     bool can_generate();
 
-    void generate();
+    void generate(string tifPath);
 
     bool is_generated();
 
@@ -33,7 +33,7 @@ public:
 
     std::pair<double, double> dimension() const;
 
-    bool subzone();
+    bool subzone(string tifPath);
 
     bool alti_to_ascii();
 
