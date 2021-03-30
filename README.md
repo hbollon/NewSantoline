@@ -1,82 +1,160 @@
-# Projet Santoline
+<h1 align="center">Projet Santoline</h1>
 
-<p align="center"><strong>This project was imported from old repository. The ReadMe is obsolete and must be updated!</strong></p>
+## Table of Contents
 
-## Récupérer le projet
+- [Mise en route](#mise-en-route)
+  - [Architecture](#architecture)
+  - [Dépendances](#dépendances)
+  - [Installation](#installation)
+- [Guide d'utilisation](#guide-dutilisation)
+- [Authors](#authors)
+
+---
+
+## Mise en route
+
+Heuresement pour vous, nous avons ENORMEMENT simplifier le processus de déploiement de NewSantoline. Malgré tout, il reste quelques subtilités, mais si vous suivez ce guide tout ce passera bien et vite.
+
+Dans un premier temps, vous devez cloner le projet.
+Pour ce faire placez vous dans le répertoire de destination (de préférence __C:/Users/\<username\>__) et exécutez la commande:
+
+```git
+git clone https://github.com/hbollon/NewSantoline.git
+```
+
+### Architecture
+
+Voici un schéma expliquant l'architecture de ce projet, afin de bien comprendre quels sont les différents éléments :
+
+[schéma](doc/schema.pdf)
 
 ### Dépendances
 
 Il faut installer les logiciels suivants:
+
 * [QGIS 3.2](https://qgis.org/downloads/)
 * [windNinja](https://firelab.org/document/windninja-software)
+* [mingw](https://sourceforge.net/projects/mingw/) **(cocher MinGW Base System/Autotools/g++)**
+* [cmake](https://cmake.org/download/) -> faire attention à ce que cmake soit ajouter dans le path
 
-### Le récupérer sur sa machine en local
+Bien faire attention à laisser les chemins par défaut de ces applications lors de l'installation (notre application ira directement récuperer leur chemin) :
 
-Avec un terminal, tapez la commande:
+* WindNinja : racine de C: (__C:\WindNinja\WindNinja-x.x.x__)
+* Qgis : dans ProgramFiles (__C:\Program Files\QGIS 3.2__)
 
-```git clone git@gitlab.com:alascenci/newsantoline.git```
+Assurez-vous que cmake et mingw ont bien été ajouté dans la variable environement "Path".
 
-Si vous avez l'erreur suivante:
+### Installation
 
-Permission denied (publickey).
-Fatal: Could not read from remote repository.
+* Télécharger les données des départements (carte et données altimétriques) et décompressez l'archive dans le répertoire:
+  
+```batch
+C:\Users\<username>\NewSantoline\data\altimetrics
+```
 
-Vous avez sûrement oublié de créer une clé SSH.
-Veuillez vous reportez à [la page d'aide pour générer une clé SSH](https://gitlab.com/help/ssh/README#generating-a-new-ssh-key-pair).
+* Lancer le script **build.bat** dans le dossier **Scripts** : qui permet de build automatiquement tout les sous-programmes C++ (en cas de soucis vérifiez que vos installation de cmake/mingw sont valides)
+* Lancer le fichier **run.bat**
 
-### Configuration
+## Guide d'utilisation
 
-Actuellement, le projet n'est pas opérationnel. Vous aurez beau tourner votre ordinateur dans tous les sens, ça ne marchera pas.
+#### 1. Choix du département
 
-Au lieu de vous appitoyer sur votre sort, nous vous conseillons de suivre les étapes suivantes.
+![screen_departement](doc/screens/screen_departements.png)
+![screen_departement](doc/screens/departement_v2.png)
 
-#### Copie de fichiers
+#### 2. Carte des Vents
 
-Il faut **créer une copie** des fichiers suivants, avec un **nouveau nom**:
-* paths.copy.json -> paths.json
-* data/communication/parametreAlgo.copy.json -> data/communication/parametreAlgo.json
-* data/maps/map-copy.json -> data/maps/map.json
-* Algo3/cmake-build-debug-copy -> Algo3/cmake-build-debug
-* src/algo/cmake-build-debug-copy -> src/algo/cmake-build-debug
+![screen_vents](doc/screens/vents.png)
 
-Ces fichiers dépendent de l'ordinateur et l'on a choisi de les ignorer (voir .gitignore), afin d'éviter de les intégrer dans de futurs commits.
+Placez ensuite un point, qui sera le centre de la carte des vents représenté par une étoile noire.
 
-#### Changer les liens
+Pour ce faire, cliquez sur le deuxième bouton du menu **Vents** et cliquez ensuite là où vous voulez le placer sur la map.
+Une fois le point placé, appuyer sur l'icône du drapeau.
 
-Les fichiers suivants contiennent des liens absolus, à changer selon la configuration de votre machine:
-* paths.json
-* SantolinePyQT5/main.py
-* src/algo/main.cpp (pour l'instant, le lien n'est pas vraiment utile)
-* save/run.bat
+![screen_vents_point](doc/screens/vents_v2.png)
 
-### Choix sur l'IDE
+Sélectionner les paramètres souhaités, à noter que :
 
-Il faut générer la carte des vents depuis l'interface avant de générer un exécutable, et il faut aussi penser à compiler les algorithmes avant de lancer une simulation. Cette dernière se contente d'exécuter le dernier exécutable généré.
+* la zone est carrée de taille ("distance" x "distance"), _ex : ici zone de 1000 par 1000_
+* orientation du vent : voir la chose comme une boussole
 
-C'est à cet endroit qu'est précisée l'exécution des algorithmes:
+![screen_vents_point](doc/screens/settings_vent.png)
 
-* [Ceci est un lien (promis, c'est pas un truc louche).](SantolinePyQT5/core/controller/algorithm_controller.py#L88)
+En fonction des performances sur votre PC, ce calcul peut être plus ou moins long, prendre le temps de regarder la console ouverte en parallèle pour voir si des problèmes ont été rencontrés. Voici un exemple de ce que vous devriez obtenir, si tout s'est bien passé :
 
-Nous utilisions et vous conseillons **CLion** pour bosser sur le C++.
+![screen_vents_point](doc/screens/console.png)
 
-On avait juste besoin d'ajouter les fichiers utilisés par l'algorithme en question dans la configuration de débogage/lancement.
+Pour afficher la carte des vents, il vous suffit d'appuyer sur le bouton "V" dans l'onglet "Vents".
 
-Pour le Python, c'était **PyCharm**.
+![screen_vents_point](doc/screens/final_vents.png)
 
-Lorsqu'il s'agissait de visualiser et/ou de faire des modifications sur l'ensemble du projet, un IDE plus léger comme **Visual Studio Code** est conseillé.
+Voici un résultat final que vous devriez obtenir.
 
-Après, à vous de voir. On ne viendra pas vous fouetter, promis.
+#### 3. Simulation des contours de feu
 
-#### Petite astuce
+Après avoir calculer les vents, l'étape qui suit est de réaliser une simulation pour calculer le contour des vents :
 
-Si vous trouvez compliqué le fait d'avoir à gérer autant d'IDE à la fois, Jetbrains propose un outil de gestion d'IDE.
+![screen_vents_point](doc/screens/simulation.png)
 
-https://www.jetbrains.com/toolbox-app/
+Appuyer sur le bouton "Dessiner contours" :
 
-## En savoir plus
+![screen_vents_point](doc/screens/draw_contours_simulation.png)
 
-Nous avons créé quelques jolis petits tutoriels pour que vous puissiez bien démarrer.
-Ils sont accessibles au lien suivant:
-https://docs.google.com/document/d/1veqeDs8Zyw250rieCrRZwh_tw0p3qs4MB4GoI7dEW5c/edit?usp=sharing
+Dessinez ensuite le contour, chaque clic que vous faites **(ATTENTION LES POINTS QUE VOUS DEVEZ PLACER DOIVENT ETRE DANS LA ZONE DES VENTS)** est un point, et le clic d'après reliera le point précédent avec celui que vous venez de faire, pour alors tracer des segments :
 
-Si vous avez d'autres questions, n'hésitez pas à nous contacter.
+* **Etape 1 :**
+
+![screen_vents_point](doc/screens/etape1_contour.png)
+
+* **Etape 2 :**
+  
+![screen_vents_point](doc/screens/etape2_contour.png)
+
+* **Etape 3 :**
+  
+![screen_vents_point](doc/screens/etape3_contour.png)
+
+Continuez ainsi jusqu'à ce que le contour initial soit suffisamment précis. Il est important de noter que chaque segment que vous faites, augmente le temps de calcul final de la simulation.
+
+Si vous commetez une erreur sur le contour, il est possible d'effacer le contour en cours en appuyant sur la croix rouge :
+
+![screen_vents_point](doc/screens/efface_contour.png)
+
+Une fois le contour realisé, il vous suffira de lancer la simulation (en renseignant d'abord les paramètres de cette dernière) :
+
+![screen_vents_point](doc/screens/simulation_contour_final.png)
+
+Quelques petites informations sur les arguments de la simulation :
+
+* Saisir dans le champ "Algorithme", le numéro de l'algorithme que vous voulez utiliser : 2 ou 3 (pour l'instant)
+* Durée de propagation : temps de propagation, si vous dépassez 1h30, les temps de calcul risquent d'être longs
+
+![screen_vents_point](doc/screens/arguments_simulation.png)
+
+Appuyer sur "Valider" et attendez maintenant que la simulation se finisse, en consultant la console pour voir si tout s'est bien passé. Voici un exemple de ce à quoi pourrait ressembler votre console.
+
+![screen_vents_point](doc/screens/console_sim.png)
+
+Et voici un exemple du résultat final, après que la simulation soit terminée.
+
+![screen_vents_point](doc/screens/contour_final_sim.png)
+
+**Vous pouvez modifier les paramètres _deep_ de NewSantoline depuis l'onglet _Réglages_. Notament le nombre de segments et le l'angle des propagations pour les algorithmes 1 et 2. Ces deux paramètres influent la précision du tracé final ainsi que la vitesse de la simuation**
+
+## Authors
+
+👤 **Hugo Bollon**
+
+* Github: [@hbollon](https://github.com/hbollon)
+* LinkedIn: [@Hugo Bollon](https://www.linkedin.com/in/hugobollon/)
+* Portfolio: [hugobollon.me](https://www.hugobollon.me)
+
+👤 **Samuel Rodriguez-Lozano**
+
+👤 **Laurent Cutting**
+
+👤 **Hamza Mahri**
+
+## Show your support
+
+Give a ⭐️ if this project helped you!
