@@ -40,6 +40,66 @@ bool Point3D::operator==(const Point3D &p) {
     return (this->_x == p.x()) && (this->_y == p.y()) && (this->_z == p.z());
 }
 
+bool Point3D::operator!=(const Point3D &p) {
+    return (this->_x != p.x()) || (this->_y != p.y()) || (this->_z != p.z());
+}
+
+bool Point3D::operator<=(const Point3D &p) {
+    if (this->_x != p.x()) return this->_x <= p.x();
+	else if (this->_y != p.y()) return this->_y <= p.y();
+    else return this->_z <= p.z();
+}
+
+bool Point3D::operator>=(const Point3D &p) {
+    if (this->_x != p.x()) return this->_x >= p.x();
+	else if (this->_y != p.y()) return this->_y >= p.y();
+    else return this->_z >= p.z();
+}
+
+bool Point3D::operator>(const Point3D &p) {
+    if (this->_x != p.x()) return this->_x > p.x();
+	else if (this->_y != p.y()) return this->_y > p.y();
+    else return this->_z > p.z();
+}
+
+bool Point3D::operator<(const Point3D &p) {
+    if (this->_x != p.x()) return this->_x < p.x();
+	else if (this->_y != p.y()) return this->_y < p.y();
+    else return this->_z < p.z();
+}
+
+bool Point3D::operator==(const Point3D &p) const {
+    return (this->_x == p.x()) && (this->_y == p.y()) && (this->_z == p.z());
+}
+
+bool Point3D::operator!=(const Point3D &p) const {
+    return (this->_x != p.x()) || (this->_y != p.y()) || (this->_z != p.z());
+}
+
+bool Point3D::operator<=(const Point3D &p) const {
+    if (this->_x != p.x()) return this->_x <= p.x();
+	else if (this->_y != p.y()) return this->_y <= p.y();
+    else return this->_z <= p.z();
+}
+
+bool Point3D::operator>=(const Point3D &p) const {
+    if (this->_x != p.x()) return this->_x >= p.x();
+	else if (this->_y != p.y()) return this->_y >= p.y();
+    else return this->_z >= p.z();
+}
+
+bool Point3D::operator>(const Point3D &p) const {
+    if (this->_x != p.x()) return this->_x > p.x();
+	else if (this->_y != p.y()) return this->_y > p.y();
+    else return this->_z > p.z();
+}
+
+bool Point3D::operator<(const Point3D &p) const {
+    if (this->_x != p.x()) return this->_x < p.x();
+	else if (this->_y != p.y()) return this->_y < p.y();
+    else return this->_z < p.z();
+}
+
 Point3D Point3D::operator*(double scalar) const {
     return {this->x()*scalar, this->y()*scalar, this->z()*scalar};
 }
