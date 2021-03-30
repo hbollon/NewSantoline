@@ -68,9 +68,9 @@ def createJsonPath():
 
 def initEnvironment():
     files = {
-        "../src/Epilobe/params.json": "../data/templates/params.json",
-        "../data/maps/map.json": None,
-        "../data/communication/parametreAlgo.json": None
+        "./src/Epilobe/params.json": "./data/templates/params.json",
+        "./data/maps/map.json": None,
+        "./data/communication/parametreAlgo.json": None
     }
 
     for file, template in files.items():

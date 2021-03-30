@@ -47,58 +47,49 @@ class WindController(controller.AController):
 
     def accept(self):
         connector = file_io.FileIO()
-        newArchPath = os.path.abspath("..")
         if os.path.isfile("..\\data\\maps\\map.json"):
             os.remove("..\\data\\maps\\map.json")
 
-        departementTifPath = ""
-        departementDir = newArchPath + "\\data\\altimetrics\\departements\\{}\\tif\\".format(self.santoline_view_.controller_.canvasModel_.map_)
+        departementTifPath = None
+        departementDir = "..\\data\\altimetrics\\departements\\{}\\tif\\".format(self.santoline_view_.controller_.canvasModel_.map_)
+        print(os.listdir(departementDir))
         for file in os.listdir(departementDir):
             if file.endswith(".tif"):
                 departementTifPath = os.path.join(departementDir, file)
                 break
 
-        if departementTifPath == "":
-            print("Missing departement tif file in {} !".format(departementDir))
+        if departementTifPath == None:
             print("Carte des vents non générée")
             self.close()
             return
 
-        filename = newArchPath + "\\src\\Epilobe\\params.json"
+        filename = "..\\src\\Epilobe\\params.json"
         connector.write(filename, json.dumps(self.windModel_.jsonify(departementTifPath)))
         print(json.dumps(self.windModel_.jsonify(departementTifPath)))
 
-        parser_commande = newArchPath + "\\src\\Epilobe\\cmake\\Epilobe.exe " \
-                          + newArchPath + "\\paths.json " \
-                          + newArchPath + "\\src\\Epilobe\\params.json " \
+        parser_commande = "..\\src\\Epilobe\\cmake\\Epilobe.exe " \
+                          + "..\\paths.json " \
+                          + "..\\src\\Epilobe\\params.json " \
                           + "\"{}\" ".format(departementTifPath) \
                           + str((self.windModel_.direction_ + 180.)%360.) \
                           + " " \
                           + str(round(self.windModel_.speed_, 1))
-
-        print(parser_commande)
-
         sub = subprocess.run(parser_commande, 
             shell=True, stdout=PIPE, stderr=PIPE)
 
         print(f"Output:\n{sub.stdout}\nErr:\n{sub.stderr}\nReturnCode: {sub.returncode}")
-        
+
         if os.path.isfile("..\\data\\maps\\map.json"):
             print("Carte des vents générée")
-
             if self.santoline_view_.roseLayer_ in self.santoline_view_.layers:
                 self.santoline_view_.layers.remove(self.santoline_view_.roseLayer_)
                 self.santoline_view_.roseLayer_= None
-
             if self.santoline_view_.windLayer_ in self.santoline_view_.layers:
                 self.santoline_view_.layers.remove(self.santoline_view_.windLayer_)
-
             if self.santoline_view_.slopeLayer_ in self.santoline_view_.layers:
                 self.santoline_view_.layers.remove(self.santoline_view_.slopeLayer_)
             if self.santoline_view_.windSlopeLayer_ in self.santoline_view_.layers:
                 self.santoline_view_.layers.remove(self.santoline_view_.windSlopeLayer_)
-
-
             self.santoline_view_.windMatrix_=self.santoline_view_.windMatrixInit('..\\data\\maps\\map.json')
             self.santoline_view_.slopeLayer_ = self.santoline_view_.setWindLayer('255,150,0,255', self.santoline_view_.densite, "slope")
             self.santoline_view_.windLayer_ = self.santoline_view_.setWindLayer('0,0,255,255', self.santoline_view_.densite, "wind")
@@ -107,7 +98,7 @@ class WindController(controller.AController):
             self.santoline_view_.afficheVentsPentes.setChecked(False)
             self.santoline_view_.afficheVents.setChecked(False)
             self.santoline_view_.canvas_.refresh()
-            for p in Path("..\\data").glob("subzone*"):
+            for p in Path("\\data").glob("subzone*"):
                 p.unlink()
         else:
             print("Carte des vents non générée")
