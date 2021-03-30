@@ -1,11 +1,25 @@
-# Projet Santoline
+<h1 align="center">Projet Santoline</h1>
 
-## Récupérer le projet
+## Table of Contents
 
-Dans un premier temps, quand vous clonez le projet, mettez le projet à un lien comme ça :
+- [Mise en route](#mise-en-route)
+  - [Architecture](#architecture)
+  - [Dépendances](#dépendances)
+  - [Installation](#installation)
+- [Guide d'utilisation](#guide-dutilisation)
+- [Authors](#authors)
 
-```batch
-C:\Users\[username]\
+---
+
+## Mise en route
+
+Heuresement pour vous, nous avons ENORMEMENT simplifier le processus de déploiement de NewSantoline. Malgré tout, il reste quelques subtilités, mais si vous suivez ce guide tout ce passera bien et vite.
+
+Dans un premier temps, vous devez cloner le projet.
+Pour ce faire placez vous dans le répertoire de destination (de préférence __C:/Users/\<username\>__) et exécutez la commande:
+
+```git
+git clone https://github.com/hbollon/NewSantoline.git
 ```
 
 ### Architecture
@@ -20,30 +34,28 @@ Il faut installer les logiciels suivants:
 
 * [QGIS 3.2](https://qgis.org/downloads/)
 * [windNinja](https://firelab.org/document/windninja-software)
-* [mingw](https://sourceforge.net/projects/mingw/) (cocher MinGW Base System/Autotools)
+* [mingw](https://sourceforge.net/projects/mingw/) **(cocher MinGW Base System/Autotools/g++)**
 * [cmake](https://cmake.org/download/) -> faire attention à ce que cmake soit ajouter dans le path
 
-Bien faire attention à laisser les chemins par défaut de ces applications :
+Bien faire attention à laisser les chemins par défaut de ces applications lors de l'installation (notre application ira directement récuperer leur chemin) :
 
-* WindNinja : racine de C:
-* Qgis : dans ProgramFiles
+* WindNinja : racine de C: (__C:\WindNinja\WindNinja-x.x.x__)
+* Qgis : dans ProgramFiles (__C:\Program Files\QGIS 3.2__)
 
-Ajouter Python dans la variable d'environnement "Path", si vous ne savez pas faire aller [ici](https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/).
-
-Faire de même pour mingw et cmake, vérifiez s'ils ont été ajouté dans la variable "Path".
+Assurez-vous que cmake et mingw ont bien été ajouté dans la variable environement "Path".
 
 ### Installation
 
-* Télécharger les départements, faire attention de bien garder l'architecture mise en place pour les départements, c'est à dire :
+* Télécharger les données des départements (carte et données altimétriques) et décompressez l'archive dans le répertoire:
   
 ```batch
-C:\users\[username]\NewSantoline\data\departement\XX - nom\tif\
+C:\Users\<username>\NewSantoline\data\altimetrics
 ```
 
-* Lancer le fichier **build.bat** dans le dossier **Scripts** : qui permet de build les sous-programmes C++
+* Lancer le script **build.bat** dans le dossier **Scripts** : qui permet de build automatiquement tout les sous-programmes C++ (en cas de soucis vérifiez que vos installation de cmake/mingw sont valides)
 * Lancer le fichier **run.bat**
 
-### Notice d'utilisation
+## Guide d'utilisation
 
 #### 1. Choix du département
 
@@ -54,7 +66,9 @@ C:\users\[username]\NewSantoline\data\departement\XX - nom\tif\
 
 ![screen_vents](doc/screens/vents.png)
 
-Placer ensuite un point, qui sera le centre de la carte des vents représenté par une étoile noire.
+Placez ensuite un point, qui sera le centre de la carte des vents représenté par une étoile noire.
+
+Pour ce faire, cliquez sur le deuxième bouton du menu **Vents** et cliquez ensuite là où vous voulez le placer sur la map.
 Une fois le point placé, appuyer sur l'icône du drapeau.
 
 ![screen_vents_point](doc/screens/vents_v2.png)
@@ -63,7 +77,6 @@ Sélectionner les paramètres souhaités, à noter que :
 
 * la zone est carrée de taille ("distance" x "distance"), _ex : ici zone de 1000 par 1000_
 * orientation du vent : voir la chose comme une boussole
-* vitesse du vent : plus le vent sera rapide, plus le calcul sera long
 
 ![screen_vents_point](doc/screens/settings_vent.png)
 
@@ -87,7 +100,7 @@ Appuyer sur le bouton "Dessiner contours" :
 
 ![screen_vents_point](doc/screens/draw_contours_simulation.png)
 
-Dessiner ensuite le contour, chaque clic que vous faites **(ATTENTION LES POINTS QUE VOUS DEVEZ PLACER DOIVENT ETRE DANS LA ZONE DES VENTS)** est un point, et le clic d'après reliera le point précédent avec celui que vous venez de faire, pour alors tracer des segments :
+Dessinez ensuite le contour, chaque clic que vous faites **(ATTENTION LES POINTS QUE VOUS DEVEZ PLACER DOIVENT ETRE DANS LA ZONE DES VENTS)** est un point, et le clic d'après reliera le point précédent avec celui que vous venez de faire, pour alors tracer des segments :
 
 * **Etape 1 :**
 
@@ -107,15 +120,14 @@ Si vous commetez une erreur sur le contour, il est possible d'effacer le contour
 
 ![screen_vents_point](doc/screens/efface_contour.png)
 
-Une fois le contour realisé, il vous suffira de sélectionner les arguments pour finaliser la situation :
+Une fois le contour realisé, il vous suffira de lancer la simulation (en renseignant d'abord les paramètres de cette dernière) :
 
 ![screen_vents_point](doc/screens/simulation_contour_final.png)
 
 Quelques petites informations sur les arguments de la simulation :
 
-* Saisir dans le champ "Algorithme", le numéro de l'algorithme que vous voulez utiliser : 2 ou 3
+* Saisir dans le champ "Algorithme", le numéro de l'algorithme que vous voulez utiliser : 2 ou 3 (pour l'instant)
 * Durée de propagation : temps de propagation, si vous dépassez 1h30, les temps de calcul risquent d'être longs
-* Les 3 derniers champs ne sont pas utilisés, il n'est pas nécessaire de les remplir
 
 ![screen_vents_point](doc/screens/arguments_simulation.png)
 
@@ -126,3 +138,23 @@ Appuyer sur "Valider" et attendez maintenant que la simulation se finisse, en co
 Et voici un exemple du résultat final, après que la simulation soit terminée.
 
 ![screen_vents_point](doc/screens/contour_final_sim.png)
+
+**Vous pouvez modifier les paramètres _deep_ de NewSantoline depuis l'onglet _Réglages_. Notament le nombre de segments et le l'angle des propagations pour les algorithmes 1 et 2. Ces deux paramètres influent la précision du tracé final ainsi que la vitesse de la simuation**
+
+## Authors
+
+👤 **Hugo Bollon**
+
+* Github: [@hbollon](https://github.com/hbollon)
+* LinkedIn: [@Hugo Bollon](https://www.linkedin.com/in/hugobollon/)
+* Portfolio: [hugobollon.me](https://www.hugobollon.me)
+
+👤 **Samuel Rodriguez-Lozano**
+
+👤 **Laurent Cutting**
+
+👤 **Hamza Mahri**
+
+## Show your support
+
+Give a ⭐️ if this project helped you!
