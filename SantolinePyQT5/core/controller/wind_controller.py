@@ -1,15 +1,12 @@
 import re
 from pathlib import Path
-
 from ..model import *
 from ..libs import file_io
 from . import controller
 from subprocess import PIPE
 import subprocess
-
 import json
 import os
-
 
 class WindController(controller.AController):
     def __init__(self, view,santolineView):
@@ -17,12 +14,6 @@ class WindController(controller.AController):
         self.windModel_ = wind_model.WindModel(self)
         self.windModel_.addObserver(view)
         self.santoline_view_ = santolineView
-
-    # def width(self, width):
-    #     self.windModel_.width(width)
-    #
-    # def height(self, height):
-    #     self.windModel_.height(height)
 
     def distance(self,distance):
         self.windModel_.north(distance)
@@ -52,21 +43,18 @@ class WindController(controller.AController):
 
         departementTifPath = None
         departementDir = "..\\data\\altimetrics\\departements\\{}\\tif\\".format(self.santoline_view_.controller_.canvasModel_.map_)
-        print(os.listdir(departementDir))
         for file in os.listdir(departementDir):
             if file.endswith(".tif"):
                 departementTifPath = os.path.join(departementDir, file)
                 break
 
         if departementTifPath == None:
-            print("Carte des vents non générée")
+            print("Aucun .tif trouvé, impossible de générer la carte des vents")
             self.close()
             return
 
         filename = "..\\src\\Epilobe\\params.json"
         connector.write(filename, json.dumps(self.windModel_.jsonify(departementTifPath)))
-        print(json.dumps(self.windModel_.jsonify(departementTifPath)))
-
         parser_commande = "..\\src\\Epilobe\\cmake\\Epilobe.exe " \
                           + "..\\paths.json " \
                           + "..\\src\\Epilobe\\params.json " \
@@ -76,7 +64,6 @@ class WindController(controller.AController):
                           + str(round(self.windModel_.speed_, 1))
         sub = subprocess.run(parser_commande, 
             shell=True, stdout=PIPE, stderr=PIPE)
-
         print(f"Output:\n{sub.stdout}\nErr:\n{sub.stderr}\nReturnCode: {sub.returncode}")
 
         if os.path.isfile("..\\data\\maps\\map.json"):
