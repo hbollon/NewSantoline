@@ -88,7 +88,7 @@ class AlgorithmController(controller.AController):
 
         if self.algorithmModel_.algorithm_=="3":
             sub = subprocess.run([
-                "..\\Algo3\\cmake-build-debug\\Algo3.exe",
+                "..\\Algo3\\cmake\\Algo3.exe",
                 "..\\data\\communication\\parametreAlgo.json",
                 "..\\data\\maps\\map.json",
                 "..\\data\\communication\\resultatSimulation.json",
@@ -102,7 +102,7 @@ class AlgorithmController(controller.AController):
             print(f"Output:\n{sub.stdout}\nErr:\n{sub.stderr}\nReturnCode: {sub.returncode}")
         else:
             sub = subprocess.run([
-                "..\\src\\algo\\cmake-build-debug\\algo.exe",
+                "..\\src\\algo\\cmake\\algo.exe",
                 "..\\data\\communication\\parametreAlgo.json",
                 "..\\data\\maps\\map.json",
                 "..\\data\\communication\\resultatSimulation.json"

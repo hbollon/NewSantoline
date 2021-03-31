@@ -12,6 +12,7 @@
 #include "ellipse.h"
 #include "geometry.h"
 #include "WindMapData.h"
+#include "ConvexHull.hpp"
 
 using json = nlohmann::json;
 using namespace std;

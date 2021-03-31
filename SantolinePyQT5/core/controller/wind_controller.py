@@ -47,17 +47,31 @@ class WindController(controller.AController):
 
     def accept(self):
         connector = file_io.FileIO()
-        newArchPath = os.path.abspath("..\\src")
+        newArchPath = os.path.abspath("..")
         if os.path.isfile("..\\data\\maps\\map.json"):
             os.remove("..\\data\\maps\\map.json")
 
-        filename = newArchPath + "\\Epilobe\\params.json"
-        connector.write(filename, json.dumps(self.windModel_.jsonify()))
-        print(json.dumps(self.windModel_.jsonify()))
+        departementTifPath = ""
+        departementDir = newArchPath + "\\data\\altimetrics\\departements\\{}\\tif\\".format(self.santoline_view_.controller_.canvasModel_.map_)
+        for file in os.listdir(departementDir):
+            if file.endswith(".tif"):
+                departementTifPath = os.path.join(departementDir, file)
+                break
 
-        parser_commande = newArchPath + "\\Epilobe\\Epilobe.exe " \
-                          +  "C:\\Users\\hbollon\\NewSantoline\\paths.json " \
-                          + newArchPath + "\\Epilobe\\params.json " \
+        if departementTifPath == "":
+            print("Missing departement tif file in {} !".format(departementDir))
+            print("Carte des vents non générée")
+            self.close()
+            return
+
+        filename = newArchPath + "\\src\\Epilobe\\params.json"
+        connector.write(filename, json.dumps(self.windModel_.jsonify(departementTifPath)))
+        print(json.dumps(self.windModel_.jsonify(departementTifPath)))
+
+        parser_commande = newArchPath + "\\src\\Epilobe\\cmake\\Epilobe.exe " \
+                          + newArchPath + "\\paths.json " \
+                          + newArchPath + "\\src\\Epilobe\\params.json " \
+                          + "\"{}\" ".format(departementTifPath) \
                           + str((self.windModel_.direction_ + 180.)%360.) \
                           + " " \
                           + str(round(self.windModel_.speed_, 1))
@@ -98,14 +112,12 @@ class WindController(controller.AController):
         else:
             print("Carte des vents non générée")
             emptyJson = {
-
                 "axeorigine": "est",
                 "direction": 0,
                 "force": 0,
                 "nbProcess": 0,
                 "dimension": [0, 0],
                 "origine": [0, 0]
-
             }
             connector.write(filename, json.dumps(emptyJson))
 

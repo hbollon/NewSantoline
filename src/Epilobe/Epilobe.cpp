@@ -51,8 +51,8 @@ bool Epilobe::can_generate() {
 }
 
 /*** Créé la subzone ***/
-bool Epilobe::subzone() {
-    std::string raster_de_base = "\""+ config->data_path + "\\var.tif\"";
+bool Epilobe::subzone(string tifPath) {
+    std::string raster_de_base = "\"" + tifPath + "\"";
     std::string raster_resultant = "\"" + config->data_path + "\\subzone.tif\"";
     double xmin, xmax, ymin, ymax;
 
@@ -75,7 +75,7 @@ bool Epilobe::subzone() {
     std::string parameters = "-overwrite -of gtiff -s_srs "
                       "\"+init=IGNF:LAMB93 +proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 "
                       "+lon_0=3 +x_0=700000 +y_0=6600000 +ellps=WGS84 +datum=WGS84 "
-                      "+towgs84 = 0, 0, 0, 0, 0, 0, 0 + units = m + no_defs\""
+                      "+towgs84=0.0,0.0,0.0,0.0,0.0,0.0,0.0 +units=m +no_defs\""
                       " -te "
                       + std::to_string(xmin) + ' '
                       + std::to_string(ymin) + ' '
@@ -129,9 +129,9 @@ bool Epilobe::windninja() {
     return system((command + parameters).c_str()) == 0;
 }
 
-void Epilobe::generate() {
+void Epilobe::generate(string tifPath) {
     if (can_generate()) {
-        m_generated = subzone() && alti_to_ascii() && windninja();
+        m_generated = subzone(tifPath) && alti_to_ascii() && windninja();
     } else {
         std::cout << "La carte des vents n'a pas pu être générée car les tous les paramètres ne sont pas bons...";
     }
