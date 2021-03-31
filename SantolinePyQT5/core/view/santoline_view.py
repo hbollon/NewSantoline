@@ -648,8 +648,6 @@ class Santoline(QMainWindow, observable.Observer):
             params= json.load(g)
         largeur=params['dimension'][1]
         hauteur=params['dimension'][0]
-        print(f"largeur/25: {largeur/25}, hauteur/25: {hauteur/25}")
-
         windMatrix = self.matrixInit(int(largeur/25) + 1, int(hauteur/25) + 1)
         if largeur>0:
             with open(path, 'r') as f:

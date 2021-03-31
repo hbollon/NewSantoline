@@ -453,13 +453,12 @@ vector<vector<Point3D>> Algo::propagation(ListeBurningPoint &burningPointInitiau
         temp.push_back(pointAMettreEnFeu.second.second);
         temp.push_back(pointAMettreEnFeu.second.first);
         arctab.push_back(temp);
+
         Point3D a = pointAMettreEnFeu.second.second;
         Point2D a0 = Point2D(pointAMettreEnFeu.second.first.x(), pointAMettreEnFeu.second.first.y());
         Point2D a1 = Point2D(a.x(), a.y());
-        //Sert uniquement a afficher la bar de progression
         if ((int)a.z() % 10 == 0)
-            afficheProgression(a.z());
-
+            std::cout << int(round(a.z() / duration * 100)) << endl;
         if (floor(a.z()) != last)
         {
             last = floor(a.z());
@@ -549,7 +548,7 @@ vector<vector<Point3D>> Algo::propagation(ListeBurningPoint &burningPointInitiau
     //    outputResultatSimulation2 << std::setw(4) << result << std::endl;
     // cout << "simulation done, " << adress << " filled!" << endl;
     //######################################################################################################################
-    contour.push_back(finalContour);
+    contour.push_back(makeConvexHull(finalContour));
     //    contour.push_back(burn);
     return contour;
 }

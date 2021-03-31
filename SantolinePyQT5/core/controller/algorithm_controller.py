@@ -45,7 +45,6 @@ class AlgorithmController(controller.AController):
         self.algorithmModel_.process(process)
         
     def accept(self):
-
         with open(b"..\\data\\reglage.json", 'r', encoding='utf-8') as f:
             reglage = json.load(f)
         if self.santo_view_.propagationLayer_ in self.santo_view_.layers:
@@ -56,9 +55,6 @@ class AlgorithmController(controller.AController):
         self.canvasModel_.propagation2_=[]
         duree =  str(self.algorithmModel_.heure_) +":"+ str(self.algorithmModel_.minute_ )+":00"
         intervalle =  str(self.algorithmModel_.heureIntervalle_) +":"+ str(self.algorithmModel_.minuteIntervalle_ )+":00"
-        #if os.path.isfile("..\\data\\communication\\resultatSimulation.json"):
-            #os.remove("..\\data\\communication\\resultatSimulation.json")
-        print("Simulation lancee \n")
         with open("..\\src\\Epilobe\\params.json ") as g:
             params= json.load(g)
         largeur=params['dimension'][1]
@@ -101,81 +97,42 @@ class AlgorithmController(controller.AController):
 
             print(f"Output:\n{sub.stdout}\nErr:\n{sub.stderr}\nReturnCode: {sub.returncode}")
         else:
-            sub = subprocess.run([
+            sub = subprocess.Popen([
                 "..\\src\\algo\\cmake\\algo.exe",
                 "..\\data\\communication\\parametreAlgo.json",
                 "..\\data\\maps\\map.json",
                 "..\\data\\communication\\resultatSimulation.json"
             ], 
-            shell=True, stdout=PIPE, stderr=PIPE)
-
-            print(f"Output:\n{sub.stdout}\nErr:\n{sub.stderr}\nReturnCode: {sub.returncode}")
-
-        # recuperer le resultat de simulation
+            stdout=subprocess.PIPE,bufsize=1)
+            lines_iterator = iter(sub.stdout.readline, b"")
+            while sub.poll() is None:
+                for line in lines_iterator:
+                    nline = line.rstrip().decode("latin")
+                    if nline.isnumeric():
+                        print(nline)
+                        self.santo_view_.progressbar_.setValue(int(nline))
+            self.santo_view_.progressbar_.setValue(100)
         resultatSimulation = []
         with open(b"..\\data\\communication\\resultatSimulation.json", 'r', encoding='utf-8') as f:
             resultatSimulation = json.load(f)
             if resultatSimulation!=None:
-                # print(resultatSimulation)
-
-                # renvoyer le resultat au santoline_view
                 for l in resultatSimulation:
                     liste=[]
                     for p in l:
                         qp = QgsPointXY(p[0], p[1])
                         liste.append(qp)
-                        # self.canvasModel_.propagation_.append(qp)
-
                     self.canvasModel_.propagation_.append(liste)
-                # with open(b"..\\data\\communication\\resultatSimulation2.json", 'r', encoding='utf-8') as k:
-                #     resultatSimulation = json.load(k)
-                #     if resultatSimulation != None:
-                #         for l in resultatSimulation:
-                #             liste = []
-                #             for p in l:
-                #                 qp = QgsPointXY(p[0], p[1])
-                #                 liste.append(qp)
-                #             self.canvasModel_.propagation2_.append(liste)
-                print("\nSimulation terminee \n")
-                #☺self.santo_view_.propagationLayer_ = self.santo_view_.propagationLayerInit(self.canvasModel_.propagation_,[255,0,0],[0,0,255])
                 self.santo_view_.propagationLayer_ = self.santo_view_.propagationLayerInit2(self.canvasModel_.propagation_,"255,0,0,255")
-                #En inversant les deux lignes (commenter l'une decommenter l'autre) on peut passer du mode lisse ou du mode point
                 self.santo_view_.propagationLayer_.updateExtents()
-                # self.santo_view_.propagationLayer2_ = self.santo_view_.propagationLayerInitLine(self.canvasModel_.propagation2_)
-                # print("Propagation: "+str(len(self.canvasModel_.propagation_)))
-                # self.santo_view_.propagationLayer2_.updateExtents()
                 self.santo_view_.layers.insert(0, (self.santo_view_.propagationLayer_))
-                # self.santo_view_.layers.insert(0, (self.santo_view_.propagationLayer2_))
-                # self.santo_view_.propagationLayer2_.triggerRepaint()
-                # self.santo_view_.propagationLayer2_.reload()
                 self.santo_view_.propagationLayer_.triggerRepaint()
                 self.santo_view_.propagationLayer_.reload()
                 self.santo_view_.canvas_.setLayers(self.santo_view_.layers)
                 self.santo_view_.canvas_.refresh()
                 self.santo_view_.update(self.canvasModel_)
-                if self.algorithmModel_.algorithm_ == "double":
-                    with open(b"..\\data\\communication\\resultatSimulation.json", 'r', encoding='utf-8') as k:
-                        resultatSimulation = json.load(k)
-                        if resultatSimulation != None:
-                            for l in resultatSimulation:
-                                liste = []
-                                for p in l:
-                                    qp = QgsPointXY(p[0], p[1])
-                                    liste.append(qp)
-                                self.canvasModel_.propagation2_.append(liste)
-                            print("\nSimulation terminee \n")
-                            self.santo_view_.propagationLayer2_ =self.santo_view_.propagationLayerInit2(self.canvasModel_.propagation2_,'0,0,255,255')
-                            self.santo_view_.propagationLayer2_.updateExtents()
-                            self.santo_view_.layers.insert(0, (self.santo_view_.propagationLayer2_))
-                            self.santo_view_.propagationLayer2_.triggerRepaint()
-                            self.santo_view_.propagationLayer2_.reload()
-                            self.santo_view_.canvas_.setLayers(self.santo_view_.layers)
-                            self.santo_view_.canvas_.refresh()
-                            self.santo_view_.update(self.canvasModel_)
-                else:
-                    print("self.algorithmModel_.algorithm_ est differentde double")
             else:
-                print("Simulation echouee")
+                self.santo_view_.controller_.showPopup("Simulation échouée", "Erreur")
+        self.santo_view_.progressbar_.setValue(0)
         
     def close(self):
         self.view_.hide()
