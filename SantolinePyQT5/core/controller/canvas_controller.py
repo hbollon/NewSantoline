@@ -1,13 +1,8 @@
 import qgis
-
 from . import controller
-
 from ..model import canvas_model
-
 from ..libs import file_connector
-
 from qgis.core import *
-
 import json
 
 
@@ -90,7 +85,6 @@ class CanvasController(controller.AController):
         # self.accept()
         
     def clearPointObstacle(self):
-
         self.canvasModel_.clearPointObstacle()
         # self.accept()
         
@@ -104,21 +98,18 @@ class CanvasController(controller.AController):
         # self.accept()
 
     def setJalonnement(self):
-
         if(self.view_.lastToolUsed_):
             self.view_.lastToolUsed_.append([])
         self.view_.canvas_.setMapTool(self.view_.toolAttaqueJalonnement_)
         self.view_.lastToolUsed_=self.canvasModel_.jalonnement_
 
     def setAppui(self):
-
         if (self.view_.lastToolUsed_):
             self.view_.lastToolUsed_.append([])
         self.view_.canvas_.setMapTool(self.view_.toolLigneAppui_)
         self.view_.lastToolUsed_ = self.canvasModel_.appui_
 
     def setObstacle(self):
-
         if (self.view_.lastToolUsed_):
             self.view_.lastToolUsed_.append([])
         self.view_.canvas_.setMapTool(self.view_.toolLigneAppui_)
@@ -145,3 +136,7 @@ class CanvasController(controller.AController):
     def accept(self):
         connector = file_connector.FileConnector()
         connector.write(json.dumps(self.canvasModel_.jsonify()))
+
+    def showPopup(self, textContent, title):
+        self.view_.popup_window_.update(textContent, title)
+        self.view_.popup_window_.show()

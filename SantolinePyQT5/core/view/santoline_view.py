@@ -8,7 +8,7 @@ from qgis.PyQt.QtGui import * #QFrame
 import math
 
 from core.view import reglage_view
-from . import wind_view, algorithm_view, departements_choices_view, reglage_view
+from . import wind_view, algorithm_view, departements_choices_view, reglage_view, popup_view
 from ..controller import * #canvas_controller ...
 from ..libs import *
 from win32api import GetSystemMetrics
@@ -54,6 +54,7 @@ class Santoline(QMainWindow, observable.Observer):
         self.parameter_window_ = None
         self.reglage_window_ = None
         self.departements_choices_window_ = None
+        self.popup_window_ = None
         self.thread_ = None
         self.fireLayer_ = None
         self.rubber_contour_feu_ = None
@@ -92,14 +93,12 @@ class Santoline(QMainWindow, observable.Observer):
         self.windmapdisplayed = False
 
         self.initUI()
-
-        print(self.densite)
+        
 
     def initUI(self):
         self.setWindowTitle("Santoline")
         self.setGeometry(90, 90, 1280, 960)
         self.showMaximized()
-        self.hide()
 
         # Ribbon bar / Barre ruban
         self.firstToolbar_ = self.addToolBar("First tool bar")
@@ -128,9 +127,7 @@ class Santoline(QMainWindow, observable.Observer):
         self.parameter_window_ = algorithm_view.ParameterWindow(self.controller_.canvasModel_,self)
         self.reglage_window_ = reglage_view.ReglageWindow(self.controller_.canvasModel_, self)
         self.departements_choices_window_ = departements_choices_view.Departements_Choices_Window()
-
-
-
+        self.popup_window_ = popup_view.Popup_Window()
         
         # Ribbon bar Departement / Barre ruban Département
         departement = QToolButton(self.secondToolbar_)
@@ -335,7 +332,6 @@ class Santoline(QMainWindow, observable.Observer):
         alignmentGroup2.addAction(self.afficheVentsPentes)
         alignmentGroup2.addAction(self.affichePente)
 
-
         self.left_toolbar_.addAction(self.calculVents)
         self.left_toolbar_.addAction(self.roseVents)
         self.left_toolbar_.addAction(self.afficheVents)
@@ -344,7 +340,6 @@ class Santoline(QMainWindow, observable.Observer):
         self.left_toolbar_.addAction(self.affichePlusDense)
         self.left_toolbar_.addAction(self.afficheMoinsDense)
         self.left_toolbar_.addAction(self.reloadMap)
-
         
         self.reglages = QToolButton(self.secondToolbar_)
         self.reglages.setText("Réglages")
@@ -402,9 +397,6 @@ class Santoline(QMainWindow, observable.Observer):
         self.affichePlusDense.setVisible(True)
         self.afficheMoinsDense.setVisible(True)
         self.reloadMap.setVisible(True)
-
-
-
     
     def affichageToolsSimulation(self) : 
         self.cleanToolbar(self.left_toolbar_)
@@ -513,10 +505,7 @@ class Santoline(QMainWindow, observable.Observer):
             self.layers.remove(self.slopeLayer_)
         if self.windSlopeLayer_ in self.layers :
             self.layers.remove(self.windSlopeLayer_)
-
         self.canvas_.setLayers(self.layers)
-
-
 
     def roseLayerInit(self,model):
         self.roseLayer_= QgsVectorLayer("Point", "Random Layer", "memory")
@@ -679,9 +668,6 @@ class Santoline(QMainWindow, observable.Observer):
                 alpha = self.vector_to_angle(x,y)
                 alpha1 = self.vector_to_angle(x1,y1)
                 alpha2 = self.vector_to_angle(x2,y2)
-                # print("wind[x]: " + str(wind['x']) + " wind[y]: " + str(wind['y']))
-                # print("xOrigin: " + str(xOrigin) + " yOrigin: " + str(yOrigin))
-                # print(f"x: {int((wind['x'] - xOrigin) / 25)}, y: {int((wind['y'] - yOrigin) / 25)}")
                 windMatrix[int((wind['x'] - xOrigin) / 25)][int((wind['y'] - yOrigin) / 25)] = [point,alpha,alpha1,alpha2]
         return windMatrix
 
@@ -693,7 +679,6 @@ class Santoline(QMainWindow, observable.Observer):
         symbol = QgsMarkerSymbol.createSimple({'name': 'arrow', 'color': color, 'outline_color': 'black', 'outline_width': '0'})
         layer.renderer().setSymbol(symbol)
         i=0
-
         for col in self.windMatrix_:
             j = 0
             if i%densite==0:
@@ -711,7 +696,6 @@ class Santoline(QMainWindow, observable.Observer):
                         features.append(feature)
                     j+=1
             i+=1
-
         provider.addFeatures(features)
         layer.updateExtents()
         fni = provider.fieldNameIndex('angle')
@@ -726,7 +710,6 @@ class Santoline(QMainWindow, observable.Observer):
             category = QgsRendererCategory(i, symbol, str(i))
             # entry for the list of category items
             categories.append(category)
-
         renderer = QgsCategorizedSymbolRenderer('angle', categories)
         layer.setRenderer(renderer)
         return layer
@@ -755,20 +738,16 @@ class Santoline(QMainWindow, observable.Observer):
         self.roseLayer_.triggerRepaint()
         self.roseLayer_.reload()
         self.canvas_.setLayers(self.layers)
-        # self.canvas_.refresh()
 
     def update_contour(self, model):
         list_points = model.contour_feu_
-
         if self.rubber_contour_feu_ == None:
             self.rubber_contour_feu_ = QgsRubberBand(self.canvas_, QgsWkbTypes.PolygonGeometry)
         polygon = QgsGeometry.fromPolygonXY([list_points])
-
         self.rubber_contour_feu_.setToGeometry(polygon, None)
         self.rubber_contour_feu_.setColor(QColor(255, 0, 0, 255))
         self.rubber_contour_feu_.setFillColor(QColor(255, 128, 0, 128))
         self.rubber_contour_feu_.setWidth(3)
-
 
     def update_largage_eau_ABE(self, model):
         list_points = model.largage_eau_ABE[len(model.largage_eau_ABE) - 1]
@@ -828,7 +807,6 @@ class Santoline(QMainWindow, observable.Observer):
 
     def update_largage_eau_HBE(self, model):
         list_points = model.largage_eau_HBE[len(model.largage_eau_HBE)-1]
-
         if self.rubber_eau_HBE_ == None:
             self.rubber_eau_HBE_ = QgsRubberBand(self.canvas_, QgsWkbTypes.PolygonGeometry)
         polygon = QgsGeometry.fromMultiPolylineXY(model.largage_eau_HBE)
@@ -836,7 +814,6 @@ class Santoline(QMainWindow, observable.Observer):
         self.rubber_eau_HBE_.setColor(QColor(0, 110, 255, 255))
         self.rubber_eau_HBE_.setWidth(3)
         self.rubber_eau_HBE_.setLineStyle(Qt.DotLine)
-
         if len(list_points) > 1:
             dernier_point2 = QgsPointXY(list_points[len(list_points) - 2].x(), list_points[len(list_points) - 2].y())
             dernier_point = QgsPointXY(list_points[len(list_points) - 1].x(), list_points[len(list_points) - 1].y())
@@ -844,14 +821,11 @@ class Santoline(QMainWindow, observable.Observer):
             p2 = QgsPointXY(dernier_point.x(), dernier_point.y())
             largeur = p2.x() - p1.x()
             hauteur = p2.y() - p1.y()
-
             dernierSegment = []
             dernierSegment.append(p1)
             dernierSegment.append(p2)
-
             longueur = math.sqrt(largeur ** 2 + hauteur ** 2)
             nb_point = int(longueur / 15)
-
             self.ligne_jalonnement_marker = QgsVertexMarker(self.canvas_)
             self.ligne_jalonnement_marker.setCenter(p1)
             self.ligne_jalonnement_marker.setColor(QColor(0, 110, 255))
@@ -860,7 +834,6 @@ class Santoline(QMainWindow, observable.Observer):
             self.ligne_jalonnement_marker.setIconType(QgsVertexMarker.ICON_CIRCLE)
             self.ligne_jalonnement_marker.setPenWidth(2)
             self.ligne_jalonnement_marker.updatePosition()
-
 
             for i in range(0, nb_point):
                 dx = largeur / nb_point
@@ -877,7 +850,6 @@ class Santoline(QMainWindow, observable.Observer):
 
     def update_largage_retartant_ABE(self, model):
         list_points = model.largage_retardant_ABE[len(model.largage_retardant_ABE) - 1]
-
         if self.rubber_retardant_ABE_ == None:
             self.rubber_retardant_ABE_ = QgsRubberBand(self.canvas_, QgsWkbTypes.PolygonGeometry)
         polygon = QgsGeometry.fromMultiPolylineXY(model.largage_retardant_ABE)
@@ -887,7 +859,6 @@ class Santoline(QMainWindow, observable.Observer):
         self.rubber_retardant_ABE_.setLineStyle(Qt.DotLine)
 
         if len(list_points) > 1:
-
             dernier_point2 = QgsPointXY(list_points[len(list_points) - 2].x(), list_points[len(list_points) - 2].y())
             dernier_point = QgsPointXY(list_points[len(list_points) - 1].x(), list_points[len(list_points) - 1].y())
 
@@ -902,8 +873,6 @@ class Santoline(QMainWindow, observable.Observer):
 
             longueur = math.sqrt(largeur ** 2 + hauteur ** 2)
             nb_point = int(longueur / 15)
-
-
 
             self.retartant_ABE_marker2 = QgsVertexMarker(self.canvas_)
             self.retartant_ABE_marker2.setCenter(p1)
@@ -949,12 +918,9 @@ class Santoline(QMainWindow, observable.Observer):
         self.rubber_retardant_HBE_.setColor(QColor(255, 0, 0, 255))
         self.rubber_retardant_HBE_.setWidth(3)
         self.rubber_retardant_HBE_.setLineStyle(Qt.DotLine)
-
         if len(list_points) > 1:
-
             dernier_point2 = QgsPointXY(list_points[len(list_points) - 2].x(), list_points[len(list_points) - 2].y())
             dernier_point = QgsPointXY(list_points[len(list_points) - 1].x(), list_points[len(list_points) - 1].y())
-
             p1 = QgsPointXY(dernier_point2.x(), dernier_point2.y())
             p2 = QgsPointXY(dernier_point.x(), dernier_point.y())
             largeur = p2.x() - p1.x()
@@ -962,10 +928,8 @@ class Santoline(QMainWindow, observable.Observer):
             dernierSegment = []
             dernierSegment.append(p1)
             dernierSegment.append(p2)
-
             longueur = math.sqrt(largeur ** 2 + hauteur ** 2)
             nb_point = int(longueur / 15)
-
             self.eua_retartant_maker = QgsVertexMarker(self.canvas_)
             self.eua_retartant_maker.setCenter(p1)
             self.eua_retartant_maker.setColor(QColor(255, 0, 0))
@@ -997,7 +961,6 @@ class Santoline(QMainWindow, observable.Observer):
         self.rubber_jalonnement_.setLineStyle(Qt.DashLine)
         self.rubber_jalonnement_.setWidth(3)
 
-
     def update_appui(self, model):
         list_points = model.appui_
 
@@ -1016,8 +979,6 @@ class Santoline(QMainWindow, observable.Observer):
         self.rubber_appui2_.setColor(QColor(255, 255, 255, 255))
         self.rubber_appui2_.setLineStyle(Qt.SolidLine)
         self.rubber_appui2_.setWidth(4)
-
-
 
     def update_obstacle(self, model):
         list_points = model.obstacle_[len(model.obstacle_) - 1]
@@ -1041,7 +1002,6 @@ class Santoline(QMainWindow, observable.Observer):
             hauteur = p2.y() - p1.y()
             longueur = math.sqrt(largeur ** 2 + hauteur ** 2)
             nb_point = int(longueur / 25)
-
 
             dernierSegment = []
             dernierSegment.append(p1)
@@ -1078,7 +1038,6 @@ class Santoline(QMainWindow, observable.Observer):
         
     def progress(self, percent):
         self.progressbar_.setValue(percent)
-
 
     #Classe responsable du chargemnt de la carte
 class MapLoader(QThread):

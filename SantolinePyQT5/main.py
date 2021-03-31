@@ -29,7 +29,7 @@ def getQGISDirectory():
     qgisLastVersion = qgisVersions[len(qgisVersions)-1];
     qgisDirectory = str(programFiles).replace('/','\\') + "\\" +str(qgisLastVersion)
     return qgisDirectory
-
+    
 
 def createJsonPath():
     full_path = os.path.realpath(__file__)

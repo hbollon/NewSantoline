@@ -89,6 +89,7 @@ class WindController(controller.AController):
                 p.unlink()
         else:
             print("Carte des vents non générée")
+            self.santoline_view_.controller_.showPopup("Carte des vents non générée", "Erreur")
             emptyJson = {
                 "axeorigine": "est",
                 "direction": 0,
@@ -98,7 +99,6 @@ class WindController(controller.AController):
                 "origine": [0, 0]
             }
             connector.write(filename, json.dumps(emptyJson))
-
         self.close()
 
     def close(self):
