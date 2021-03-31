@@ -42,7 +42,7 @@ Bien faire attention à laisser les chemins par défaut de ces applications lors
 * WindNinja : racine de C: (__C:\WindNinja\WindNinja-x.x.x__)
 * Qgis : dans ProgramFiles (__C:\Program Files\QGIS 3.2__)
 
-Assurez-vous que cmake et mingw ont bien été ajouté dans la variable environement "Path".
+Assurez-vous que cmake et mingw ont bien été ajouté dans la variable environement "Path" (voir [ce lien](https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/) si vous ne savez pas comment interragir avec vos variables d'environnement).
 
 ### Installation
 
