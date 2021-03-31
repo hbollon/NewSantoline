@@ -63,7 +63,7 @@ def createJsonPath():
     }
 
     #write Json
-    with open('../paths.json', 'w') as outfile:
+    with open('./paths.json', 'w') as outfile:
         json.dump(data, outfile)
 
 def initEnvironment():
