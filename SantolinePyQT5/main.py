@@ -29,7 +29,7 @@ def getQGISDirectory():
     qgisLastVersion = qgisVersions[len(qgisVersions)-1];
     qgisDirectory = str(programFiles).replace('/','\\') + "\\" +str(qgisLastVersion)
     return qgisDirectory
-
+    
 
 def createJsonPath():
     full_path = os.path.realpath(__file__)
@@ -63,14 +63,14 @@ def createJsonPath():
     }
 
     #write Json
-    with open('../paths.json', 'w') as outfile:
+    with open('./paths.json', 'w') as outfile:
         json.dump(data, outfile)
 
 def initEnvironment():
     files = {
-        "../src/Epilobe/params.json": "../data/templates/params.json",
-        "../data/maps/map.json": None,
-        "../data/communication/parametreAlgo.json": None
+        "./src/Epilobe/params.json": "./data/templates/params.json",
+        "./data/maps/map.json": None,
+        "./data/communication/parametreAlgo.json": None
     }
 
     for file, template in files.items():

@@ -16,4 +16,4 @@ set VSI_CACHE=TRUE
 set VSI_CACHE_SIZE=1000000
 set QT_PLUGIN_PATH=%OSGEO4W_ROOT%\apps\qgis\qtplugins;%OSGEO4W_ROOT%\apps\qt5\plugins
 set PYTHONPATH=%OSGEO4W_ROOT%\apps\qgis\python;%PYTHONPATH%
-"%PYTHONHOME%\python" C:\Users\hbollon\NewSantoline\SantolinePyQT5\main.py
+"%PYTHONHOME%\python" C:\Users\%USERNAME%\NewSantoline\SantolinePyQT5\main.py
