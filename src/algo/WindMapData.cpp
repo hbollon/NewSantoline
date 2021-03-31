@@ -23,15 +23,9 @@ void parsedWindMap::initialize(const json& carteVent, int water, double temp, do
 
     }
     setMinCoordinateOfWindMap(carteVent);
-    std::ofstream efile;
-    efile.open ("exentricity.txt");
-    std::ofstream xfile;
-    xfile.open ("x.txt");
-    std::ofstream yfile;
-    yfile.open ("y.txt");
+
     // initialize fields in matrix
     for (const auto &it : carteVent) {
-
         double slope = it["slope"];
         double aspect = it["aspect"];
         json jSlopeVector = it["slope_vector"];
@@ -47,16 +41,10 @@ void parsedWindMap::initialize(const json& carteVent, int water, double temp, do
 
 
         this->_matrix[(int)index.x()]->at((int)index.y()) = d;
-
-//        efile<<"E("<<(int)index.x()+1<<","<<(int)index.y()+1<<") = "<<ellipse.get_e()<<" ; "<<std::endl;
-//        xfile<<std::fixed<<"X("<<(int)index.x()+1<<","<<(int)index.y()+1<<") = "<<mapCoordinate.x()<<" ; "<<std::endl;
-//        yfile<<std::fixed<<"Y("<<(int)index.x()+1<<","<<(int)index.y()+1<<") = "<<mapCoordinate.y()<<" ; "<<std::endl;
-
-
     }
+
     // reduce size of matrix if it's possible
     this->_matrix.shrink_to_fit();
-
 }
 
 
