@@ -9,7 +9,6 @@ from ..controller import *
 
 class ParameterWindow(input_popup_view.InputPopup):
     def __init__(self,canvasModel,santoView):
-        self.algorithme_nom_ = None
         self.algorithme_duree_heure_ = None
         self.algorithme_duree_minute_ = None
         self.algorithme_intervalle_heure_ = None
@@ -21,6 +20,8 @@ class ParameterWindow(input_popup_view.InputPopup):
         
         self.valider_ = None
         self.annuler_ = None
+
+        self.algorithme_choice_layout = None
         
         super().__init__(algorithm_controller.AlgorithmController(self,canvasModel,santoView))
         
@@ -30,12 +31,20 @@ class ParameterWindow(input_popup_view.InputPopup):
         body = QVBoxLayout(self)
         
         algorithme = QWidget(self)
-        algorithme_layout = QHBoxLayout(algorithme)
-        algorithme_label = QLabel("Algorithme", algorithme)
-        self.algorithme_nom_ = QLineEdit(algorithme)
-        algorithme_layout.addWidget(algorithme_label)
-        algorithme_layout.addWidget(self.algorithme_nom_)
-        algorithme.setLayout(algorithme_layout)
+
+
+
+        algorithme_choice_layout = QHBoxLayout(algorithme)
+        algorithme_choice_label = QLabel("Algorithme : ", algorithme)
+        algorithme_choice_button_2 = QRadioButton('2')
+        algorithme_choice_button_2.setChecked(True)
+        algorithme_choice_button_3 = QRadioButton('3')
+        algorithme_choice_button_2.setChecked(False)
+        algorithme_choice_layout.addWidget(algorithme_choice_label)
+        algorithme_choice_layout.addWidget(algorithme_choice_button_2)
+        algorithme_choice_layout.addWidget(algorithme_choice_button_3)
+        algorithme_choice_button_2.toggled.connect(self.controller_.algorithme_choice_button_2_clicked)
+        algorithme_choice_button_3.toggled.connect(self.controller_.algorithme_choice_button_3_clicked)
         
         algorithme_box = QGroupBox("Paramètres", self)
         algorithme_box_layout = QVBoxLayout(algorithme_box)
@@ -70,9 +79,6 @@ class ParameterWindow(input_popup_view.InputPopup):
 
         algorithme_intervalle.setLayout(algorithme_intervalle_layout)
 
-
-
-        
         algorithme_duree.setLayout(algorithme_duree_layout)
         
         algorithme_reserve = QWidget(algorithme_box)
@@ -133,7 +139,6 @@ class ParameterWindow(input_popup_view.InputPopup):
         self.setLayout(body)
 
         # Event binding
-        self.algorithme_nom_.textEdited.connect(self.controller_.algorithm)
         self.algorithme_duree_heure_.valueChanged.connect(self.controller_.heure)
         self.algorithme_duree_minute_.valueChanged.connect(self.controller_.minute)
         self.algorithme_intervalle_heure_.valueChanged.connect(self.controller_.heureIntervalle)
@@ -147,7 +152,6 @@ class ParameterWindow(input_popup_view.InputPopup):
         self.update(self.controller_.algorithmModel_)
         
     def update(self, observable):
-        self.algorithme_nom_.setText(observable.algorithm_)
         self.algorithme_duree_heure_.setValue(observable.heure_)
         self.algorithme_duree_minute_.setValue(observable.minute_)
         self.algorithme_reserve_spinbox_.setValue(observable.waterReserve_)

@@ -43,9 +43,15 @@ class AlgorithmController(controller.AController):
 
     def process(self, process):
         self.algorithmModel_.process(process)
+    
+    def algorithme_choice_button_2_clicked(self, value):
+        self.algorithmModel_.algorithme_choice_button_2_clicked(value)
+        
+    def algorithme_choice_button_3_clicked(self, value):
+        self.algorithmModel_.algorithme_choice_button_3_clicked(value)
+
         
     def accept(self):
-
         with open(b"..\\data\\reglage.json", 'r', encoding='utf-8') as f:
             reglage = json.load(f)
         if self.santo_view_.propagationLayer_ in self.santo_view_.layers:
@@ -56,16 +62,13 @@ class AlgorithmController(controller.AController):
         self.canvasModel_.propagation2_=[]
         duree =  str(self.algorithmModel_.heure_) +":"+ str(self.algorithmModel_.minute_ )+":00"
         intervalle =  str(self.algorithmModel_.heureIntervalle_) +":"+ str(self.algorithmModel_.minuteIntervalle_ )+":00"
-        #if os.path.isfile("..\\data\\communication\\resultatSimulation.json"):
-            #os.remove("..\\data\\communication\\resultatSimulation.json")
-        print("Simulation lancee \n")
         with open("..\\src\\Epilobe\\params.json ") as g:
             params= json.load(g)
         largeur=params['dimension'][1]
         hauteur=params['dimension'][0]
 
         with open('..\\data\\communication\\parametreAlgo.json', 'w') as outfile:
-            json.dump({"algorithm": self.algorithmModel_.algorithm_,
+            json.dump({"algorithm": self.algorithmModel_.algorithm_choice_,
                         "waterReserve": self.algorithmModel_.waterReserve_,
                         "duree":duree,
                        "intervalle":intervalle,
@@ -86,7 +89,7 @@ class AlgorithmController(controller.AController):
         self.close()
         # lancer le programme algo avec les parametre algo et la carte de vent et la sortie est le resultat  de simulation
 
-        if self.algorithmModel_.algorithm_=="3":
+        if self.algorithmModel_.algorithm_choice_=="3":
             sub = subprocess.run([
                 "..\\Algo3\\cmake\\Algo3.exe",
                 "..\\data\\communication\\parametreAlgo.json",
@@ -100,82 +103,42 @@ class AlgorithmController(controller.AController):
             shell=True, stdout=PIPE, stderr=PIPE)
 
             print(f"Output:\n{sub.stdout}\nErr:\n{sub.stderr}\nReturnCode: {sub.returncode}")
-        else:
-            sub = subprocess.run([
+        else: 
+            print("début simulation")
+            proc = subprocess.Popen([
                 "..\\src\\algo\\cmake\\algo.exe",
                 "..\\data\\communication\\parametreAlgo.json",
                 "..\\data\\maps\\map.json",
                 "..\\data\\communication\\resultatSimulation.json"
-            ], 
-            shell=True, stdout=PIPE, stderr=PIPE)
-
-            print(f"Output:\n{sub.stdout}\nErr:\n{sub.stderr}\nReturnCode: {sub.returncode}")
-
-        # recuperer le resultat de simulation
+            ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+            while proc.poll() is None:
+                line = proc.stdout.readline()
+                output = line.decode('utf-8').strip()
+                if(output.isnumeric()):
+                    self.santo_view_.progressbar_.setValue(int(output))
+                if(output.startswith("temps")):
+                    print(output)
         resultatSimulation = []
         with open(b"..\\data\\communication\\resultatSimulation.json", 'r', encoding='utf-8') as f:
             resultatSimulation = json.load(f)
             if resultatSimulation!=None:
-                # print(resultatSimulation)
-
-                # renvoyer le resultat au santoline_view
                 for l in resultatSimulation:
                     liste=[]
                     for p in l:
                         qp = QgsPointXY(p[0], p[1])
                         liste.append(qp)
-                        # self.canvasModel_.propagation_.append(qp)
-
                     self.canvasModel_.propagation_.append(liste)
-                # with open(b"..\\data\\communication\\resultatSimulation2.json", 'r', encoding='utf-8') as k:
-                #     resultatSimulation = json.load(k)
-                #     if resultatSimulation != None:
-                #         for l in resultatSimulation:
-                #             liste = []
-                #             for p in l:
-                #                 qp = QgsPointXY(p[0], p[1])
-                #                 liste.append(qp)
-                #             self.canvasModel_.propagation2_.append(liste)
-                print("\nSimulation terminee \n")
-                #☺self.santo_view_.propagationLayer_ = self.santo_view_.propagationLayerInit(self.canvasModel_.propagation_,[255,0,0],[0,0,255])
                 self.santo_view_.propagationLayer_ = self.santo_view_.propagationLayerInit2(self.canvasModel_.propagation_,"255,0,0,255")
-                #En inversant les deux lignes (commenter l'une decommenter l'autre) on peut passer du mode lisse ou du mode point
                 self.santo_view_.propagationLayer_.updateExtents()
-                # self.santo_view_.propagationLayer2_ = self.santo_view_.propagationLayerInitLine(self.canvasModel_.propagation2_)
-                # print("Propagation: "+str(len(self.canvasModel_.propagation_)))
-                # self.santo_view_.propagationLayer2_.updateExtents()
                 self.santo_view_.layers.insert(0, (self.santo_view_.propagationLayer_))
-                # self.santo_view_.layers.insert(0, (self.santo_view_.propagationLayer2_))
-                # self.santo_view_.propagationLayer2_.triggerRepaint()
-                # self.santo_view_.propagationLayer2_.reload()
                 self.santo_view_.propagationLayer_.triggerRepaint()
                 self.santo_view_.propagationLayer_.reload()
                 self.santo_view_.canvas_.setLayers(self.santo_view_.layers)
                 self.santo_view_.canvas_.refresh()
                 self.santo_view_.update(self.canvasModel_)
-                if self.algorithmModel_.algorithm_ == "double":
-                    with open(b"..\\data\\communication\\resultatSimulation.json", 'r', encoding='utf-8') as k:
-                        resultatSimulation = json.load(k)
-                        if resultatSimulation != None:
-                            for l in resultatSimulation:
-                                liste = []
-                                for p in l:
-                                    qp = QgsPointXY(p[0], p[1])
-                                    liste.append(qp)
-                                self.canvasModel_.propagation2_.append(liste)
-                            print("\nSimulation terminee \n")
-                            self.santo_view_.propagationLayer2_ =self.santo_view_.propagationLayerInit2(self.canvasModel_.propagation2_,'0,0,255,255')
-                            self.santo_view_.propagationLayer2_.updateExtents()
-                            self.santo_view_.layers.insert(0, (self.santo_view_.propagationLayer2_))
-                            self.santo_view_.propagationLayer2_.triggerRepaint()
-                            self.santo_view_.propagationLayer2_.reload()
-                            self.santo_view_.canvas_.setLayers(self.santo_view_.layers)
-                            self.santo_view_.canvas_.refresh()
-                            self.santo_view_.update(self.canvasModel_)
-                else:
-                    print("self.algorithmModel_.algorithm_ est differentde double")
             else:
-                print("Simulation echouee")
+                self.santo_view_.controller_.showPopup("Simulation échouée", "Erreur")
+        self.santo_view_.progressbar_.setValue(0)
         
     def close(self):
         self.view_.hide()

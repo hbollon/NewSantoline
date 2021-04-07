@@ -648,8 +648,6 @@ class Santoline(QMainWindow, observable.Observer):
             params= json.load(g)
         largeur=params['dimension'][1]
         hauteur=params['dimension'][0]
-        print(f"largeur/25: {largeur/25}, hauteur/25: {hauteur/25}")
-
         windMatrix = self.matrixInit(int(largeur/25) + 1, int(hauteur/25) + 1)
         if largeur>0:
             with open(path, 'r') as f:
@@ -1019,61 +1017,71 @@ class Santoline(QMainWindow, observable.Observer):
                 self.obstacle_marker.setPenWidth(2)
                 self.obstacle_marker.updatePosition()
 
-    ###---Procedures de chargement du fond de carte---###
 
+    # function to change department
     def change(self, departement):
         datas = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '../../..', "data/altimetrics/departements", departement))
-        ext = ".jp2"
-        self.thread_ = MapLoader(self, datas, ext)
+        self.thread_ = MapLoader(datas)
         self.thread_.end.connect(self.finish)
         self.thread_.progress.connect(self.progress)
         self.thread_.start()
-        
+
+    # function call when the MapLoader is finish
     def finish(self, layers):
-        self.layers = layers
-        self.canvas_.setExtent(layers[1].extent())
-        self.canvas_.setLayers(layers)
-        self.canvas_.refresh()
-        self.progress(0)
+        # check if the array of layers is empty (=if fail in MapLoader)
+        if len(layers) != 0:
+            self.layers = layers
+            self.canvas_.setExtent(layers[1].extent())
+            self.canvas_.setLayers(layers)
+            self.canvas_.refresh()
+            #reset the progressBar to 0
+            self.progress(0)
+        else: 
+            self.controller_.showPopup("Impossible de charger la carte", "Erreur")
         
     def progress(self, percent):
         self.progressbar_.setValue(percent)
 
-    #Classe responsable du chargemnt de la carte
+# class to load the map
 class MapLoader(QThread):
     end = pyqtSignal(list)
     progress = pyqtSignal(int)
 
-    def __init__(self, santoline_view, datas, ext):
+    def __init__(self, datas):
         QThread.__init__(self)
-        print(santoline_view)
         self.datas_ = datas
-        self.ext_ = ext
         
     def __del__(self):
         self.wait()
         
     def run(self):
         # get list of all files which finish with .ext into datas folder 
-        list = useful.allFiles(self.datas_, self.ext_)
-        # check if list of files is not empty
-        if (len(list) == 0 ):
-            return
-            
-        layers = []
-        def runner():
-            try:
-                while (len(list) > 0):
-                    i = list.pop()
-                    layer = QgsRasterLayer(i, i)
-                    if (not layer.isValid()):
-                        raise IOError("Fail to open the layer {}".format(i))
-                    layers.append(layer)
-                    self.progress.emit(100 - int((len(list) / len(list)) * 100.))
-            except IndexError: # catch if we pop an empty list.
-                pass
-                
-        threads = [threading.Thread(target=runner) for i in range(useful.thread_quantity() - 1)]
-        for thread in threads: thread.start()
-        for thread in threads: thread.join()
-        self.end.emit(layers)
+        list = useful.allFiles(self.datas_, ".jp2")
+        if (len(list) == 0):
+            # if list of files is empty, finish the thread
+            # pass empty array to end fonction to say that there is an error
+            self.end.emit([])
+        else:
+            layers = []
+            total_len = len(list)
+            #function which will be called by the threads
+            def runner():
+                try:
+                    while (len(list) > 0):
+                        i = list.pop()
+                        layer = QgsRasterLayer(i, i)
+                        if (not layer.isValid()):
+                            raise IOError("Fail to open the layer {}".format(i))
+                        layers.append(layer)
+                        #set the progressBar value
+                        self.progress.emit(100 - int((len(list) / total_len) * 100))
+                except IndexError: # catch if we pop an empty list.
+                    pass
+            #create array of threads
+            #array lenght is the number of cpu core
+            threads = [threading.Thread(target=runner) for i in range(useful.thread_quantity() - 1)]
+            #start the thread
+            for thread in threads: thread.start()
+            for thread in threads: thread.join()
+            #all the threads are finished, pass array of layer to end function
+            self.end.emit(layers)
