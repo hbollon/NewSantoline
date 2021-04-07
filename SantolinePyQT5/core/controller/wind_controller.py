@@ -52,9 +52,9 @@ class WindController(controller.AController):
             print("Aucun .tif trouvé, impossible de générer la carte des vents")
             self.close()
             return
-
         filename = "..\\src\\Epilobe\\params.json"
         connector.write(filename, json.dumps(self.windModel_.jsonify(departementTifPath)))
+        
         parser_commande = "..\\src\\Epilobe\\cmake\\Epilobe.exe " \
                           + "..\\paths.json " \
                           + "..\\src\\Epilobe\\params.json " \
@@ -62,9 +62,13 @@ class WindController(controller.AController):
                           + str((self.windModel_.direction_ + 180.)%360.) \
                           + " " \
                           + str(round(self.windModel_.speed_, 1))
-        sub = subprocess.run(parser_commande, 
-            shell=True, stdout=PIPE, stderr=PIPE)
-        print(f"Output:\n{sub.stdout}\nErr:\n{sub.stderr}\nReturnCode: {sub.returncode}")
+        proc = subprocess.Popen(parser_commande, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        while proc.poll() is None:
+            line = proc.stdout.readline()
+            output = line.decode('utf-8').strip()
+            if "Run 0 (solver)" in output:
+                number = ''.join([n for n in output if n.isdigit()])
+                self.santoline_view_.progressbar_.setValue(int(number[1:]))
 
         if os.path.isfile("..\\data\\maps\\map.json"):
             print("Carte des vents générée")
@@ -87,6 +91,8 @@ class WindController(controller.AController):
             self.santoline_view_.canvas_.refresh()
             for p in Path("\\data").glob("subzone*"):
                 p.unlink()
+            self.santoline_view_.afficheCanvasVents()
+            self.santoline_view_.progressbar_.setValue(0)
         else:
             print("Carte des vents non générée")
             self.santoline_view_.controller_.showPopup("Carte des vents non générée", "Erreur")
