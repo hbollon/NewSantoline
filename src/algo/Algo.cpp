@@ -411,8 +411,6 @@ vector<vector<Point3D>> Algo::propagation(ListeBurningPoint &burningPointInitiau
         updateVicinity(&betterVicinity, burning, listeObstacles, it->second, segment_size);
     }
 
-    int last = 0;
-
     //contour stock des tableaux de points qui corespondent chacun a un contour de feu
     // (il est possible qu'il y ai un ou plusieur contour comme l'utilisateur le desire
     // si il y en a plusieurs, il s'agit de contours intermediaires calcules a intervalle regulier)
@@ -430,6 +428,7 @@ vector<vector<Point3D>> Algo::propagation(ListeBurningPoint &burningPointInitiau
     //on l'initialise avec la valeur intervalle qui est un attribut de la classe Algo
     //celle-ci est recuperee dans le fichier parametreAlgo.json au moment de l'instanciation de de Algo
     int durationInte = intervalle;
+    int lastProgressValue = 0;
 
     //Tant que le prochain point a mettre en feu a une date d'ignition inferieur a la duree de la simulation on parcours la vicinity
     while (pointAMettreEnFeu.second.second.z() < duration)
@@ -457,11 +456,12 @@ vector<vector<Point3D>> Algo::propagation(ListeBurningPoint &burningPointInitiau
         Point3D a = pointAMettreEnFeu.second.second;
         Point2D a0 = Point2D(pointAMettreEnFeu.second.first.x(), pointAMettreEnFeu.second.first.y());
         Point2D a1 = Point2D(a.x(), a.y());
-        if ((int)a.z() % 10 == 0)
-            std::cout << int(round(a.z() / duration * 100)) << endl;
-        if (floor(a.z()) != last)
-        {
-            last = floor(a.z());
+        if ((int)a.z() % 10 == 0){
+            int progressValue = int(round(a.z() / duration * 100));
+            if(progressValue > lastProgressValue){
+                lastProgressValue = progressValue;
+                std::cout << progressValue << endl;
+            }
         }
         bool intersection = false;
 
@@ -497,15 +497,6 @@ vector<vector<Point3D>> Algo::propagation(ListeBurningPoint &burningPointInitiau
     //Enfin on ajoute le dernier contour
     vector<Point3D> finalContour = get_contour(betterVicinity, listeObstacles, duration);
     finalContour.insert(finalContour.end(), intersectionObstacle.begin(), intersectionObstacle.end());
-
-    //    finalContour.insert(finalContour.begin(),contourCourant.begin(),contourCourant.end());
-    //    vector<Point3D> burn;
-    //    for (auto &p : burning){
-    //        burn.push_back(p.second);
-    //
-    //    }
-    //    contour.push_back(burn);
-
     for (auto &p : contourCourant)
     {
         finalContour.push_back(p);
@@ -531,25 +522,13 @@ vector<vector<Point3D>> Algo::propagation(ListeBurningPoint &burningPointInitiau
         for (const auto &it : it2)
         {
 
-            temp.push_back(it.toTuple()); //[x,y,z] (z=date d'ignition)
+            temp.push_back(it.toTuple());
         }
 
         result.push_back(temp);
     }
-    //    json temp;
-    //    for (const auto &it: finalContour) {
-    //        temp.push_back(it.toTuple());
-    //    }
-    //    result.push_back(temp);
-    //result.push_back(burn);
 
-    //string adress = "C:\\Users\\Skaldr\\Desktop\\NewSantoline\\data\\communication\\resultatSimulation2.json";
-    // std::ofstream outputResultatSimulation2(adress);
-    //    outputResultatSimulation2 << std::setw(4) << result << std::endl;
-    // cout << "simulation done, " << adress << " filled!" << endl;
-    //######################################################################################################################
     contour.push_back(makeConvexHull(finalContour));
-    //    contour.push_back(burn);
     return contour;
 }
 
