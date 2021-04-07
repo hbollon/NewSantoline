@@ -3,7 +3,6 @@ from qgis.PyQt.QtCore import QTime
 class AlgorithmModel(model.AModel):
     def __init__(self, controller):
         super().__init__(controller)
-        self.algorithm_ = "2"
         self.heure_ = 0
         self.minute_ = 0
         self.heureIntervalle_ = 0
@@ -13,10 +12,8 @@ class AlgorithmModel(model.AModel):
         self.process_ = 0
         self.dimension_ = 25
         self.nbDivisionCellule_ = 25
+        self.algorithm_choice_ = "2"
         
-    def algorithm(self, algorithm):
-        self.algorithm_ = algorithm
-        self.notifyObservers()
         
     def heure(self, heure):
         self.heure_ = heure
@@ -53,6 +50,12 @@ class AlgorithmModel(model.AModel):
     def nbDivisionCellule(self, nbDivisionCellule):
         self.nbDivisionCellule_ = nbDivisionCellule
         self.notifyObservers()
+
+    def algorithme_choice_button_2_clicked(self, value):
+        self.algorithm_choice_ = "2"
+
+    def algorithme_choice_button_3_clicked(self, value):
+        self.algorithm_choice_ = "3"
         
     def jsonify(self):
         duree = self.duree_.hour() + self.duree_.minute() / 60.
@@ -65,7 +68,7 @@ class AlgorithmModel(model.AModel):
                     "duration" : round(duree,1),
                     "intervalle": self.heureIntervalle_,
                     "nbProcess" : round(self.process_,1),
-                    "algorithm" : self.algorithm_,
+                    "algorithm" : self.algorithm_choice_,
                     "dimension" : round(25.0,1)
                 }
             }

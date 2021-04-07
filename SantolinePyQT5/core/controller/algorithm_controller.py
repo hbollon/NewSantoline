@@ -43,6 +43,13 @@ class AlgorithmController(controller.AController):
 
     def process(self, process):
         self.algorithmModel_.process(process)
+    
+    def algorithme_choice_button_2_clicked(self, value):
+        self.algorithmModel_.algorithme_choice_button_2_clicked(value)
+        
+    def algorithme_choice_button_3_clicked(self, value):
+        self.algorithmModel_.algorithme_choice_button_3_clicked(value)
+
         
     def accept(self):
         with open(b"..\\data\\reglage.json", 'r', encoding='utf-8') as f:
@@ -61,7 +68,7 @@ class AlgorithmController(controller.AController):
         hauteur=params['dimension'][0]
 
         with open('..\\data\\communication\\parametreAlgo.json', 'w') as outfile:
-            json.dump({"algorithm": self.algorithmModel_.algorithm_,
+            json.dump({"algorithm": self.algorithmModel_.algorithm_choice_,
                         "waterReserve": self.algorithmModel_.waterReserve_,
                         "duree":duree,
                        "intervalle":intervalle,
@@ -82,7 +89,7 @@ class AlgorithmController(controller.AController):
         self.close()
         # lancer le programme algo avec les parametre algo et la carte de vent et la sortie est le resultat  de simulation
 
-        if self.algorithmModel_.algorithm_=="3":
+        if self.algorithmModel_.algorithm_choice_=="3":
             sub = subprocess.run([
                 "..\\Algo3\\cmake\\Algo3.exe",
                 "..\\data\\communication\\parametreAlgo.json",
@@ -96,22 +103,21 @@ class AlgorithmController(controller.AController):
             shell=True, stdout=PIPE, stderr=PIPE)
 
             print(f"Output:\n{sub.stdout}\nErr:\n{sub.stderr}\nReturnCode: {sub.returncode}")
-        else:
-            sub = subprocess.Popen([
+        else: 
+            print("début simulation")
+            proc = subprocess.Popen([
                 "..\\src\\algo\\cmake\\algo.exe",
                 "..\\data\\communication\\parametreAlgo.json",
                 "..\\data\\maps\\map.json",
                 "..\\data\\communication\\resultatSimulation.json"
-            ], 
-            stdout=subprocess.PIPE,bufsize=1)
-            lines_iterator = iter(sub.stdout.readline, b"")
-            while sub.poll() is None:
-                for line in lines_iterator:
-                    nline = line.rstrip().decode("latin")
-                    if nline.isnumeric():
-                        print(nline)
-                        self.santo_view_.progressbar_.setValue(int(nline))
-            self.santo_view_.progressbar_.setValue(100)
+            ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+            while proc.poll() is None:
+                line = proc.stdout.readline()
+                output = line.decode('utf-8').strip()
+                if(output.isnumeric()):
+                    self.santo_view_.progressbar_.setValue(int(output))
+                if(output.startswith("temps")):
+                    print(output)
         resultatSimulation = []
         with open(b"..\\data\\communication\\resultatSimulation.json", 'r', encoding='utf-8') as f:
             resultatSimulation = json.load(f)
