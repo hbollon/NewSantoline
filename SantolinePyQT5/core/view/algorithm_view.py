@@ -32,8 +32,6 @@ class ParameterWindow(input_popup_view.InputPopup):
         
         algorithme = QWidget(self)
 
-
-
         algorithme_choice_layout = QHBoxLayout(algorithme)
         algorithme_choice_label = QLabel("Algorithme : ", algorithme)
         algorithme_choice_button_2 = QRadioButton('2')

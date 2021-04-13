@@ -52,6 +52,7 @@ class AlgorithmController(controller.AController):
 
         
     def accept(self):
+        self.santo_view_.controller_.switchContent(False)
         with open(b"..\\data\\reglage.json", 'r', encoding='utf-8') as f:
             reglage = json.load(f)
         if self.santo_view_.propagationLayer_ in self.santo_view_.layers:
@@ -139,6 +140,7 @@ class AlgorithmController(controller.AController):
             else:
                 self.santo_view_.controller_.showPopup("Simulation échouée", "Erreur")
         self.santo_view_.progressbar_.setValue(0)
+        self.santo_view_.controller_.switchContent(True)
         
     def close(self):
         self.view_.hide()
