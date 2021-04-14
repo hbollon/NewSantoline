@@ -32,7 +32,7 @@ private:
     string aPropager;/*ListAux(4)*/
     std::vector<Choc> listeChoc;/*listaux(5)*/
 
-    map<string,CoinCase> listeCoins;/*LIstaux(7)*/
+    map<string,CoinCase> listeCoins;/*Listaux(7)*/
 
     int kmax = 20;
     int compteurId =0;

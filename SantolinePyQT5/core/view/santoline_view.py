@@ -92,6 +92,11 @@ class Santoline(QMainWindow, observable.Observer):
         self.layers = []
         self.windmapdisplayed = False
 
+        self.departement = None
+        self.actionPan = None
+        self.actionZoomIn = None
+        self.actionZoomOut = None
+
         self.initUI()
         
 
@@ -113,7 +118,6 @@ class Santoline(QMainWindow, observable.Observer):
         self.addToolBarBreak()
         self.left_toolbar_ = self.addToolBar("Left tool bar")
 
-
         self.left_toolbar_.setMovable(False)
         self.left_toolbar_.setFloatable(False)
         self.addToolBar(QtCore.Qt.LeftToolBarArea,self.left_toolbar_)  # On positionne la toolbar à gauche
@@ -130,12 +134,12 @@ class Santoline(QMainWindow, observable.Observer):
         self.popup_window_ = popup_view.Popup_Window()
         
         # Ribbon bar Departement / Barre ruban Département
-        departement = QToolButton(self.secondToolbar_)
-        departement.setCheckable(False)
-        departement.setAutoExclusive(True)
-        departement.setText("Departements")
-        self.secondToolbar_.addWidget(departement)
-        departement.clicked.connect(self.controller_.departements_choices)
+        self.departement = QToolButton(self.secondToolbar_)
+        self.departement.setText("Departements")
+        self.departement.setCheckable(False)
+        self.departement.setAutoExclusive(True)
+        self.departement.clicked.connect(self.controller_.departements_choices)
+        self.secondToolbar_.addWidget(self.departement)
 
         # Interface body / Corps de l'interface
         self.canvas_ = QgsMapCanvas(self)
@@ -151,20 +155,19 @@ class Santoline(QMainWindow, observable.Observer):
         toolZoomOut = QgsMapToolZoom(self.canvas_, True)
         toolEdit = QgsMapToolEmitPoint(self.canvas_)
         
-        actionPan = QAction(QIcon("icons\\hand.png"), "Naviguer", self)
-        actionPan.setCheckable(True)
-        toolPan.setAction(actionPan)
-        actionPan.triggered.connect(lambda : self.canvas_.setMapTool(toolPan))
+        self.actionPan = QAction(QIcon("icons\\hand.png"), "Naviguer", self)
+        self.actionPan.setCheckable(True)
+        toolPan.setAction(self.actionPan)
+        self.actionPan.triggered.connect(lambda : self.canvas_.setMapTool(toolPan))
         
-        actionZoomIn = QAction(QIcon("icons\\zoom_in.png"), "Zoom avant", self)
-        actionZoomIn.setCheckable(False)
-        actionZoomIn.triggered.connect(self.zoomAvant )
+        self.actionZoomIn = QAction(QIcon("icons\\zoom_in.png"), "Zoom avant", self)
+        self.actionZoomIn.setCheckable(False)
+        self.actionZoomIn.triggered.connect(self.zoomAvant)
 
-        actionZoomOut = QAction(QIcon("icons\\zoom_out.png"), "Zoom arriere", self)
-        actionZoomOut.setCheckable(False)
-        toolZoomOut.setAction(actionZoomOut)
-        actionZoomOut.triggered.connect(self.zoomArriere )
-
+        self.actionZoomOut = QAction(QIcon("icons\\zoom_out.png"), "Zoom arriere", self)
+        self.actionZoomOut.setCheckable(False)
+        toolZoomOut.setAction(self.actionZoomOut)
+        self.actionZoomOut.triggered.connect(self.zoomArriere)
 
         # Simulation
         self.simulation = QToolButton(self.secondToolbar_)
@@ -192,9 +195,9 @@ class Santoline(QMainWindow, observable.Observer):
         self.actionCancelContour.triggered.connect(self.controller_.clearPointContour)
         self.actionCancelContour.setVisible(False)
 
-        self.firstToolbar_.addAction(actionPan)
-        self.firstToolbar_.addAction(actionZoomIn)
-        self.firstToolbar_.addAction(actionZoomOut)
+        self.firstToolbar_.addAction(self.actionPan)
+        self.firstToolbar_.addAction(self.actionZoomIn)
+        self.firstToolbar_.addAction(self.actionZoomOut)
         self.left_toolbar_.addAction(self.simuler)
         self.left_toolbar_.addAction(self.actionEmitPoint)
         self.left_toolbar_.addAction(self.actionCancelContour)

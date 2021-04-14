@@ -1,6 +1,3 @@
-//
-// Created by Skaldr on 7/11/2019.
-//
 #include "json.hpp"
 using json = nlohmann::json;
 #include <algorithm>
@@ -9,8 +6,6 @@ using json = nlohmann::json;
 #include "AlgoOpt.hpp"
 #include "EllipseOpt.hpp"
 using namespace std;
-
-char NUM_DELIMITER = '_';
 
 /*********************************************************************************************
  *                              Fonctions principales                                        *
@@ -25,15 +20,14 @@ vector<Point3D> AlgoOpt::propagation(vector<Point2D> listE, json cartevent, json
     json infos_json = nullptr;
     double tempsPropagation = timeToDouble(parametreAlgo["duree"]);
 
-    int compt;
-
 /*********************************************************************************************
  *                              ZONE DE "POINT DE COLLE"                                     *
  *********************************************************************************************/
     initialiserEllipse(cartevent, sortie, parametreAlgo["largeur"], parametreAlgo["hauteur"], parametreAlgo["waterReserve"], parametreAlgo["temperature"]);
 
+    //Si la saisie du contour initial est fait dans le sens horaire
     if (saisieEstSensHoraire(listE)) {
-        cout << "Sens horaire !" << endl;
+        //On inverse la liste pour faire comme si c'etait rentré dans le sens contraire de l'horaire
         listE = inverseSensList(listE);
     }
     for (auto &i : listE) {
@@ -48,11 +42,8 @@ vector<Point3D> AlgoOpt::propagation(vector<Point2D> listE, json cartevent, json
  *********************************************************************************************/
     initListff(listE);
 
-    compt = 0;
+    int compt = 0;
     vector<Point3D> r;
-    cout << "############################################################################" << endl;
-    cout << "temps propagation ===> " << tempsPropagation << " secondes." << endl;
-    cout << "############################################################################" << endl;
 
     int nmax = listff.size();
     int nmaxnewn;
@@ -85,13 +76,10 @@ vector<Point3D> AlgoOpt::propagation(vector<Point2D> listE, json cartevent, json
             actualiseCoin(to_string(k));
         }
         nmax = nmaxnew;
-
-
         compt++;
     }
 
     cout << "t : " <<listff.at(aPropager).t << "  temps : " << tempsPropagation / 3600.0 <<endl;
-
 
     int nb_points_parc = 1;
     double tempMin = listff.at(aPropager).t;
@@ -145,7 +133,6 @@ vector<Point3D> AlgoOpt::propagation(vector<Point2D> listE, json cartevent, json
                      << suivant.at(suivant.size() - 1)
                      << ", precedent : " << precedent.at((position + 1) % precedent.size()) << endl;
             }
-
         } else{
             {
                 if (id.at(position) != precedent.at((position + 1) % precedent.size()) ||
@@ -156,7 +143,6 @@ vector<Point3D> AlgoOpt::propagation(vector<Point2D> listE, json cartevent, json
                 }
             }
         }
-
 
     if(nb_points_parc>=listff.size()){
         cout<<"Erreur, nb_points_parc >= listff.size"<<endl;
@@ -172,15 +158,11 @@ vector<Point3D> AlgoOpt::propagation(vector<Point2D> listE, json cartevent, json
                                      {"nb_iterations", compt},
                                      {"nb_points", nb_points_parc}
                              });
-
         infos_algo << infos_json;
-        cout << "#######################################################" << endl;
         cout << "Les infos de l'algo ont ete sauvegardes." << endl;
     } else {
-        cout << "#######################################################" << endl;
         cout << "[ERROR] Les infos de l'algo n'ont pas pu etre sauvegardes." << endl;
     }
-
 
     return r;
 }
@@ -229,12 +211,9 @@ void AlgoOpt::uneIteration(string ind){
     }
     int indic2 = 0;
     if(affichage) cout <<"valeur de indic dans uneIteration : "<<indic << endl;
-    if(!indic)
-    {
+    if(!indic) {
         supprime(ind);
-    }
-    else
-    {
+    } else {
         indic2 = propage(ind, vits);
         if(affichage) cout <<"valeur de indic2 dans uneIteration : " << indic2 <<endl;
     }
@@ -249,7 +228,6 @@ void AlgoOpt::uneIteration(string ind){
         cout << endl;
         cout << endl;
     }
-
 }
 
 int AlgoOpt::propage(string ind, vector<vector<VitesseOpt>> vits){
@@ -307,7 +285,6 @@ int AlgoOpt::propage(string ind, vector<vector<VitesseOpt>> vits){
 
         mvt.addVitesse(vit);
 
-
         int indics = supprimerCroisement(mvt, ind);
         if(affichage) cout << "Valeur de indics apres supprimeCroisement : " << indics << endl;
 
@@ -315,7 +292,6 @@ int AlgoOpt::propage(string ind, vector<vector<VitesseOpt>> vits){
         if(affichage) cout << "resultat testBordure : " << test << endl;
 
         if (!test) {
-
             if (indics == 0 && compt == 1) {
                 insere(mvt, ind, false);
                 compt++;
@@ -330,7 +306,6 @@ int AlgoOpt::propage(string ind, vector<vector<VitesseOpt>> vits){
                 if (affichage) cout << "il y a un choc" << endl;
                 string  indc;
                 compteurId--;
-
                 if(compt == 1)
                 {
                     indc = ind;
@@ -344,8 +319,7 @@ int AlgoOpt::propage(string ind, vector<vector<VitesseOpt>> vits){
                 cout << "erreur 1 dans propage indic :" << indic << endl;
                 exit(EXIT_FAILURE);
             }
-        } else
-        {
+        }else{
             compteurId--;
             if(affichage) cout << "On est sur une Bordure brulee." << endl;
         }
@@ -358,12 +332,13 @@ void AlgoOpt::initialiserEllipse(json cartevent, ofstream& sortie, int largeur, 
     /*Initialise la carte des ellipses 3d pour toutes les cellules*/
     /*Les coordonnées d'une cellule correspondent au coin en bas à gauche d'une cellule*/
     json jsonVent = nullptr;
+    setXminYmin(cartevent);
 
     int largeurCarteEllipse = largeur/tailleCellule;
     int hauteurCarteEllipse = hauteur/tailleCellule;
     carteEllipse = vector<vector<EllipseOpt >> (largeurCarteEllipse);
 
-    for(long i = 0 ; i <  largeurCarteEllipse; i++){
+    for(int i=0; i<largeurCarteEllipse; i++){
         try
         {
             carteEllipse.at(i).resize(hauteurCarteEllipse);
@@ -374,18 +349,13 @@ void AlgoOpt::initialiserEllipse(json cartevent, ofstream& sortie, int largeur, 
             std::cout<< " i = "<<i<<std::endl;
         }
     }
-
-    setXminYmin(cartevent);
-
     for (const auto &it : cartevent) {
-
         double slope = it["slope"];
         double aspect = it["aspect"];
-
         json jSlopeVector = it["slope_vector"];
         Vector3D windSlope = Vector3D(it["windSlope"][0],it["windSlope"][1],it["windSlope"][2]);
         Point2D mapCoordinate = Point2D(it["x"], it["y"]);
-        Point2D index = coordinateToIndex(Point2D(mapCoordinate.x(), mapCoordinate.y()));
+        Point2D index = coordinateToIndex(mapCoordinate);
 
         float lb = 1 + 0.0012 * pow((2.237 * windSlope.norm()), 2.154);
         float epsilon = sqrt(1 - (1 / (lb*lb)));
@@ -415,13 +385,9 @@ void AlgoOpt::initialiserEllipse(json cartevent, ofstream& sortie, int largeur, 
 }
 
 void AlgoOpt::initListff(vector<Point2D> listPointE) {
-    if(affichage) cout << "debut initlistff "<< endl;
-
     listePointsDansCellule =  map<string,vector<string>>();
     vector<PointOpt> listDef;
-
     vector<Point2D> listPoint = raffine(listPointE,0.5);
-
     for(vector<Point2D>::const_iterator it = listPoint.begin(); it != listPoint.end(); ++it){
 
         Point2D pTemp = Point2D(it->x(), it->y());
@@ -437,7 +403,6 @@ void AlgoOpt::initListff(vector<Point2D> listPointE) {
         p.ancetre = p.getId();
         listDef.push_back(p);
     }
-
 
     for(int i =1; i<listDef.size();i++){
         listDef.at(i).precedent = listDef.at(i - 1).getId();
@@ -512,8 +477,6 @@ void AlgoOpt::initListff(vector<Point2D> listPointE) {
         initialiserCoinContourDepart(listff.at(listff.at(ind).ancetre));
         ind = listff.at(ind).suivant;
     }initialiserCoinContourDepart(listff.at(listff.at(ind0).ancetre));
-
-
 }
 
 bool AlgoOpt::chocDansCellule(PointOpt mvt, string ind)
@@ -640,27 +603,34 @@ bool AlgoOpt::chocDansCellule(PointOpt mvt, string ind)
     if(affichage)cout << "On sort de chocDansCellule, INDIC : "<<INDIC<<endl;
 
     return INDIC;
-
 }
 
 /*********************************************************************************************
  *                              Fonctions d'insertion de point                               *
  *********************************************************************************************/
-vector<Point2D> AlgoOpt::raffine(vector<Point2D> listPoint, double crit){
-    Point2D m = *listPoint.begin();
-    vector<Point2D> result;
-    listPoint.push_back(m);
-    for(vector<Point2D>::const_iterator it = listPoint.begin()+1; it != listPoint.end(); ++it){
-        Vector2D  vtemp =(*it)-m;
 
+//fonction qui renvoit une liste de point contour plus complete à partir des quelques points initiaux
+vector<Point2D> AlgoOpt::raffine(vector<Point2D> listPoint, double crit){
+    //On recupère le premier point posé par l'utilisateur et on le met dans m
+    Point2D m = *listPoint.begin();
+    //On créé une liste de points qui sera notre résultat
+    vector<Point2D> result;
+    //On copie le premier point dans la dernière case du vector
+    listPoint.push_back(m);
+    //On parcours la liste de point sans passer par le premier
+    for(vector<Point2D>::const_iterator it = listPoint.begin()+1; it != listPoint.end(); ++it){
+        //On créé un vecteur temporaire
+        Vector2D vtemp =(*it)-m;
+        //on calcule la norme (distance) du vecteur temporaire
         double dist = vtemp.norm();
         if(dist > seuil){/*Attention val abs*/
             double test = floor((dist)/crit);
             for(int j = 1;j<test+1;j++){
                 Point2D mk = m+(j-1)*Vector2D(*it-m)/(test+1);
                 Point2D mki = Point2D(round(mk.x()),round(mk.y()));
-                /*On ne veut pas tomber pile sur un cote d'une case */
-                if(((mk.x()-mki.x()) * (mk.y()-mki.y()))==0){/*Si on tombe sur une ligne on decale d'un centieme*/
+                //On ne veut pas tomber pile sur un cote d'une case
+                //Si on tombe sur une ligne on decale d'un centieme
+                if(((mk.x()-mki.x()) * (mk.y()-mki.y()))==0){
                     mk=mk+ 0.01*Vector2D(Vector2D(*it-m)/(test+1));
                 }
                 result.push_back(mk);
@@ -739,7 +709,6 @@ pair<Point3D, Vector2D> AlgoOpt::mnplusun(Point3D point, VitesseOpt vitesse){
 
     if(affichage) cout << "Fin de mnplusun"<<endl;
     return(std::make_pair(pointRetour,vectorRetour));
-
 }
 
 void AlgoOpt::insere(PointOpt point, string ind, bool indic){
@@ -806,8 +775,6 @@ void AlgoOpt::insere(PointOpt point, string ind, bool indic){
     }
     listePointsActifs.insert(make_pair(to_string(nmax),point.t));
 
-
-
     //!!! Les instructions suivantes ont un gros besoin d'optimisation
     string minInd = listePointsActifs.begin()->first;
     for(auto &it:listePointsActifs){
@@ -820,11 +787,8 @@ void AlgoOpt::insere(PointOpt point, string ind, bool indic){
         cout << "ind: " << ind << " nouveau point " << listff.at(to_string(listff.size() - 1)).getId() << " suivant "
              << listff.at(listff.at(to_string(listff.size() - 1)).suivant).getId() << " precedent "
              << listff.at(listff.at(to_string(listff.size() - 1)).precedent).getId() << endl;
-
-
         cout << "Fin de insere" << endl;
     }
-
 }
 
 void AlgoOpt::rajoutePoints(string indice) {
@@ -832,7 +796,6 @@ void AlgoOpt::rajoutePoints(string indice) {
     rajoutePoint(indice);
     string indp = mt.precedent;
     rajoutePoint(indp);
-
 }
 
 void AlgoOpt::rajoutePoint(string indice)
@@ -862,13 +825,11 @@ void AlgoOpt::rajoutePoint(string indice)
 
         Vector2D dm;
         Point2D mm;
-        if(ts >= t)
-        {
+        if(ts >= t) {
             ms = ms + (t - ts)*vs;
             dm = ms - m;
             mm = m;
-        } else
-        {
+        } else {
             mm = m +(ts-t)*v;
             ms = mts.coordonne;
             dm = ms - mm;
@@ -876,11 +837,9 @@ void AlgoOpt::rajoutePoint(string indice)
         double testS;
 
         Vector2D ijMoinsijs = ij - ijs;
-        if(ijMoinsijs.norm() != 0)
-        {
+        if(ijMoinsijs.norm() != 0) {
             testS = dm.norm();
-        } else
-        {
+        } else {
             testS = (abs(v.determinant(dm)) / v.norm()) + (abs(vs.determinant(dm)) / vs.norm());
         }
         if(testS >= crit)
@@ -1417,7 +1376,6 @@ vector<vector<VitesseOpt>> AlgoOpt::vitesseRajoutes(Point2D ij, Vector2D v0, Vec
     double KMAX = floor((thetaf-theta0)*kmax/(2*M_PI))+1;
 
     for (double k = 0.0; k <= KMAX; k += 1.0){
-
         listheta.push_back(theta0 + (thetaf - theta0) * k/KMAX);
     }
 
@@ -1425,7 +1383,6 @@ vector<vector<VitesseOpt>> AlgoOpt::vitesseRajoutes(Point2D ij, Vector2D v0, Vec
 
     listhetab.reserve(listheta.size());
     for (double & it : listheta){
-
         listhetab.push_back( round(100000 * it) );
     }
 
@@ -1436,10 +1393,8 @@ vector<vector<VitesseOpt>> AlgoOpt::vitesseRajoutes(Point2D ij, Vector2D v0, Vec
     std::vector<double>::iterator it_theta = listheta.begin();
     vector<vector<VitesseOpt>> listvn;
     for (int k = 0; k < listhetab.size(); k += 1){
-
         double t = listhetab.at(k)/100000;
         if(t <= thetaf){
-
             double v1 = -e.coordonne().x() + e.a()*cos(t)*e.vecteur().x() - e.b()*sin(t)*e.vecteur().y();
             double v2 = -e.coordonne().y() + e.a()*cos(t)*e.vecteur().y() + e.b()*sin(t)*e.vecteur().x();
             double v3 = -e.a() * sin(t) * e.vecteur().x() - e.b()*cos(t)*e.vecteur().y();
@@ -1828,8 +1783,7 @@ void AlgoOpt::actualiseCoin(string ind)
             }
 
         }
-    } else
-    {
+    } else {
         vector<Point2D> listDIJ;/*Liste des coordonnees*/
         listDIJ.emplace_back(Point2D(0,0));
         listDIJ.emplace_back(Point2D(1,0));
@@ -1912,29 +1866,23 @@ bool AlgoOpt::saisieEstSensHoraire(vector<Point2D> listE)
     int taille = listE.size();
     Vector2D Op;
     Vector2D ukp1;
-
-    for(int i = 0;i < taille;i++)
+    for(int i=0; i<taille; i++)
     {
         Op = Vector2D(listE.at(i).x(),listE.at(i).y());
         ukp1 = Vector2D(listE.at((i+1)%taille).x()-listE.at((i)%taille).x(),listE.at((i+1)%taille).y()-listE.at((i)%taille).y());
         somme += Op.determinant(ukp1);
-
     }
     return somme < 0;
-
-
 }
 
 vector<Point2D> AlgoOpt::inverseSensList(vector<Point2D> listE)
 {
     vector<Point2D> listTemp;
-
     for(int i = listE.size()-1;i>=0;i--)
     {
         listTemp.push_back(listE.at(i));
     }
     return listTemp;
-
 }
 
 Point2D AlgoOpt::coordinateToIndex(const Point2D &p) {
@@ -1949,22 +1897,17 @@ Point2D AlgoOpt::indextoCoordinate(const Point2D &p) const {
     return {tailleCellule*p.x() + xmin, tailleCellule*p.y() + ymin};
 }
 
-void AlgoOpt::setXminYmin(json carteVent)
-{
+// set the smallest x and y value of carteVent to xmin and ymin
+void AlgoOpt::setXminYmin(json carteVent) {
     double xmintemp = -1;
     double ymintemp = -1;
-
+    //iterate carteVent to find the smallest x and y value
     for (const auto &it : carteVent) {
-
-        double tempx  = it["x"];
-        double tempy  = it["y"];
-        if (tempx < xmintemp || xmintemp == -1)
-            xmintemp = tempx;
-        if (tempy < ymintemp || ymintemp == -1)
-            ymintemp = tempy;
+        if (it["x"] < xmintemp || xmintemp == -1)
+            xmintemp = it["x"];
+        if (it["y"] < ymintemp || ymintemp == -1)
+            ymintemp = it["y"];
     }
-
-
     xmin = xmintemp;
     ymin = ymintemp;
 }
@@ -1972,7 +1915,6 @@ void AlgoOpt::setXminYmin(json carteVent)
 string AlgoOpt::numero (Point2D ij){
     return to_string(ij.x())+"_"+to_string(ij.y());
 }
-
 
 /*********************************************************************************************
  *                              Fonctions pour l'application de test                         *
@@ -2065,7 +2007,7 @@ pair<double, double> AlgoOpt::numToCoordinate(const string& num) const {
     string buffer;
     double x, y;
     for(char it : num) {
-        if (it == NUM_DELIMITER) {
+        if (it == '_') {
             x = stod(buffer);
             buffer = "";
         } else {
@@ -2144,5 +2086,4 @@ void AlgoOpt::triDesChocs()
         }
         listeChoc.at(j) = element;
     }
-
 }

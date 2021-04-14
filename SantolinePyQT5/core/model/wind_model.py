@@ -58,9 +58,6 @@ class WindModel(model.AModel):
         widthfinal = widthtemp-(widthtemp%50)+50
         heightfinal = heighttemp-(heighttemp%50)+50
         origin = (self.direction_ + 180.)%360.
-        print("\n h:"+str(heightfinal)+" w:"+str(widthfinal)+"\n")
-        print("\n east:"+str(self.east_)+" west:"+str(self.west_)+"\n")
-        print("\n north:"+str(self.north_)+" south:"+str(self.south_)+"\n")
 
         json = {
             #"type": "parametreepilobe",

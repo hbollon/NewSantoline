@@ -52,6 +52,7 @@ class AlgorithmController(controller.AController):
 
         
     def accept(self):
+        self.santo_view_.controller_.switchContent(False)
         with open(b"..\\data\\reglage.json", 'r', encoding='utf-8') as f:
             reglage = json.load(f)
         if self.santo_view_.propagationLayer_ in self.santo_view_.layers:
@@ -88,9 +89,10 @@ class AlgorithmController(controller.AController):
                        "listeObstacle": self.canvasModel_.obstacleJsonify()}, outfile)
         self.close()
         # lancer le programme algo avec les parametre algo et la carte de vent et la sortie est le resultat  de simulation
-
-        if self.algorithmModel_.algorithm_choice_=="3":
-            sub = subprocess.run([
+        algorithm_choice = self.algorithmModel_.algorithm_choice_
+        print("début simulation:", algorithm_choice)
+        if algorithm_choice == "3":
+            proc = subprocess.Popen([
                 "..\\Algo3\\cmake\\Algo3.exe",
                 "..\\data\\communication\\parametreAlgo.json",
                 "..\\data\\maps\\map.json",
@@ -99,12 +101,12 @@ class AlgorithmController(controller.AController):
                 "..\\data\\communication\\points.json",
                 "..\\data\\communication\\infos.json",
 				"..\\data\\communication\\listeSommets.json"
-            ], 
-            shell=True, stdout=PIPE, stderr=PIPE)
-
-            print(f"Output:\n{sub.stdout}\nErr:\n{sub.stderr}\nReturnCode: {sub.returncode}")
+            ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+            while proc.poll() is None:
+                line = proc.stdout.readline()
+                output = line.decode('utf-8').strip()
+                print(output)
         else: 
-            print("début simulation")
             proc = subprocess.Popen([
                 "..\\src\\algo\\cmake\\algo.exe",
                 "..\\data\\communication\\parametreAlgo.json",
@@ -139,6 +141,7 @@ class AlgorithmController(controller.AController):
             else:
                 self.santo_view_.controller_.showPopup("Simulation échouée", "Erreur")
         self.santo_view_.progressbar_.setValue(0)
+        self.santo_view_.controller_.switchContent(True)
         
     def close(self):
         self.view_.hide()

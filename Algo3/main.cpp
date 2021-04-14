@@ -29,9 +29,7 @@ int main(int argc, char* argv[]) {
     json parametreAlgo, carteVent;
 
     // On récupère les json spécifiés par argv[1] et argv[2]
-
     std::ifstream inputParametreAlgo(argv[1]),inputCarteVent(argv[2]);
-    //std::ifstream inputParametreAlgo(R"(c:\Users\dubos\Desktop\Projet\back\parametreAlgo.json)"),inputCarteVent(R"(c:\Users\dubos\Desktop\Projet\back\map.json)");
 
     inputParametreAlgo >> parametreAlgo;
     inputCarteVent >> carteVent;
@@ -45,16 +43,16 @@ int main(int argc, char* argv[]) {
         listPointE.emplace_back(Point2D(it));
     }
 
-    AlgoOpt a = AlgoOpt();
+    AlgoOpt algoOpt = AlgoOpt();
     //recuperation des jsons de sortie
     ofstream outputResultatSimulation(argv[3]);
     ofstream sortie(argv[4]);
     ofstream contour_final_detail(argv[5]);
     ofstream infos_algo(argv[6]);
     ofstream etat_final_liste_sommets(argv[7]);
-
+    
     //On lance l'algorithme avec la fonction propagation, ce qui ressort de cette fonction est la liste des points du contour final.
-    std::vector<Point3D> burned = a.propagation(listPointE,carteVent,parametreAlgo, sortie, infos_algo, etat_final_liste_sommets);
+    std::vector<Point3D> burned = algoOpt.propagation(listPointE,carteVent,parametreAlgo, sortie, infos_algo, etat_final_liste_sommets);
 
     json temp;
     /*On ajoute a un json les informations sur les points du contour final*/
@@ -69,7 +67,7 @@ int main(int argc, char* argv[]) {
     std::cout << "simulation done, " << argv[3] << " filled!" << std::endl;
 
     /*On sauvegarde les informations pour l'application de test*/
-    a.sauvegarde_liste_vitesses(contour_final_detail);
-
+    algoOpt.sauvegarde_liste_vitesses(contour_final_detail);
+   
     return 0;
 }

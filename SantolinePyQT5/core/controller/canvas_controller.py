@@ -140,3 +140,21 @@ class CanvasController(controller.AController):
     def showPopup(self, textContent, title):
         self.view_.popup_window_.update(textContent, title)
         self.view_.popup_window_.show()
+
+    def switchContent(self, boolean):
+        #main bar button
+        self.view_.departement.setEnabled(boolean)
+        self.view_.reglages.setEnabled(boolean)
+        self.view_.actions.setEnabled(boolean)
+        self.view_.vents.setEnabled(boolean)
+        self.view_.simulation.setEnabled(boolean)
+        #Simulation button
+        self.view_.simuler.setEnabled(boolean)
+        self.view_.actionEmitPoint.setEnabled(boolean)
+        self.view_.actionCancelContour.setEnabled(boolean)
+        #navigable button
+        self.view_.actionPan.setEnabled(boolean)
+        self.view_.actionZoomIn.setEnabled(boolean)
+        self.view_.actionZoomOut.setEnabled(boolean)
+        #disable map
+        self.view_.canvas_.freeze(boolean)
