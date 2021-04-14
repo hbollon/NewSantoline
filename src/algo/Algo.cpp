@@ -542,7 +542,8 @@ vector<vector<Point3D>> Algo::propagation(ListeBurningPoint &burningPointInitiau
     finalContour = import3dPointsTo2dFile();
     contour.push_back(finalContour);
 
-    contour.push_back(makeConvexHull(finalContour));
+    // Convex hull method (TODO: add hull settings on simulation)
+    //contour.push_back(makeConvexHull(finalContour));
     return contour;
 }
 
