@@ -117,3 +117,21 @@ std::ostream &operator<<(std::ostream &os, const Point2D &p) {
     os << "[" << p.x() << " , " << p.y() << "]" << std::endl;
     return os;
 }
+
+std::vector<Point2D> Points3DtoPoints2D(std::vector<Point3D> input){
+    std::vector<Point2D> output;
+    for(Point3D point : input) {
+        Point2D point2d = Point2D(point.x(), point.z());
+        output.push_back(point2d);
+    }
+    return output;
+}
+
+std::vector<Point3D> Points2DtoPoints3D(std::vector<Point2D> input){
+    std::vector<Point3D> output;
+    for(Point2D point : input) {
+        Point3D point3d = Point3D(point.x(), 0, point.y());
+        output.push_back(point3d);
+    }
+    return output;
+}

@@ -1,6 +1,8 @@
+#include <algorithm>
 #include <iomanip>
 #include <fstream>
 #include "Algo.h"
+
 
 using namespace std;
 
@@ -386,7 +388,6 @@ Point2D lineLineIntersection(Point2D A, Point2D B, Point2D C, Point2D D)
 
 vector<vector<Point3D>> Algo::propagation(ListeBurningPoint &burningPointInitiaux, vector<vector<Point2D>> &listeObstacles)
 {
-
     double segment_size = segmentSize;
     //burning stock les points en feu
     map<string, Point3D> burning;
@@ -527,6 +528,19 @@ vector<vector<Point3D>> Algo::propagation(ListeBurningPoint &burningPointInitiau
 
         result.push_back(temp);
     }
+
+    //string adress = "C:\\Users\\Skaldr\\Desktop\\NewSantoline\\data\\communication\\resultatSimulation2.json";
+    // std::ofstream outputResultatSimulation2(adress);
+    //    outputResultatSimulation2 << std::setw(4) << result << std::endl;
+    // cout << "simulation done, " << adress << " filled!" << endl;
+    //######################################################################################################################
+    //int k = (int)finalContour.size();
+    //finalContour = ConcaveHull(finalContour, (size_t)k, true);
+    //contour.push_back(finalContour);
+    export3dPointsTo2dFile(finalContour);
+    int retCode = system("C:\\Users\\hbollon\\NewSantoline\\src\\algo\\concave.exe C:\\Users\\hbollon\\NewSantoline\\SantolinePyQT5\\points.txt -out C:\\Users\\hbollon\\NewSantoline\\SantolinePyQT5\\points2.txt");
+    finalContour = import3dPointsTo2dFile();
+    contour.push_back(finalContour);
 
     contour.push_back(makeConvexHull(finalContour));
     return contour;

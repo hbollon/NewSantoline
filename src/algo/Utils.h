@@ -1,10 +1,15 @@
 #ifndef ALGO_UTILS_H
 #define ALGO_UTILS_H
 
+#include <fstream>
+#include <sstream>
+#include <regex>
 #include <math.h>
 #include <string>
 #include <cstring>
 #include <iostream>
+#include <vector>
+#include "Point.h"
 
 //seriously windows, what the actual fuck? when did you come up with the idea that PI is useless?
 
@@ -69,7 +74,8 @@ double lerp(double a, double b, double c);
  */
 //std::vector<Point2D> from_3D_to_2D(std::vector<Point3D> points);
 
-
+void export3dPointsTo2dFile(std::vector<Point3D> points);
+std::vector<Point3D> import3dPointsTo2dFile();
 
 void progressBar(std::ostream& output,const double currentValue, const double maximumValue);
 

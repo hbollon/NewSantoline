@@ -5,6 +5,7 @@
 #include <utility>
 #include <tuple>
 #include <iostream>
+#include <vector>
 
 class Point2D{
 protected:
@@ -12,6 +13,8 @@ protected:
     double _y;
 
 public:
+    uint64_t id = 0;
+
     Point2D() = default;
     Point2D(double x, double y):_x(x), _y(y){};
     Point2D(std::pair<double, double> pair):_x(pair.first), _y(pair.second){}
@@ -34,12 +37,15 @@ public:
 
 class Point3D{
 protected:
-    double _x;
-    double _y;
-    double _z;
+    double _x = 0.0;
+    double _y = 0.0;
+    double _z = 0.0;
 
 public:
+    uint64_t id = 0;
+
     Point3D() = default;
+    Point3D(double x, double y):_x(x), _z(y){}
     Point3D(double x, double y, double z):_x(x), _y(y), _z(z){}
 
     double distanceCarree(const Point3D& p);
@@ -72,6 +78,9 @@ public:
     bool operator<=(const Point3D& p) const;
     friend std::ostream& operator<<(std::ostream& os, const Point3D& p);
 };
+
+std::vector<Point2D> Points3DtoPoints2D(std::vector<Point3D> input);
+std::vector<Point3D> Points2DtoPoints3D(std::vector<Point2D> input);
 
 
 /*** Un Burning Point est comme un point 2D mais avec une date d'igntion et une cellule d'ignition ***/
