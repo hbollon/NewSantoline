@@ -89,13 +89,21 @@ class WindController(controller.AController):
             self.santoline_view_.afficheVentsPentes.setChecked(False)
             self.santoline_view_.afficheVents.setChecked(False)
             self.santoline_view_.canvas_.refresh()
-            for p in Path("\\data").glob("subzone*"):
+            #récuprération du chemin absolu du dossier data
+            subzonePath = Path(__file__).resolve().parents[3] / "data"
+            #pour tous les fichier subzone dans le dossier data
+            for p in subzonePath.glob("subzone*"):
+                #supression du fichier 
                 p.unlink()
+            #affichier la carte des vents
             self.santoline_view_.afficheCanvasVents()
+            #remettre la progressbar à 0
             self.santoline_view_.progressbar_.setValue(0)
         else:
             print("Carte des vents non générée")
+            #affichage d'une popup d'erreur
             self.santoline_view_.controller_.showPopup("Carte des vents non générée", "Erreur")
+            #on créé un json avec des valeurs par défault
             emptyJson = {
                 "axeorigine": "est",
                 "direction": 0,
@@ -104,6 +112,7 @@ class WindController(controller.AController):
                 "dimension": [0, 0],
                 "origine": [0, 0]
             }
+            #on écrit le json dans params.json pour remplacer ce qu'y a été commencer
             connector.write(filename, json.dumps(emptyJson))
         self.close()
 
