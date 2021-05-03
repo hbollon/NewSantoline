@@ -7,7 +7,6 @@ from ..model import algorithm_model, canvas_model
 from ..libs import file_connector
 from . import controller, canvas_controller
 from ..model import canvas_model
-from subprocess import PIPE
 
 import json
 import threading
@@ -50,7 +49,12 @@ class AlgorithmController(controller.AController):
     def algorithme_choice_button_3_clicked(self, value):
         self.algorithmModel_.algorithme_choice_button_3_clicked(value)
 
+    def courbe_choice_button_concave_clicked(self, value):
+        self.algorithmModel_.courbe_choice_button_concave_clicked(value)
         
+    def courbe_choice_button_convexe_clicked(self, value):
+        self.algorithmModel_.courbe_choice_button_convexe_clicked(value)
+
     def accept(self):
         self.santo_view_.controller_.switchContent(False)
         with open(b"..\\data\\reglage.json", 'r', encoding='utf-8') as f:
@@ -86,7 +90,10 @@ class AlgorithmController(controller.AController):
                         "contourInitial":self.canvasModel_.jsonify(),
                        "largeur":largeur,
                        "hauteur":hauteur,
-                       "listeObstacle": self.canvasModel_.obstacleJsonify()}, outfile)
+                       "listeObstacle": self.canvasModel_.obstacleJsonify(),
+                        "courbeEnveloppe" : self.algorithmModel_.courbe_choice_,
+                       }, 
+                       outfile)
         self.close()
         # lancer le programme algo avec les parametre algo et la carte de vent et la sortie est le resultat  de simulation
         algorithm_choice = self.algorithmModel_.algorithm_choice_
