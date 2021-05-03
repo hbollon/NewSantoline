@@ -13,7 +13,7 @@ class AlgorithmModel(model.AModel):
         self.dimension_ = 25
         self.nbDivisionCellule_ = 25
         self.algorithm_choice_ = "2"
-        self.courbe_choice_ = "1"
+        self.courbe_choice_ = 1
         
     def heure(self, heure):
         self.heure_ = heure
@@ -58,10 +58,10 @@ class AlgorithmModel(model.AModel):
         self.algorithm_choice_ = "3"
 
     def courbe_choice_button_concave_clicked(self, value):
-        self.courbe_choice_ = "1"
+        self.courbe_choice_ = 1
 
     def courbe_choice_button_convexe_clicked(self, value):
-        self.courbe_choice_ = "2"
+        self.courbe_choice_ = 2
         
     def jsonify(self):
         duree = self.duree_.hour() + self.duree_.minute() / 60.
