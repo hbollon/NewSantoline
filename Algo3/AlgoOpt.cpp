@@ -1,3 +1,5 @@
+// Pète moi le soleil !
+
 #include "json.hpp"
 using json = nlohmann::json;
 #include <algorithm>
@@ -5,6 +7,7 @@ using json = nlohmann::json;
 #include "math.h"
 #include "AlgoOpt.hpp"
 #include "EllipseOpt.hpp"
+#include "ConvexHull.hpp"
 using namespace std;
 
 /*********************************************************************************************
@@ -162,6 +165,21 @@ vector<Point3D> AlgoOpt::propagation(vector<Point2D> listE, json cartevent, json
         cout << "Les infos de l'algo ont ete sauvegardes." << endl;
     } else {
         cout << "[ERROR] Les infos de l'algo n'ont pas pu etre sauvegardes." << endl;
+    }
+
+    // Hull
+    // 1 -> Convex Hull
+    // 2 -> Concave Hull 
+    // Check folder's readme for more informations
+    int courbeEnveloppe = parametreAlgo["courbeEnveloppe"];
+    if (courbeEnveloppe == 1) {
+        export3dPointsTo2dFile(r);
+        int retCode = system("C:\\Users\\hbollon\\NewSantoline\\src\\algo\\concave.exe C:\\Users\\hbollon\\NewSantoline\\SantolinePyQT5\\points.txt -out C:\\Users\\hbollon\\NewSantoline\\SantolinePyQT5\\points2.txt");
+        r = import3dPointsTo2dFile();
+    } else if (courbeEnveloppe == 2) {
+        r = makeConvexHull(r);
+    } else {
+        std::cerr << "Error : bad hull method" << std::endl;
     }
 
     return r;
@@ -336,7 +354,7 @@ void AlgoOpt::initialiserEllipse(json cartevent, ofstream& sortie, int largeur, 
 
     int largeurCarteEllipse = largeur/tailleCellule;
     int hauteurCarteEllipse = hauteur/tailleCellule;
-    carteEllipse = vector<vector<EllipseOpt >> (largeurCarteEllipse);
+    carteEllipse = vector<vector<EllipseOpt>> (largeurCarteEllipse);
 
     for(int i=0; i<largeurCarteEllipse; i++){
         try

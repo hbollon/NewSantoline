@@ -53,6 +53,38 @@ std::vector<Point2D> from_3D_to_2D(std::vector<Point3D> points) {
     return res_2d_points;
 }*/
 
+void export3dPointsTo2dFile(std::vector<Point3D> points) {
+    std::ofstream outfile;
+    outfile.open("points.txt", std::ios_base::out);
+    for(Point3D point : points)
+    {
+        outfile << point.x() << "," << point.y() << std::endl;
+    }
+    outfile.close();
+}
+
+std::vector<Point3D> import3dPointsTo2dFile() {
+    std::vector<Point3D> out;
+    std::ifstream infile;
+    infile.open("C:\\Users\\hbollon\\NewSantoline\\SantolinePyQT5\\points2.txt", std::ios_base::in);
+    std::string line;
+    while(std::getline(infile, line))
+    {
+        line = std::regex_replace(line, std::regex("  "), " ");
+        std::istringstream   linestream(line);
+        std::string         data;
+        int                 x;
+        int                 y;
+
+        linestream >> x;
+        std::getline(linestream, data, ' ');
+        linestream >> y;
+        out.push_back(Point3D(x, y, 0));
+    }
+
+    return out;
+}
+
 void progressBar(std::ostream& output,const double currentValue, const double maximumValue) {
     static const int PROGRESSBARWIDTH = 60;
     static int myProgressBarRotation = 0;

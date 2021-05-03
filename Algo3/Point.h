@@ -61,6 +61,17 @@ public:
     Point3D operator*(double scalar) const ;
     Point3D operator/(double scalar) const ;
     bool operator==(const Point3D& p);
+    bool operator!=(const Point3D& p);
+    bool operator>(const Point3D& p);
+    bool operator<(const Point3D& p);
+    bool operator>=(const Point3D& p);
+    bool operator<=(const Point3D& p);
+    bool operator==(const Point3D& p) const;
+    bool operator!=(const Point3D& p) const;
+    bool operator>(const Point3D& p) const;
+    bool operator<(const Point3D& p) const;
+    bool operator>=(const Point3D& p) const;
+    bool operator<=(const Point3D& p) const;
     friend std::ostream& operator<<(std::ostream& os, const Point3D& p);
 };
 

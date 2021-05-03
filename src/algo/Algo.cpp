@@ -528,22 +528,23 @@ vector<vector<Point3D>> Algo::propagation(ListeBurningPoint &burningPointInitiau
 
         result.push_back(temp);
     }
+ 
+    // Hull
+    // 1 -> Concave Hull 
+    // 2 -> Convex Hull
+    // Check folder's readme for more informations
+    if (courbeEnveloppe == 1) {
+        export3dPointsTo2dFile(finalContour);
+        int retCode = system("C:\\Users\\hbollon\\NewSantoline\\src\\algo\\concave.exe C:\\Users\\hbollon\\NewSantoline\\SantolinePyQT5\\points.txt -out C:\\Users\\hbollon\\NewSantoline\\SantolinePyQT5\\points2.txt");
+        finalContour = import3dPointsTo2dFile();
+        contour.push_back(finalContour);
+    } else if (courbeEnveloppe == 2) {
+        contour.push_back(makeConvexHull(finalContour));
+    } else {
+        std::cerr << "Error : bad hull method" << std::endl;
+        contour.push_back(finalContour);
+    }
 
-    //string adress = "C:\\Users\\Skaldr\\Desktop\\NewSantoline\\data\\communication\\resultatSimulation2.json";
-    // std::ofstream outputResultatSimulation2(adress);
-    //    outputResultatSimulation2 << std::setw(4) << result << std::endl;
-    // cout << "simulation done, " << adress << " filled!" << endl;
-    //######################################################################################################################
-    //int k = (int)finalContour.size();
-    //finalContour = ConcaveHull(finalContour, (size_t)k, true);
-    //contour.push_back(finalContour);
-    export3dPointsTo2dFile(finalContour);
-    int retCode = system("C:\\Users\\hbollon\\NewSantoline\\src\\algo\\concave.exe C:\\Users\\hbollon\\NewSantoline\\SantolinePyQT5\\points.txt -out C:\\Users\\hbollon\\NewSantoline\\SantolinePyQT5\\points2.txt");
-    finalContour = import3dPointsTo2dFile();
-    contour.push_back(finalContour);
-
-    // Convex hull method (TODO: add hull settings on simulation)
-    //contour.push_back(makeConvexHull(finalContour));
     return contour;
 }
 

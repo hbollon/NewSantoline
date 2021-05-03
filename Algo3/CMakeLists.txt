@@ -3,4 +3,4 @@ project(Algo3)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Algo3 main.cpp Point.cpp Vecteur.cpp Utils.cpp PointOpt.cpp PointOpt.hpp VitesseOpt.cpp VitesseOpt.hpp AlgoOpt.cpp AlgoOpt.hpp EllipseOpt.cpp EllipseOpt.hpp Choc.cpp Choc.hpp CoinCase.cpp CoinCase.h)
+add_executable(Algo3 ConvexHull.cpp Point.cpp Vecteur.cpp Utils.cpp PointOpt.cpp PointOpt.hpp VitesseOpt.cpp VitesseOpt.hpp AlgoOpt.cpp AlgoOpt.hpp EllipseOpt.cpp EllipseOpt.hpp Choc.cpp Choc.hpp CoinCase.cpp CoinCase.h main.cpp)

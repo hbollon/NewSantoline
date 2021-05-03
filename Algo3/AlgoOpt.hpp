@@ -14,6 +14,7 @@
 #include "EllipseOpt.hpp"
 #include "json.hpp"
 #include "CoinCase.h"
+#include "Utils.h"
 
 using json = nlohmann::json;
 

@@ -30,6 +30,7 @@ public:
         {
             contourInitial = parametreAlgo["contourInitial"];
             algorithm = parametreAlgo["algorithm"];
+            courbeEnveloppe = parametreAlgo["courbeEnveloppe"];
             listeObstacles = parametreAlgo["listeObstacle"];
             temperature = parametreAlgo["temperature"];
             waterReserve = parametreAlgo["waterReserve"];
@@ -87,6 +88,7 @@ private:
     json contourInitial;
     json listeObstacles;
     string algorithm;
+    int courbeEnveloppe;
     double temperature;
     int waterReserve;
     double arcAngle;
