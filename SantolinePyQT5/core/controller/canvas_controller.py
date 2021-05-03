@@ -156,5 +156,3 @@ class CanvasController(controller.AController):
         self.view_.actionPan.setEnabled(boolean)
         self.view_.actionZoomIn.setEnabled(boolean)
         self.view_.actionZoomOut.setEnabled(boolean)
-        #disable map
-        self.view_.canvas_.freeze(boolean)
