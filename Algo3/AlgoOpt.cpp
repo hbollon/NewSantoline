@@ -174,7 +174,7 @@ vector<Point3D> AlgoOpt::propagation(vector<Point2D> listE, json cartevent, json
     int courbeEnveloppe = parametreAlgo["courbeEnveloppe"];
     if (courbeEnveloppe == 1) {
         export3dPointsTo2dFile(r);
-        int retCode = system("C:\\Users\\hbollon\\NewSantoline\\src\\algo\\concave.exe C:\\Users\\hbollon\\NewSantoline\\SantolinePyQT5\\points.txt -out C:\\Users\\hbollon\\NewSantoline\\SantolinePyQT5\\points2.txt");
+        int retCode = system("..\\src\\algo\\concave.exe points.txt -out points2.txt");
         r = import3dPointsTo2dFile();
     } else if (courbeEnveloppe == 2) {
         r = makeConvexHull(r);

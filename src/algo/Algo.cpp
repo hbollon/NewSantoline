@@ -535,7 +535,7 @@ vector<vector<Point3D>> Algo::propagation(ListeBurningPoint &burningPointInitiau
     // Check folder's readme for more informations
     if (courbeEnveloppe == 1) {
         export3dPointsTo2dFile(finalContour);
-        int retCode = system("C:\\Users\\hbollon\\NewSantoline\\src\\algo\\concave.exe C:\\Users\\hbollon\\NewSantoline\\SantolinePyQT5\\points.txt -out C:\\Users\\hbollon\\NewSantoline\\SantolinePyQT5\\points2.txt");
+        int retCode = system("..\\src\\algo\\concave.exe points.txt -out points2.txt");
         finalContour = import3dPointsTo2dFile();
         contour.push_back(finalContour);
     } else if (courbeEnveloppe == 2) {

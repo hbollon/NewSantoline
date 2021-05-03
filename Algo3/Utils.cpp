@@ -66,7 +66,7 @@ void export3dPointsTo2dFile(std::vector<Point3D> points) {
 std::vector<Point3D> import3dPointsTo2dFile() {
     std::vector<Point3D> out;
     std::ifstream infile;
-    infile.open("C:\\Users\\hbollon\\NewSantoline\\SantolinePyQT5\\points2.txt", std::ios_base::in);
+    infile.open("points2.txt", std::ios_base::in);
     std::string line;
     while(std::getline(infile, line))
     {
