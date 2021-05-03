@@ -269,27 +269,12 @@ int AlgoOpt::propage(string ind, vector<vector<VitesseOpt>> vits){
         }
 
         PointOpt mvt = PointOpt(mnp.first,mnp.second,indm, &compteurId,"Point de propage");
-        if(affichage) {
-            cout << "Point fait apres mnplusun" << endl;
-            cout << "ind : " << ind << endl;
-            cout << "mvt.tauperp : " << mvt.tau << endl;
-            cout << fixed << " temp mvt : " << mvt.t << endl;
-            cout << fixed << " mvt coordonnees: " << mvt.coordonne << endl;
-            cout << "mvt.indice " << mvt.indice << endl;
-            cout << "mvt.getid " << mvt.getId() << endl;
-            cout << "mvt.ancetre " << mvt.ancetre << endl;
-            cout << "mvt.suivant " << mvt.suivant << endl;
-            cout << "mvt.precedent " << mvt.precedent << endl;
-            cout << "mvt.vit.size : " << vit.size() << endl;
-        }
 
         mvt.addVitesse(vit);
 
         int indics = supprimerCroisement(mvt, ind);
-        if(affichage) cout << "Valeur de indics apres supprimeCroisement : " << indics << endl;
 
         bool test = testBordureBrulee(mvt);
-        if(affichage) cout << "resultat testBordure : " << test << endl;
 
         if (!test) {
             if (indics == 0 && compt == 1) {
@@ -385,47 +370,53 @@ void AlgoOpt::initialiserEllipse(json cartevent, ofstream& sortie, int largeur, 
 }
 
 void AlgoOpt::initListff(vector<Point2D> listPointE) {
-    listePointsDansCellule =  map<string,vector<string>>();
+    listePointsDansCellule = map<string,vector<string>>();
     vector<PointOpt> listDef;
-    vector<Point2D> listPoint = raffine(listPointE,0.5);
+    vector<Point2D> listPoint = raffine(listPointE, 0.5);
+    //On créé une liste de point circulaire : 
+    //l(0) => ancetre = l(0)
+    //        precedent = l(dernier)
+    //        suivant = l(1)
+    //        id = l(0)
+    //l(1) => ancetre = l(1)
+    //        precedent = l(0)
+    //        suivant = l(2)
+    //        id = l(1)
+    // [...]
+    //ajout de l'ancetre 
     for(vector<Point2D>::const_iterator it = listPoint.begin(); it != listPoint.end(); ++it){
-
         Point2D pTemp = Point2D(it->x(), it->y());
-        if(pTemp.x() - floor(pTemp.x()) < seuil)
-        {
+        if(pTemp.x() - floor(pTemp.x()) < seuil){
             pTemp.x() = pTemp.x() + 0.001;
         }
-        if(pTemp.y() - floor(pTemp.y()) < seuil)
-        {
+        if(pTemp.y() - floor(pTemp.y()) < seuil){
             pTemp.y() = pTemp.y() + 0.001;
         }
         PointOpt p = PointOpt(pTemp,0,Vector2D(0,0),"0", &compteurId,"Point de initListff");
         p.ancetre = p.getId();
+        //ajout du pointOpt a la liste
         listDef.push_back(p);
     }
-
-    for(int i =1; i<listDef.size();i++){
+    //ajout du précédent
+    for(int i=1; i<listDef.size();i++){
         listDef.at(i).precedent = listDef.at(i - 1).getId();
     }
-    listDef.at(0).precedent = listDef.at(listDef.size() -1).getId();
-    listDef.at(0).suivant = listDef.at(1).getId();
-
+    //ajout du suivant
     for(int i =0; i<listDef.size()-1;i++){
         listDef.at(i).suivant = listDef.at(i+1).getId();
     }
+    //gestion du premier element de la liste
+    listDef.at(0).precedent = listDef.at(listDef.size() -1).getId();
+    listDef.at(0).suivant = listDef.at(1).getId();
+    //gestion du dernier element de la liste
     listDef.at(listDef.size()-1).precedent = listDef.at(listDef.size()-2).getId();
     listDef.at(listDef.size()-1).suivant = listDef.at(0).getId();
 
-    vector<VitesseOpt> listvit;
-    int i = 0;
-
-    PointOpt chercher;
+    //ajout la liste des vitesses pour chaque point
     for(auto &it: listDef){
-        Point2D m =it.coordonne;
-        chercher = findPts(listDef,it.precedent);
-        Point2D mp = chercher.coordonne;
-        chercher = findPts(listDef,it.suivant);
-        Point2D ms = chercher.coordonne;
+        Point2D m = it.coordonne;
+        Point2D mp = findPointOptByIndice(listDef,it.precedent).coordonne;
+        Point2D ms = findPointOptByIndice(listDef,it.suivant).coordonne;
         Point2D ds = ms-m;
         Point2D dp = m-mp;
         if(Vector2D(ds).norm()!=0){
@@ -439,34 +430,25 @@ void AlgoOpt::initListff(vector<Point2D> listPointE) {
             it.listeVitesse.push_back(temp1);
             it.listeVitesse.push_back(temp2);
         }
-        i++;
     }
 
     for(auto &it:listDef){
         it.listeVitesse=vitesseChocOuPas(*(it.listeVitesse.begin())->begin(),*(it.listeVitesse.begin()+1)->begin()).second;
         listff.insert(make_pair(it.getId(),it));
     }
-
-    i = 0;
-    bool indic;
-    for(i; i < listPoint.size(); i++) {
-
-        indic = propage(to_string(i), listff.at(to_string(i)).listeVitesse);
-
-        if(!indic){
+    for(int i = 0; i < listPoint.size(); i++) {
+        if(!propage(to_string(i), listff.at(to_string(i)).listeVitesse)){
             string indp = listff.at(to_string(i)).precedent;
             string inds = listff.at(to_string(i)).suivant;
             listff.at(indp).suivant = inds;
             listff.at(inds).precedent = indp;
         }
-
     }
 
     string ind0 = aPropager;
     string ind = listff.at(ind0).suivant;
 
-    while(ind != ind0)
-    {
+    while(ind != ind0) {
         actualiseCoin(ind);
         ind = listff.at(ind).suivant;
     }
@@ -479,8 +461,7 @@ void AlgoOpt::initListff(vector<Point2D> listPointE) {
     }initialiserCoinContourDepart(listff.at(listff.at(ind0).ancetre));
 }
 
-bool AlgoOpt::chocDansCellule(PointOpt mvt, string ind)
-{
+bool AlgoOpt::chocDansCellule(PointOpt mvt, string ind) {
     cout<<"ChocDansCellule mvt.getid() : "<<mvt.getId()<<", ind : "<<ind << endl;
     bool INDIC = true;
     string INDP,INDS;
@@ -499,9 +480,7 @@ bool AlgoOpt::chocDansCellule(PointOpt mvt, string ind)
     pair<double,std::vector<std::vector<VitesseOpt>>> VITC;
     double test = v.vecteur().determinant(vc.vecteur());
 
-    if(test < 0)
-    {
-        if(affichage)cout<<"test < 0"<<endl;
+    if(test < 0) {
         if(VITS.size() == 3)
         {
             v = VITS.at(1);
@@ -540,18 +519,14 @@ bool AlgoOpt::chocDansCellule(PointOpt mvt, string ind)
     nb = numero(ijc);
     listnum.push_back(nb);
 
-    for(auto num : listnum)
-    {
+    for(auto num : listnum){
         auto iterator = find(listeCellulesBrulees.begin(),listeCellulesBrulees.end(),num);
-        if(iterator != listeCellulesBrulees.end())
-        {
+        if(iterator != listeCellulesBrulees.end()){
             vector<string> tabIndice1Num = listePointsDansCellule.at(num);
-            for(int indz = 0; indz < tabIndice1Num.size(); indz++)
-            {
+            for(int indz = 0; indz < tabIndice1Num.size(); indz++){
                 PointOpt mvtt = listff.at(tabIndice1Num.at(indz));
                 Vector2D mvttt = mvtt.coordonne;
-                if(mvttt.norm() <= seuil)
-                {
+                if(mvttt.norm() <= seuil){
                     TEST = true;
                     INDCHOC = tabIndice1Num.at(indz);
                 }
@@ -706,23 +681,15 @@ pair<Point3D, Vector2D> AlgoOpt::mnplusun(Point3D point, VitesseOpt vitesse){
     }
     vectorRetour = Vector2D(vectorRetour.x()*tauperp1,
                             vectorRetour.y()*tauperp2);
-
-    if(affichage) cout << "Fin de mnplusun"<<endl;
     return(std::make_pair(pointRetour,vectorRetour));
 }
 
 void AlgoOpt::insere(PointOpt point, string ind, bool indic){
-
-    if(affichage) cout << "Indice : "<<point.indice<<", t : "<<point.t<<endl;
-    if(affichage) cout << "Ind : "<<ind<<", indic : "<<indic<<endl;
-    if(affichage) cout << "listff.size() : "<<listff.size()<<endl;
-
     int nmax = listff.size();
     if(!indic){
         point.precedent=listff.at(ind).precedent;
         point.suivant=listff.at(ind).suivant;
         point.ancetre=ind;
-
         listff.insert(make_pair(to_string(nmax), point));
         listff.at(listff.at(ind).precedent).suivant = to_string(nmax);
         listff.at(listff.at(ind).suivant).precedent = to_string(nmax);
@@ -736,7 +703,6 @@ void AlgoOpt::insere(PointOpt point, string ind, bool indic){
         listff.at(listff.at(to_string(nmax)).suivant).precedent = to_string(nmax);
         if(point.ancetre != "0"){
             //cette condition permet au programme de s'executer mais n'est pas certaine et sert sans doute a traiter les chocs
-            if(affichage) cout << "On passe dans la condition pas certaine."<<endl;
             listff.at(listff.at(ind).ancetre).precedent = to_string(nmax);
         }
     }
@@ -783,12 +749,6 @@ void AlgoOpt::insere(PointOpt point, string ind, bool indic){
         }
     }
     aPropager = minInd;
-    if(affichage) {
-        cout << "ind: " << ind << " nouveau point " << listff.at(to_string(listff.size() - 1)).getId() << " suivant "
-             << listff.at(listff.at(to_string(listff.size() - 1)).suivant).getId() << " precedent "
-             << listff.at(listff.at(to_string(listff.size() - 1)).precedent).getId() << endl;
-        cout << "Fin de insere" << endl;
-    }
 }
 
 void AlgoOpt::rajoutePoints(string indice) {
@@ -798,8 +758,7 @@ void AlgoOpt::rajoutePoints(string indice) {
     rajoutePoint(indp);
 }
 
-void AlgoOpt::rajoutePoint(string indice)
-{
+void AlgoOpt::rajoutePoint(string indice) {
     if(affichage) cout << "Dans rajoute Point indice : "<<indice<<endl;
     double tmin = listff.at(aPropager).t;
 
@@ -811,8 +770,7 @@ void AlgoOpt::rajoutePoint(string indice)
     string inds = mt.suivant;
     PointOpt mts = listff.at(inds);
 
-    if((mts.ancetre != mt.ancetre) || ((atoi(mts.indice.c_str()) + atoi(mt.indice.c_str())) != 3))
-    {
+    if((mts.ancetre != mt.ancetre) || ((atoi(mts.indice.c_str()) + atoi(mt.indice.c_str())) != 3)) {
         vector<vector<VitesseOpt>> vitmts = mts.listeVitesse;
         vector<VitesseOpt> vits = vitmts.at(0);
         double ts = mts.t;
@@ -842,24 +800,14 @@ void AlgoOpt::rajoutePoint(string indice)
         } else {
             testS = (abs(v.determinant(dm)) / v.norm()) + (abs(vs.determinant(dm)) / vs.norm());
         }
-        if(testS >= crit)
-        {
+        if(testS >= crit){
             mm = m + (tmin - t)*v;
             if(affichage)cout << tmin << " "<<t <<endl;
             ms = mts.coordonne + (tmin - ts)*vs;
             Point2D mis = (ms+mm)/2;
             ij = Point2D(round(mis.x()),round(mis.y()));
-            if((mis.x()-ij.x())*(mis.y() - ij.y()) == 0)
-            {
-                if(affichage) cout << "MIS est sur le bord" << endl;
-                if(affichage) cout << "MIS.x"<<mis.x() << endl;
-                if(affichage) cout << "MIS.y"<<mis.y() << endl;
-                if(affichage) cout << "ij.x"<<ij.x() << endl;
-                if(affichage) cout << "ij.y"<<ij.y() << endl;
+            if((mis.x()-ij.x())*(mis.y() - ij.y()) == 0){
                 mis =((ms+mm)*2)/3;
-                if(affichage) cout << "ms"<<ms << endl;
-                if(affichage) cout << "mm"<<mm << endl;
-                if(affichage) cout << "MIS"<<mis << endl;
             }
 
             ij = Point2D(floor(mis.x()),floor(mis.y()));
@@ -867,28 +815,20 @@ void AlgoOpt::rajoutePoint(string indice)
             Vector2D dir = ms - mm;
             double testSS = dir.norm();
 
-            if(testSS >= (crit/5))
-            {
+            if(testSS >= (crit/5)) {
                 VitesseOpt vitmis = vitessea0(0,dir,ij);
                 Point3D misAvecT = Point3D(mis.x(),mis.y(),tmin);
                 pair<Point3D, Vector2D> mnp = mnplusun(misAvecT,vitmis);
                 Point2D postmnplusun = Point2D(mnp.first.x(),mnp.first.y());
                 PointOpt mvt = PointOpt(postmnplusun,mnp.first.z(),mnp.second,"0","0","0","0",vitmis,&compteurId,"Point de rajoutePoint");
                 bool test = testBordureBrulee(mvt);
-                if(affichage) cout << "resultat testBordureBrulee : " << test << endl;
-                if(!test)
-                {
+                if(!test){
                     int indics = supprimeCroisementRaj(mvt,tmin,indice);
-
-                    if(indics == 0)
-                    {
+                    if(indics == 0){
                         insere(mvt,indice,true);
-                        if(affichage) cout << "On a rajoute "<< listff.size() - 1 << endl;
                     }else{
-                        if(affichage) cout << "indics !=0 bla" <<endl;
                         compteurId --;
                     }
-
                 }else{
                     compteurId --;
                 }
@@ -904,7 +844,6 @@ void AlgoOpt::rajoutePoint(string indice)
  *                              Fonctions de suppression de point                            *
  *********************************************************************************************/
 void AlgoOpt::supprime(string ind) {
-    if(affichage) cout <<"Dans supprime ind : "<<ind<<endl;
     if (listePointsActifs.count(ind) != 0) {
         listePointsActifs.erase(ind);
         string minInd = listePointsActifs.begin()->first;
@@ -914,21 +853,13 @@ void AlgoOpt::supprime(string ind) {
             }
         }
         aPropager = minInd;
-
         listff.at((listff.at(ind).precedent)).suivant = (listff.at(ind).suivant);
         listff.at((listff.at(ind).suivant)).precedent = (listff.at(ind).precedent);
-    } else{
-        if(affichage) cout << "Le point d'indice "<<ind<<" a deja ete supprime."<<endl;
     }
 }
 
-void AlgoOpt::supprimePlus(std::string ind, std::string num)
-{
-
-    if(affichage)cout << "On supprimePlus ind : "<<ind<<", num : "<<num<<endl;
-    if(affichage)cout << "listePointsActifs.count(ind) : "<<listePointsActifs.count(ind)<<endl;
-    if(listePointsActifs.count(ind) != 0)
-    {
+void AlgoOpt::supprimePlus(std::string ind, std::string num){
+    if(listePointsActifs.count(ind) != 0){
         listePointsActifs.erase(ind);
         string minInd = listePointsActifs.begin()->first;
         for (auto &it:listePointsActifs) {
@@ -938,7 +869,6 @@ void AlgoOpt::supprimePlus(std::string ind, std::string num)
         }
         aPropager = minInd;
     }
-    if(affichage)cout << "listePointsDansCellule.count(num) : "<<listePointsDansCellule.count(num)<<endl;
     if(listePointsDansCellule.count(num)!=0) {
         vector<string> tab = listePointsDansCellule.at(num);
         vector<int> aSuppr;
@@ -949,9 +879,7 @@ void AlgoOpt::supprimePlus(std::string ind, std::string num)
                 i = tab.size();
             }
         }
-
     }
-    if(affichage)cout<<"On sort de supprimePlus"<<endl;
 }
 
 int AlgoOpt::supprimerCroisement(PointOpt mtp, std::string ind){
@@ -1214,17 +1142,12 @@ VitesseOpt AlgoOpt::vitessea0(double a0, Vector2D tau, Point2D ijn){
     /*Quand il s'agit d'un "nouveau point" (point sur le contour initial ou point creer), on force la a0 a 0*/
     /*La fonction nous donne la vitesse dans la cellule entrante*/
     /*Les coordonnees ijn correspondent aux coordonnees de la cellule entrante*/
-
-    if(affichage)cout<< "Debut vitessea0"<<endl;
-    if(affichage)cout<< "a0"<< a0<<endl;
-    if(affichage)cout<< "tau"<< tau<<endl;
-    if(affichage)cout<< "ijn"<< ijn<<endl;
     Vector2D tff;
     Vector2D v;
     double INDIC;
 
-    EllipseOpt ellipse = carteEllipse[ijn.x()][ijn.y()];/*Ellipse de la nouvelle cellule*/
-    if(affichage)cout << "ellipse : "<<ellipse << endl;
+    //Ellipse de la nouvelle cellule
+    EllipseOpt ellipse = carteEllipse[ijn.x()][ijn.y()];
     tau = tau.normalized();
 
     Vector2D tauperp = Vector2D(-tau.y(), tau.x());
@@ -1238,11 +1161,9 @@ VitesseOpt AlgoOpt::vitessea0(double a0, Vector2D tau, Point2D ijn){
     Vector2D aw0 = (w01/(ellipse.a()*ellipse.a()))*ellipse.vecteur()
                    + (w02/(ellipse.b()*ellipse.b()))*eperp;
 
-
     double w0aw0 = w0.dot(aw0);
     double delta = w0aw0-(a0*a0);
 
-    if(affichage)cout << "delta : "<<delta << endl;
     if(delta >= seuil){
         Vector2D w1 = Vector2D(-aw0.y(),aw0.x());
         double test = w1.dot(tauperp);
@@ -1281,7 +1202,6 @@ VitesseOpt AlgoOpt::vitessea0(double a0, Vector2D tau, Point2D ijn){
         tff = Vector2D(0,0);
         INDIC = 10;
     }
-    if(affichage)cout << "Fin vitessea0"<<endl;
     return {v,tff,ijn,INDIC};
 }
 
@@ -2003,7 +1923,6 @@ void AlgoOpt::sauvegarder_liste_sommets(ofstream &etat_final_liste_sommets) cons
 }
 
 pair<double, double> AlgoOpt::numToCoordinate(const string& num) const {
-
     string buffer;
     double x, y;
     for(char it : num) {
@@ -2022,7 +1941,6 @@ pair<double, double> AlgoOpt::numToCoordinate(const string& num) const {
  *                              Fonctions d'affichage                                        *
  *********************************************************************************************/
 void AlgoOpt:: affiche(std::vector<vector<VitesseOpt>> v){
-
     int i =0;
     for(auto &it:v){
         it.begin()->affiche();
@@ -2032,24 +1950,18 @@ void AlgoOpt:: affiche(std::vector<vector<VitesseOpt>> v){
 
 void AlgoOpt:: affiche(std::pair<double,std::vector<vector<VitesseOpt>>> v){
     affiche(v.second);
-
 }
 
 /*********************************************************************************************
  *                              Autre                                                        *
  *********************************************************************************************/
-string AlgoOpt::getMinlisteCellulesBrulees()
-{
+string AlgoOpt::getMinlisteCellulesBrulees(){
     string min = "0";
-
-    for(int i = 0;i<listeCellulesBrulees.size();i++)
-    {
-        if(listePointsActifs.at(listeCellulesBrulees.at(i)) < listePointsActifs.at(min))
-        {
+    for(int i = 0;i<listeCellulesBrulees.size();i++){
+        if(listePointsActifs.at(listeCellulesBrulees.at(i)) < listePointsActifs.at(min)){
             min = listeCellulesBrulees.at(i);
         }
     }
-
     return min;
 }
 
@@ -2057,31 +1969,23 @@ float AlgoOpt::det(Vector2D v1, Vector2D v2){
     return v1.x()*v2.y() - v1.y() * v2.x();
 }
 
-PointOpt AlgoOpt::findPts(vector<PointOpt> listDef, string indice)
-{
-    for(auto & i : listDef)
-    {
-
-        if(i.getId() == indice)
-        {
+//trouve un point avec son id
+//retourne null si pas trouvé
+PointOpt AlgoOpt::findPointOptByIndice(vector<PointOpt> listDef, string indice){
+    for(auto & i : listDef){
+        if(i.getId() == indice){
             return i;
         }
-
     }
     return nullptr;
 }
 
-void AlgoOpt::triDesChocs()
-{
+void AlgoOpt::triDesChocs(){
     Choc element;
     int j;
-
-    for(int i = 1;i < listeChoc.size(); i++)
-    {
+    for(int i = 1;i < listeChoc.size(); i++){
         element = listeChoc.at(i);
-
-        for(j = i; j > 0 && listeChoc.at(j-1).temps > element.temps; j--)
-        {
+        for(j = i; j > 0 && listeChoc.at(j-1).temps > element.temps; j--){
             listeChoc.at(j) = listeChoc.at(j - 1);
         }
         listeChoc.at(j) = element;

@@ -108,7 +108,7 @@ public:
 
     /*Autre*/
     string getMinlisteCellulesBrulees();
-    PointOpt findPts(vector<PointOpt>,string);
+    PointOpt findPointOptByIndice(vector<PointOpt>,string);
     float det(Vector2D v1, Vector2D v2);
     void triDesChocs();
 
