@@ -8,13 +8,8 @@ import sys
 import os
 from qgis.core import QgsApplication, QgsPoint
 from core.view import santoline_view
-import random
 import json
 import shutil
-
-import core.libs
-
-import threading
 
     #getting qgis path
 def getQGISDirectory():
