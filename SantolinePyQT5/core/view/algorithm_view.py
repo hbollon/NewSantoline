@@ -22,6 +22,7 @@ class ParameterWindow(input_popup_view.InputPopup):
         self.annuler_ = None
 
         self.algorithme_choice_layout = None
+        self.courbe_choice_layout = None
         
         super().__init__(algorithm_controller.AlgorithmController(self,canvasModel,santoView))
         
@@ -31,18 +32,31 @@ class ParameterWindow(input_popup_view.InputPopup):
         body = QVBoxLayout(self)
         
         algorithme = QWidget(self)
+        courbe = QWidget(self)
 
         algorithme_choice_layout = QHBoxLayout(algorithme)
         algorithme_choice_label = QLabel("Algorithme : ", algorithme)
         algorithme_choice_button_2 = QRadioButton('2')
         algorithme_choice_button_2.setChecked(True)
         algorithme_choice_button_3 = QRadioButton('3')
-        algorithme_choice_button_2.setChecked(False)
+        algorithme_choice_button_3.setChecked(False)
         algorithme_choice_layout.addWidget(algorithme_choice_label)
         algorithme_choice_layout.addWidget(algorithme_choice_button_2)
         algorithme_choice_layout.addWidget(algorithme_choice_button_3)
         algorithme_choice_button_2.toggled.connect(self.controller_.algorithme_choice_button_2_clicked)
         algorithme_choice_button_3.toggled.connect(self.controller_.algorithme_choice_button_3_clicked)
+
+        courbe_choice_layout = QHBoxLayout(courbe)
+        courbe_choice_label = QLabel("Courbe : ", courbe)
+        courbe_choice_button_concave = QRadioButton('Concave')
+        courbe_choice_button_concave.setChecked(True)
+        courbe_choice_button_convexe = QRadioButton('Convexe')
+        courbe_choice_button_convexe.setChecked(False)
+        courbe_choice_layout.addWidget(courbe_choice_label)
+        courbe_choice_layout.addWidget(courbe_choice_button_concave)
+        courbe_choice_layout.addWidget(courbe_choice_button_convexe)
+        courbe_choice_button_concave.toggled.connect(self.controller_.courbe_choice_button_concave_clicked)
+        courbe_choice_button_convexe.toggled.connect(self.controller_.courbe_choice_button_convexe_clicked)
         
         algorithme_box = QGroupBox("Paramètres", self)
         algorithme_box_layout = QVBoxLayout(algorithme_box)
@@ -130,6 +144,7 @@ class ParameterWindow(input_popup_view.InputPopup):
         boutons_layout.addWidget(self.annuler_)
         boutons.setLayout(boutons_layout)
         
+        body.addWidget(courbe)
         body.addWidget(algorithme)
         body.addWidget(algorithme_box)
         body.addWidget(boutons)
