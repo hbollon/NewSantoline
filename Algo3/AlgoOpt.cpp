@@ -1012,7 +1012,7 @@ int AlgoOpt::supprimerCroisement(PointOpt mtp, std::string ind){
     return indic;
 }
 
-int AlgoOpt::supprimeCroisementRaj(PointOpt mvt, double tmin, string ind) {
+int AlgoOpt::supprimeCroisementRaj(PointOpt mvt, double tmin, const string ind) {
     if(affichage) cout << "Debut supprimeCroisementRaj"<<endl;
     listeChoc = vector<Choc>();
 
@@ -1426,7 +1426,7 @@ VitesseOpt AlgoOpt::vitesse0(Point2D p, Point2D s){
     return VitesseOpt();
 }
 
-VitesseOpt AlgoOpt::vitesse(VitesseOpt vb, Point2D ij){
+VitesseOpt AlgoOpt::vitesse(const VitesseOpt vb, Point2D ij){
 
     EllipseOpt ellipse = carteEllipse[ij.x()][ij.y()];
     Vector2D vv = vb.vecteur();
@@ -1594,7 +1594,7 @@ pair<bool,vector<vector<VitesseOpt>>> AlgoOpt::vitesseNew1(vector<vector<Vitesse
 /*********************************************************************************************
  *                              Fonction de gestion des bordures                             *
  *********************************************************************************************/
-bool AlgoOpt::testBordureBrulee(PointOpt point) {
+bool AlgoOpt::testBordureBrulee(const PointOpt point) {
     if(affichage) cout << "Dans testBordureBrulee" << endl;
 
     if(listeCoins.empty())
@@ -1989,7 +1989,7 @@ float AlgoOpt::det(Vector2D v1, Vector2D v2){
 
 //trouve un point avec son id
 //retourne null si pas trouvé
-PointOpt AlgoOpt::findPointOptByIndice(vector<PointOpt> listDef, string indice){
+PointOpt AlgoOpt::findPointOptByIndice(const vector<PointOpt> listDef, string indice){
     for(auto & i : listDef){
         if(i.getId() == indice){
             return i;

@@ -63,7 +63,7 @@ public:
 
 
     /*Fonctions de suppression de point*/
-    int supprimeCroisementRaj(PointOpt mvt,double tmin, string ind);
+    int supprimeCroisementRaj(PointOpt mvt,double tmin, const string ind);
     void supprimePointTropProche(string ind, double crit);
     int supprimerCroisement(PointOpt point, std::string ind);
     void supprime(std::string ind);
@@ -79,10 +79,10 @@ public:
     pair<bool,vector<vector<VitesseOpt>>> vitesseChocNew(vector<vector<VitesseOpt>> vits, Vector2D tauperp);
     pair<bool,vector<vector<VitesseOpt>>> vitesseNew1(vector<vector<VitesseOpt>> vits, Vector2D tauperp);
     pair<bool,vector<vector<VitesseOpt>>> vitesseSommetNew(vector<vector<VitesseOpt>> vits, Vector2D tauperp);
-    VitesseOpt vitesse(VitesseOpt vb, Point2D ij);
+    VitesseOpt vitesse(const VitesseOpt vb, Point2D ij);
 
     /*Fonction de gestion des bordures*/
-    bool testBordureBrulee(PointOpt point);
+    bool testBordureBrulee(const PointOpt point);
     void actualiseCoin(string ind);
     void initialiserCoinContourDepart(PointOpt mvt);
 
@@ -109,7 +109,7 @@ public:
 
     /*Autre*/
     string getMinlisteCellulesBrulees();
-    PointOpt findPointOptByIndice(vector<PointOpt>,string);
+    PointOpt findPointOptByIndice(vector<PointOpt>, const string);
     float det(Vector2D v1, Vector2D v2);
     void triDesChocs();
 

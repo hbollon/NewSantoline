@@ -18,8 +18,8 @@ public:
     bool indic;
     Point2D pts;
 
-    SommetCase(std::string newNumSommet, double newT, std::string newIndicePointAllume, bool newIndic, int x, int y);
-    SommetCase(std::string newNumSommet, double newT, std::string newIndicePointAllume, bool newIndic, Point2D newPts);
+    SommetCase(const std::string newNumSommet, double newT, std::string newIndicePointAllume, bool newIndic, int x, int y);
+    SommetCase(const std::string newNumSommet, double newT, std::string newIndicePointAllume, bool newIndic, Point2D newPts);
 
 };
 

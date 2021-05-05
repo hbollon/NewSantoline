@@ -44,18 +44,11 @@ PointOpt::PointOpt(int * compt):
 
 PointOpt::PointOpt():tau(),indice(),coordonne(),t(),id()
 {}
-PointOpt::PointOpt(const PointOpt &other)
+
+PointOpt::PointOpt(const PointOpt &other) : tau(other.tau), indice(other.indice), coordonne(other.coordonne), t(other.t), 
+id(other.id), ancetre(other.ancetre), suivant(other.suivant), precedent(other.precedent), listeVitesse(other.listeVitesse), creation(other.creation)
 {
-    tau = other.tau;
-    indice = other.indice;
-    coordonne = other.coordonne;
-    t = other.t;
-    id = other.id;
-    ancetre = other.ancetre;
-    suivant = other.suivant;
-    precedent = other.precedent;
-    listeVitesse = other.listeVitesse;
-    creation = other.creation;
+    
 }
 
 PointOpt& PointOpt::operator=(const PointOpt &other)
