@@ -7,7 +7,8 @@
 #include "NoConfigException.hpp"
 #include "../Utils/Configuration.h"
 
-class Epilobe {
+class Epilobe
+{
 public:
     Epilobe();
 
@@ -21,7 +22,7 @@ public:
 
     bool can_generate();
 
-    void generate(string tifPath);
+    void generate(const string tifPath);
 
     bool is_generated();
 
@@ -33,7 +34,7 @@ public:
 
     std::pair<double, double> dimension() const;
 
-    bool subzone(string tifPath);
+    bool subzone(const string tifPath);
 
     bool alti_to_ascii();
 
@@ -54,4 +55,3 @@ private:
     std::pair<double, double> m_origin;
     std::pair<double, double> m_dimension;
 };
-

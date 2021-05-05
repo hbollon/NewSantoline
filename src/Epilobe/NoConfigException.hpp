@@ -6,12 +6,14 @@
 
 using namespace std;
 
-class NoConfigException {
+class NoConfigException
+{
 public:
-    explicit NoConfigException(string msg) : msg_(std::move(msg)){}
+    explicit NoConfigException(string msg) : msg_(std::move(msg)) {}
     ~NoConfigException() = default;
 
-    string getMessage() const {return msg_;}
+    string getMessage() const { return msg_; }
+
 private:
     string msg_;
 };

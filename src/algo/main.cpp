@@ -5,14 +5,16 @@
 #include "Algo.h"
 using json = nlohmann::json;
 
+#ifdef WINDOWS
+#include <direct.h>
+#define GetCurrentDir _getcwd
+#else
+#include <unistd.h>
+#define GetCurrentDir getcwd
+#endif
+
 int main(int argc, char *argv[])
 {
-
-    //    argc = 4;
-    //    argv[1]="C:\\Users\\Skaldr\\Desktop\\NewSantolineCedric\\SantolinePyQT5\\parametreAlgo.json";
-    //    argv[2]="C:\\Users\\Skaldr\\Desktop\\NewSantolineCedric\\SantolinePyQT5\\maps\\map.json";
-    //    argv[3]="C:\\Users\\Skaldr\\Desktop\\NewSantolineCedric\\SantolinePyQT5\\resultatSimulation.json";
-
     if (argc != 4)
     {
         cerr << "le nombre d'arguments en entree n'est pas valide" << endl

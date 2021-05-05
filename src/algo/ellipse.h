@@ -1,11 +1,11 @@
 #ifndef ALGO_ELLIPSE_H
 #define ALGO_ELLIPSE_H
 
-
 #include "Vecteur.h"
 #include "Utils.h"
 
-class AEllipse {
+class AEllipse
+{
 
     Vector3D m_wind;
     Vector3D m_slope;
@@ -24,10 +24,10 @@ class AEllipse {
     Point2D m_plan;
 
 public:
-    AEllipse(Vector3D wind, Vector3D slope, Vector3D windSlope, double aspect, double slope_value,double exentricite, double rateOfSpread,
-             double temp, double swl, Point2D top_left, Point2D plan);
     AEllipse(Vector3D wind, Vector3D slope, Vector3D windSlope, double aspect, double slope_value, double exentricite, double rateOfSpread,
-            Point2D top_left,Point2D plan);
+             double temp, double swl, Point2D top_left, const Point2D plan);
+    AEllipse(Vector3D wind, Vector3D slope, Vector3D windSlope, double aspect, double slope_value, double exentricite, double rateOfSpread,
+             Point2D top_left, const Point2D plan);
     AEllipse();
 
     /**

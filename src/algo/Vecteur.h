@@ -10,12 +10,14 @@
 #include "Utils.h"
 #include "Point.h"
 
-class Vector2D {
+class Vector2D
+{
     std::pair<double, double> m_body;
+
 public:
     Vector2D();
     Vector2D(double x, double y);
-    Vector2D(const Point2D& p): m_body(p.x(), p.y()){};
+    Vector2D(const Point2D &p) : m_body(p.x(), p.y()){};
 
     /*produit scalaire
      * @param v est le vector avec lequel on va faire notre produit
@@ -60,13 +62,15 @@ public:
     std::string toString();
 };
 
-class Vector3D {
+class Vector3D
+{
 
     std::tuple<double, double, double> m_body;
+
 public:
     Vector3D();
     Vector3D(double x, double y, double z);
-    Vector3D(const Point3D& p): m_body(p.x(), p.y(), p.z()){};
+    Vector3D(const Point3D &p) : m_body(p.x(), p.y(), p.z()){};
 
     /*produit scalaire
     * @param v est le vector avec lequel on va faire notre produit

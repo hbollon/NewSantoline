@@ -3,7 +3,6 @@
 #include <fstream>
 #include "Algo.h"
 
-
 using namespace std;
 
 json Algo::simulation()
@@ -44,7 +43,7 @@ json Algo::simulation()
     return resultat;
 }
 
-json Algo::simulation(string type)
+json Algo::simulation(const string type)
 {
 
     std::cout << "debut simulation \n";
@@ -319,7 +318,7 @@ int orientation(Point2D p, Point2D q, Point2D r)
     return (val > 0) ? 1 : 2; // clock or counterclock wise
 }
 
-bool doIntersect(Point2D p1, Point2D q1, Point2D p2, Point2D q2)
+bool doIntersect(const Point2D p1, const Point2D q1, const Point2D p2, const Point2D q2)
 {
 
     // Find the four orientations needed for general and
@@ -457,9 +456,11 @@ vector<vector<Point3D>> Algo::propagation(ListeBurningPoint &burningPointInitiau
         Point3D a = pointAMettreEnFeu.second.second;
         Point2D a0 = Point2D(pointAMettreEnFeu.second.first.x(), pointAMettreEnFeu.second.first.y());
         Point2D a1 = Point2D(a.x(), a.y());
-        if ((int)a.z() % 10 == 0){
+        if ((int)a.z() % 10 == 0)
+        {
             int progressValue = int(round(a.z() / duration * 100));
-            if(progressValue > lastProgressValue){
+            if (progressValue > lastProgressValue)
+            {
                 lastProgressValue = progressValue;
                 std::cout << progressValue << endl;
             }
@@ -528,19 +529,24 @@ vector<vector<Point3D>> Algo::propagation(ListeBurningPoint &burningPointInitiau
 
         result.push_back(temp);
     }
- 
+
     // Hull
-    // 1 -> Concave Hull 
+    // 1 -> Concave Hull
     // 2 -> Convex Hull
     // Check folder's readme for more informations
-    if (courbeEnveloppe == 1) {
+    if (courbeEnveloppe == 1)
+    {
         export3dPointsTo2dFile(finalContour);
         int retCode = system("..\\src\\algo\\concave.exe points.txt -out points2.txt");
         finalContour = import3dPointsTo2dFile();
         contour.push_back(finalContour);
-    } else if (courbeEnveloppe == 2) {
+    }
+    else if (courbeEnveloppe == 2)
+    {
         contour.push_back(makeConvexHull(finalContour));
-    } else {
+    }
+    else
+    {
         std::cerr << "Error : bad hull method" << std::endl;
         contour.push_back(finalContour);
     }
@@ -692,7 +698,8 @@ vector<Point3D> Algo::get_contour(map<string, pair<Point3D, Point3D>> betterVici
     return (contour);
 }
 
-vector<Point3D> Algo::trier(vector<Point3D> list){
+vector<Point3D> Algo::trier(vector<Point3D> list)
+{
     time_t debut;
     time(&debut);
 
@@ -702,25 +709,27 @@ vector<Point3D> Algo::trier(vector<Point3D> list){
     list.erase(list.begin());
     vector<Point3D>::const_iterator temp;
     Point3D p1;
-    int i =0;
-    while(list.size()>1){
-        temp=list.begin();
-        p1=*temp;
+    int i = 0;
+    while (list.size() > 1)
+    {
+        temp = list.begin();
+        p1 = *temp;
 
-        for(vector<Point3D>::const_iterator it =list.begin(); it != list.end(); ++it){
-            if (distanceP(p0, *it) < distanceP(p0, *temp) ) {
+        for (vector<Point3D>::const_iterator it = list.begin(); it != list.end(); ++it)
+        {
+            if (distanceP(p0, *it) < distanceP(p0, *temp))
+            {
                 temp = it;
-                p1=*it;
-
+                p1 = *it;
             }
         }
-        if (distanceP(p0, p1) > 1 && distanceP(p0, p1) < 100){
+        if (distanceP(p0, p1) > 1 && distanceP(p0, p1) < 100)
+        {
             result.push_back(p1);
-            p0=p1;
+            p0 = p1;
         }
 
         list.erase(temp);
-
     }
     time_t fin;
     time(&fin);
@@ -872,7 +881,7 @@ vector<Point3D> Algo::get_neighbor(Point2D p)
     return result;
 }
 
-vector<Point3D> Algo::get_neighbor_Fixe(Point2D p)
+vector<Point3D> Algo::get_neighbor_Fixe(const Point2D p)
 {
     // retourne tout les points touché par les arcs de l'ellipse(déterminée au point p) avec une date d'ignition = 200
 
@@ -941,7 +950,7 @@ string Algo::associated_id(const Point2D &p, double segment_size, double cell_di
     return result;
 }
 
-bool Algo::pointOnLine(Point2D a, Point2D b, Point2D c)
+bool Algo::pointOnLine(const Point2D a, const Point2D b, const Point2D c)
 {
     if (distanceP(a, b) + distanceP(b, c) == distanceP(a, b))
     {
@@ -988,7 +997,7 @@ void Algo::arcs(const Point2D &p, AEllipse &e, vector<Point2D> &result)
     }
 }
 
-vector<Point2D> Algo::handleImpossible(vector<Point2D> points, Point2D point)
+vector<Point2D> Algo::handleImpossible(vector<Point2D> points, const Point2D point)
 // déso mais j'arrive vraiment pas à comprendre cette fonction
 {
     // pour l'intant, on ne considère que la première ligne d'obstacle

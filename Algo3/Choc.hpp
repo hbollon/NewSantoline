@@ -16,12 +16,11 @@ public:
     std::string indic;
     Point2D point;
     double temps;
-    Choc(std::string num, std::string indic, Point2D point, double test) : num(num), indic(indic), point(point), temps(test)
+    Choc(const std::string num, std::string indic, Point2D point, double test) : num(num), indic(indic), point(point), temps(test)
     {
     }
-    Choc() : num("-1"), indic("-1"), temps(-1)
+    Choc() : num("-1"), indic("-1"), temps(-1), point(Point2D(0, 0))
     {
-        point = Point2D(0, 0);
     };
 };
 
