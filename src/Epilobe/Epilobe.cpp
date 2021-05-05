@@ -14,7 +14,7 @@ bool Epilobe::isConfigValid()
 }
 
 Epilobe::Epilobe() : m_axe("est"), m_direction(0), m_force(1), m_nb_process(1),
-                     m_origin(0, 0), m_dimension(0, 0)
+                     m_origin(0, 0), m_dimension(0, 0), m_generated(false)
 {
     try
     {

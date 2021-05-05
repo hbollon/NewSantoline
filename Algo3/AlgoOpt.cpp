@@ -1540,8 +1540,8 @@ vector<vector<VitesseOpt>> AlgoOpt::vitesseRajoutes(Point2D ij, Vector2D v0, Vec
         listhetab.push_back(round(100000 * it));
     }
 
-    std::sort(listhetab.begin(), listhetab.end());
-    std::unique(listhetab.begin(), listhetab.end());
+    //std::sort(listhetab.begin(), listhetab.end());
+    //std::unique(listhetab.begin(), listhetab.end());
 
     std::sort(listheta.begin(), listheta.end());
     std::vector<double>::iterator it_theta = listheta.begin();
