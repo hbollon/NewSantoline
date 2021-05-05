@@ -709,7 +709,6 @@ vector<Point3D> Algo::trier(vector<Point3D> list)
     list.erase(list.begin());
     vector<Point3D>::const_iterator temp;
     Point3D p1;
-    int i = 0;
     while (list.size() > 1)
     {
         temp = list.begin();
@@ -1009,10 +1008,9 @@ vector<Point2D> Algo::handleImpossible(vector<Point2D> points, const Point2D& po
     }
 
     vector<Point2D> result;
-    bool cross;
     for (vector<Point2D>::const_iterator it = points.begin(); it != points.end(); ++it)
     {
-        cross = false;
+        bool cross = false;
         int pos = 0;
         while (!cross && pos < ((obstacle.size()) - 1))
         {

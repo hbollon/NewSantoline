@@ -19,7 +19,6 @@ vector<Point3D> AlgoOpt::propagation(vector<Point2D> listE, json cartevent, json
     vector<string> id;
     vector<string> suivant;
     vector<string> precedent;
-    double ancientmin;
 
     json infos_json = nullptr;
     double tempsPropagation = timeToDouble(parametreAlgo["duree"]);
@@ -52,9 +51,6 @@ vector<Point3D> AlgoOpt::propagation(vector<Point2D> listE, json cartevent, json
     vector<Point3D> r;
 
     int nmax = listff.size();
-    int nmaxnewn;
-    int nmaxnew;
-    ancientmin = listff.at(aPropager).t;
 
     int iterationAffichage = 999999;
     double tfinal = (tempsPropagation / 3600.0);
@@ -63,14 +59,13 @@ vector<Point3D> AlgoOpt::propagation(vector<Point2D> listE, json cartevent, json
         if (compt == iterationAffichage)
             affichage = true;
 
-        ancientmin = listff.at(aPropager).t;
         if (affichage)
             cout << "APropager : " << aPropager << endl;
 
         uneIteration(aPropager);
 
-        nmaxnewn = listff.size();
-        nmaxnew = nmax;
+        int nmaxnewn = listff.size();
+        int nmaxnew = nmax;
 
         while (nmaxnewn > nmaxnew && (nmaxnewn - nmaxnew <= 20))
         {
@@ -1068,7 +1063,6 @@ int AlgoOpt::supprimerCroisement(PointOpt mtp, std::string ind)
     { /*Cas sommet*/
         cout << "Dans supprimeCroisement mtp = mm IND=" << ind << std::endl;
         return 1; /*TODO attention*/
-        exit(EXIT_FAILURE);
     }
 
     Vector2D v = mtp.listeVitesse.begin()->begin()->vecteur();
@@ -1459,8 +1453,6 @@ VitesseOpt AlgoOpt::vitesseMax(Vector2D direction, Point2D ij)
     Vector2D tff = Vector2D(-aux3 * ellipse.vecteur().y() - aux4 * ellipse.vecteur().x(),
                             aux3 * ellipse.vecteur().x() - aux4 * ellipse.vecteur().y());
 
-    double normtff = tff.norm();
-
     if (det(v, tff) <= 0.0)
     {
         tff = Vector2D(-tff.x(), -tff.y());
@@ -1655,8 +1647,6 @@ VitesseOpt AlgoOpt::vitesse0(Point2D p, Point2D s)
 
 VitesseOpt AlgoOpt::vitesse(const VitesseOpt& vb, const Point2D& ij)
 {
-
-    EllipseOpt ellipse = carteEllipse[ij.x()][ij.y()];
     Vector2D vv = vb.vecteur();
     Point2D ijo = vb.coordonne();
     Vector2D tauperp = ij - ijo;
@@ -1903,9 +1893,6 @@ bool AlgoOpt::testBordureBrulee(const PointOpt& point)
             }
             else
             { //Ici les deux sommets sont ou vont brules
-
-                string ind = listeCoins.at(num).indicePointAllume; //On va chercher l'indice du point dans la cellule
-                string ind1 = listeCoins.at(num1).indicePointAllume;
                 double tmax = listeCoins.at(num).tIgnitionCoin;
                 double tmax1 = listeCoins.at(num1).tIgnitionCoin;
                 double tm = m.t;
