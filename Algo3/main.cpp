@@ -10,12 +10,13 @@
 using json = nlohmann::json;
 using namespace std;
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[])
+{
 
     // ORIGINE => pied de la cellule (x,y) donnés par le fichier carteVent.json.
     // penser à la conversion
 
-    cout<<"Debut de programme, nombre d'arguments : "<< argc << endl;
+    cout << "Debut de programme, nombre d'arguments : " << argc << endl;
     /* Arguments du programme */
     /* "[chemin]\data\communication\parametreAlgo.json" -> Json en entree qui contient tous les parametres pour l'execution de l'algo
      * "[chemin]\data\maps\map.json" -> json en entrre qui contient des informations de terrain de la zone
@@ -29,7 +30,7 @@ int main(int argc, char* argv[]) {
     json parametreAlgo, carteVent;
 
     // On récupère les json spécifiés par argv[1] et argv[2]
-    std::ifstream inputParametreAlgo(argv[1]),inputCarteVent(argv[2]);
+    std::ifstream inputParametreAlgo(argv[1]), inputCarteVent(argv[2]);
 
     inputParametreAlgo >> parametreAlgo;
     inputCarteVent >> carteVent;
@@ -39,7 +40,8 @@ int main(int argc, char* argv[]) {
     json contourInitial = parametreAlgo["contourInitial"];
 
     //On transforme ce qu'on a recupere du json en objets utilisable pas l'algo
-    for (const auto &it : contourInitial){
+    for (const auto &it : contourInitial)
+    {
         listPointE.emplace_back(Point2D(it));
     }
 
@@ -50,13 +52,14 @@ int main(int argc, char* argv[]) {
     ofstream contour_final_detail(argv[5]);
     ofstream infos_algo(argv[6]);
     ofstream etat_final_liste_sommets(argv[7]);
-    
+
     //On lance l'algorithme avec la fonction propagation, ce qui ressort de cette fonction est la liste des points du contour final.
-    std::vector<Point3D> burned = algoOpt.propagation(listPointE,carteVent,parametreAlgo, sortie, infos_algo, etat_final_liste_sommets);
+    std::vector<Point3D> burned = algoOpt.propagation(listPointE, carteVent, parametreAlgo, sortie, infos_algo, etat_final_liste_sommets);
 
     json temp;
     /*On ajoute a un json les informations sur les points du contour final*/
-    for (const auto &it : burned){
+    for (const auto &it : burned)
+    {
         temp.push_back(it.toTuple()); //[x,y,z] (z=date d'ignition)
     }
     json result;
@@ -68,6 +71,6 @@ int main(int argc, char* argv[]) {
 
     /*On sauvegarde les informations pour l'application de test*/
     algoOpt.sauvegarde_liste_vitesses(contour_final_detail);
-   
+
     return 0;
 }

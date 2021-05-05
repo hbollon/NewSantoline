@@ -4,17 +4,19 @@ double deg_to_rad(double degrees) { return degrees * M_PI / 180.0; }
 
 double rad_to_deg(double radian) { return radian * 180.0 / M_PI; }
 
-double timeToDouble(std::string time){
+double timeToDouble(std::string time)
+{
     double result = 0;
-    char str[time.size() +1];
+    char str[time.size() + 1];
     strcpy(str, time.c_str());
-    char *tokens[time.size() +1];
+    char *tokens[time.size() + 1];
     char delims[] = ":";
 
     int i = 0;
-    tokens[i] = strtok( str, delims );
-    while( tokens[i] != nullptr){
-        tokens[++i] = strtok(nullptr, delims );
+    tokens[i] = strtok(str, delims);
+    while (tokens[i] != nullptr)
+    {
+        tokens[++i] = strtok(nullptr, delims);
     }
 
     result = std::stod(tokens[0]) * 3600 + std::stod(tokens[1]) * 60 + std::stod(tokens[2]);
@@ -23,8 +25,9 @@ double timeToDouble(std::string time){
 }
 
 // conversion: m/s -> km/h
-std::string doubleToTime(double time){
-    return {std::to_string((int)time/3600) + ":" + std::to_string((int)(fmod(time, 3600)/60)) + ":" + std::to_string(fmod(time, 60))};
+std::string doubleToTime(double time)
+{
+    return {std::to_string((int)time / 3600) + ":" + std::to_string((int)(fmod(time, 3600) / 60)) + ":" + std::to_string(fmod(time, 60))};
 }
 
 /*bool intersect(Point2D o, Vector2D dir, Point2D a, Vector2D dir_a, Point2D &result) {
@@ -53,28 +56,30 @@ std::vector<Point2D> from_3D_to_2D(std::vector<Point3D> points) {
     return res_2d_points;
 }*/
 
-void export3dPointsTo2dFile(std::vector<Point3D> points) {
+void export3dPointsTo2dFile(std::vector<Point3D> points)
+{
     std::ofstream outfile;
     outfile.open("points.txt", std::ios_base::out);
-    for(Point3D point : points)
+    for (Point3D point : points)
     {
         outfile << point.x() << "," << point.y() << std::endl;
     }
     outfile.close();
 }
 
-std::vector<Point3D> import3dPointsTo2dFile() {
+std::vector<Point3D> import3dPointsTo2dFile()
+{
     std::vector<Point3D> out;
     std::ifstream infile;
     infile.open("points2.txt", std::ios_base::in);
     std::string line;
-    while(std::getline(infile, line))
+    while (std::getline(infile, line))
     {
         line = std::regex_replace(line, std::regex("  "), " ");
-        std::istringstream   linestream(line);
-        std::string         data;
-        int                 x;
-        int                 y;
+        std::istringstream linestream(line);
+        std::string data;
+        int x;
+        int y;
 
         linestream >> x;
         std::getline(linestream, data, ' ');
@@ -85,32 +90,37 @@ std::vector<Point3D> import3dPointsTo2dFile() {
     return out;
 }
 
-void progressBar(std::ostream& output,const double currentValue, const double maximumValue) {
+void progressBar(std::ostream &output, const double currentValue, const double maximumValue)
+{
     static const int PROGRESSBARWIDTH = 60;
     static int myProgressBarRotation = 0;
     static int myProgressBarCurrent = 0;
     // how wide you want the progress meter to be
-    double fraction = currentValue /maximumValue;
+    double fraction = currentValue / maximumValue;
 
     // part of the progressmeter that's already "full"
     int dotz = static_cast<int>(floor(fraction * PROGRESSBARWIDTH));
-    if (dotz > PROGRESSBARWIDTH) dotz = PROGRESSBARWIDTH;
+    if (dotz > PROGRESSBARWIDTH)
+        dotz = PROGRESSBARWIDTH;
 
     // if the fullness hasn't changed skip display
-    if (dotz == myProgressBarCurrent) return;
+    if (dotz == myProgressBarCurrent)
+        return;
     myProgressBarCurrent = dotz;
     myProgressBarRotation++;
 
     // create the "meter"
-    int ii=0;
+    int ii = 0;
     output << "[";
     // part  that's full already
-    for ( ; ii < dotz;ii++) output<< "#";
+    for (; ii < dotz; ii++)
+        output << "#";
     // remaining part (spaces)
-    for ( ; ii < PROGRESSBARWIDTH;ii++) output<< " ";
-    static const char* rotation_string = "|/-\\";
+    for (; ii < PROGRESSBARWIDTH; ii++)
+        output << " ";
+    static const char *rotation_string = "|/-\\";
     myProgressBarRotation %= 4;
     output << "] " << rotation_string[myProgressBarRotation]
-           << " " << (int)(fraction*100)<<"/100\r";
+           << " " << (int)(fraction * 100) << "/100\r";
     output.flush();
 }

@@ -77,6 +77,6 @@ double lerp(double a, double b, double c);
 void export3dPointsTo2dFile(std::vector<Point3D> points);
 std::vector<Point3D> import3dPointsTo2dFile();
 
-void progressBar(std::ostream& output,const double currentValue, const double maximumValue);
+void progressBar(std::ostream &output, const double currentValue, const double maximumValue);
 
 #endif

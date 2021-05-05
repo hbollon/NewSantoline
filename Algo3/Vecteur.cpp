@@ -40,7 +40,7 @@ Vector2D Vector2D::rotate(double degrees) const
 {
     double radians = deg_to_rad(degrees);
     return {x() * cos(radians) - y() * sin(radians),
-                    x() * sin(radians) + y() * cos(radians)};
+            x() * sin(radians) + y() * cos(radians)};
 }
 
 Vector2D Vector2D::operator+(const Vector2D &v) const
@@ -67,16 +67,17 @@ bool Vector2D::operator==(const Vector2D &v) const
     return m_body == v.m_body;
 }
 
-double & Vector2D::x()
+double &Vector2D::x()
 {
     return m_body.first;
 }
 
-double Vector2D::x() const {
+double Vector2D::x() const
+{
     return m_body.first;
 }
 
-double & Vector2D::y()
+double &Vector2D::y()
 {
     return m_body.second;
 }
@@ -85,8 +86,6 @@ double Vector2D::y() const
 {
     return m_body.second;
 }
-
-
 
 std::string Vector2D::toString()
 {
@@ -108,18 +107,20 @@ Vector2D operator*(const double &scalar, const Vector2D &v)
     return {v.x() * scalar, v.y() * scalar};
 }
 
-Vector2D Vector2D::operator+(const Point2D &p) const {
+Vector2D Vector2D::operator+(const Point2D &p) const
+{
     return {this->x() + p.x(), this->y() + p.y()};
 }
 
-Vector2D Vector2D::operator-(const Point2D &p) const {
+Vector2D Vector2D::operator-(const Point2D &p) const
+{
     return {this->x() - p.x(), this->y() - p.y()};
 }
 
-Vector2D::operator Point2D() const {
+Vector2D::operator Point2D() const
+{
     return {this->x(), this->y()};
 }
-
 
 Vector3D::Vector3D() : m_body(0, 0, 0)
 {
@@ -177,7 +178,7 @@ bool Vector3D::operator==(const Vector3D &v) const
     return m_body == v.m_body;
 }
 
-double & Vector3D::x()
+double &Vector3D::x()
 {
     return std::get<0>(m_body);
 }
@@ -187,7 +188,7 @@ double Vector3D::x() const
     return std::get<0>(m_body);
 }
 
-double & Vector3D::y()
+double &Vector3D::y()
 {
     return std::get<1>(m_body);
 }
@@ -197,7 +198,7 @@ double Vector3D::y() const
     return std::get<1>(m_body);
 }
 
-double & Vector3D::z()
+double &Vector3D::z()
 {
     return std::get<2>(m_body);
 }
@@ -222,6 +223,8 @@ Vector3D operator*(const double &scalar, const Vector3D &v)
     return {v.x() * scalar, v.y() * scalar, v.z() * scalar};
 }
 
-Vector3D::operator Point3D() const {
-    return {this->x(), this->y(), this->z()};;
+Vector3D::operator Point3D() const
+{
+    return {this->x(), this->y(), this->z()};
+    ;
 }

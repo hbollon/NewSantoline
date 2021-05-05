@@ -157,10 +157,9 @@ std::ostream &operator<<(std::ostream &os, EllipseOpt &o)
               << " b : " << o.b() << std::endl;
 }
 
-EllipseOpt::EllipseOpt(const EllipseOpt &other) : m_vecteur(other.m_vecteur), m_coordonne(other.m_coordonne), 
-m_a(other.m_a), m_b(other.m_b)
+EllipseOpt::EllipseOpt(const EllipseOpt &other) : m_vecteur(other.m_vecteur), m_coordonne(other.m_coordonne),
+                                                  m_a(other.m_a), m_b(other.m_b)
 {
-    
 }
 
 EllipseOpt EllipseOpt::operator=(const EllipseOpt &other)
