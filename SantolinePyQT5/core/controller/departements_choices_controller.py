@@ -1,7 +1,5 @@
 from ..model import *
 from . import controller
-
-import re
 import os
 
 class Departements_Choices_Controller(controller.AController):

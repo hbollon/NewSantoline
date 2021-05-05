@@ -194,6 +194,11 @@ vector<Point3D> AlgoOpt::propagation(vector<Point2D> listE, json cartevent, json
     {
         export3dPointsTo2dFile(r);
         int retCode = system("..\\src\\algo\\concave.exe points.txt -out points2.txt");
+        if(retCode != 0)
+        {
+            cerr << "[ERROR] erreur pendant le calcul de la courbe enveloppe" << endl;
+            return r;
+        }
         r = import3dPointsTo2dFile();
     }
     else if (courbeEnveloppe == 2)
@@ -202,7 +207,7 @@ vector<Point3D> AlgoOpt::propagation(vector<Point2D> listE, json cartevent, json
     }
     else
     {
-        std::cerr << "Error : bad hull method" << std::endl;
+        cerr << "Error : bad hull method" << endl;
     }
 
     return r;
@@ -412,10 +417,10 @@ void AlgoOpt::initialiserEllipse(json cartevent, ofstream &sortie, int largeur, 
         {
             carteEllipse.at(i).resize(hauteurCarteEllipse);
         }
-        catch (std::bad_alloc &ba)
+        catch (bad_alloc &ba)
         {
-            std::cout << "erreur init map" << std::endl;
-            std::cout << " i = " << i << std::endl;
+            cout << "erreur init map" << endl;
+            cout << " i = " << i << endl;
         }
     }
     for (const auto &it : cartevent)
@@ -576,7 +581,7 @@ bool AlgoOpt::chocDansCellule(PointOpt mvt, string ind)
 
     VitesseOpt v = *VITS.begin();
     VitesseOpt vc = *VITSC.begin();
-    pair<double, std::vector<std::vector<VitesseOpt>>> VITC;
+    pair<double, vector<vector<VitesseOpt>>> VITC;
     double test = v.vecteur().determinant(vc.vecteur());
 
     if (test < 0)
@@ -808,7 +813,7 @@ pair<Point3D, Vector2D> AlgoOpt::mnplusun(const Point3D& point, const VitesseOpt
     }
     vectorRetour = Vector2D(vectorRetour.x() * tauperp1,
                             vectorRetour.y() * tauperp2);
-    return (std::make_pair(pointRetour, vectorRetour));
+    return (make_pair(pointRetour, vectorRetour));
 }
 
 void AlgoOpt::insere(PointOpt point, string ind, bool indic)
@@ -1018,7 +1023,7 @@ void AlgoOpt::supprime(string ind)
     }
 }
 
-void AlgoOpt::supprimePlus(std::string ind, std::string num)
+void AlgoOpt::supprimePlus(string ind, string num)
 {
     if (listePointsActifs.count(ind) != 0)
     {
@@ -1049,7 +1054,7 @@ void AlgoOpt::supprimePlus(std::string ind, std::string num)
     }
 }
 
-int AlgoOpt::supprimerCroisement(PointOpt mtp, std::string ind)
+int AlgoOpt::supprimerCroisement(PointOpt mtp, string ind)
 {
     if (affichage)
         cout << "SupprimerCroisement" << endl;
@@ -1066,7 +1071,7 @@ int AlgoOpt::supprimerCroisement(PointOpt mtp, std::string ind)
 
     if (vtemp.norm() <= seuil)
     { /*Cas sommet*/
-        cout << "Dans supprimeCroisement mtp = mm IND=" << ind << std::endl;
+        cout << "Dans supprimeCroisement mtp = mm IND=" << ind << endl;
         return 1; /*TODO attention*/
         exit(EXIT_FAILURE);
     }
@@ -1161,10 +1166,10 @@ int AlgoOpt::supprimerCroisement(PointOpt mtp, std::string ind)
             }
         }
     }
-    std::vector<string>::iterator ite;
-    ite = std::unique(indasuppr.begin(), indasuppr.end());
+    vector<string>::iterator ite;
+    ite = unique(indasuppr.begin(), indasuppr.end());
 
-    indasuppr.resize(std::distance(indasuppr.begin(), ite));
+    indasuppr.resize(distance(indasuppr.begin(), ite));
     if (affichage)
         cout << "Indasuppr taille : " << indasuppr.size() << endl;
     if (!indasuppr.empty())
@@ -1243,9 +1248,9 @@ int AlgoOpt::supprimeCroisementRaj(const PointOpt& mvt, const double& tmin, cons
                 }
             }
         }
-        std::vector<string>::iterator ite;
+        vector<string>::iterator ite;
         ite = unique(indasuppr.begin(), indasuppr.end());
-        indasuppr.resize(std::distance(indasuppr.begin(), ite));
+        indasuppr.resize(distance(indasuppr.begin(), ite));
 
         if (affichage)
             cout << "Indasuppr taille : " << indasuppr.size() << endl;
@@ -1431,7 +1436,7 @@ VitesseOpt AlgoOpt::vitesseMax(Vector2D direction, Point2D ij)
     EllipseOpt ellipse = carteEllipse[ij.x()][ij.y()];
     if (direction.norm() <= seuil)
     {
-        cout << "erreur dans vitessemax, vd=0" << std::endl;
+        cout << "erreur dans vitessemax, vd=0" << endl;
         exit(EXIT_FAILURE);
     }
     direction = direction.normalized();
@@ -1518,7 +1523,7 @@ vector<vector<VitesseOpt>> AlgoOpt::vitesseRajoutes(Point2D ij, Vector2D v0, Vec
         t4 += 2 * M_PI;
     }
 
-    std::vector<double> listheta;
+    vector<double> listheta;
 
     listheta.push_back(t1);
     listheta.push_back(t2);
@@ -1532,7 +1537,7 @@ vector<vector<VitesseOpt>> AlgoOpt::vitesseRajoutes(Point2D ij, Vector2D v0, Vec
         listheta.push_back(theta0 + (thetaf - theta0) * k / KMAX);
     }
 
-    std::vector<double> listhetab;
+    vector<double> listhetab;
 
     listhetab.reserve(listheta.size());
     for (double &it : listheta)
@@ -1540,11 +1545,11 @@ vector<vector<VitesseOpt>> AlgoOpt::vitesseRajoutes(Point2D ij, Vector2D v0, Vec
         listhetab.push_back(round(100000 * it));
     }
 
-    std::sort(listhetab.begin(), listhetab.end());
-    std::unique(listhetab.begin(), listhetab.end());
+    sort(listhetab.begin(), listhetab.end());
+    unique(listhetab.begin(), listhetab.end());
 
-    std::sort(listheta.begin(), listheta.end());
-    std::vector<double>::iterator it_theta = listheta.begin();
+    sort(listheta.begin(), listheta.end());
+    vector<double>::iterator it_theta = listheta.begin();
     vector<vector<VitesseOpt>> listvn;
     for (int k = 0; k < listhetab.size(); k += 1)
     {
@@ -1598,7 +1603,7 @@ pair<double, vector<vector<VitesseOpt>>> AlgoOpt::vitesseChocOuPas(VitesseOpt vi
 
     if (test > seuil)
     {
-        cout << "erreur dans VIP ou VIS dans vitessechocoupas test = " << test << std::endl;
+        cout << "erreur dans VIP ou VIS dans vitessechocoupas test = " << test << endl;
         exit(EXIT_FAILURE);
     }
     test = det(tp, ts);
@@ -1645,7 +1650,7 @@ pair<double, vector<vector<VitesseOpt>>> AlgoOpt::vitesseChocOuPas(VitesseOpt vi
     }
     if (affichage)
         cout << "Fin vitesseChocOuPas indic = " << indic << endl;
-    return std::make_pair(indic, vitc);
+    return make_pair(indic, vitc);
 }
 
 VitesseOpt AlgoOpt::vitesse0(Point2D p, Point2D s)
@@ -2270,7 +2275,7 @@ pair<double, double> AlgoOpt::numToCoordinate(const string &num) const
 /*********************************************************************************************
  *                              Fonctions d'affichage                                        *
  *********************************************************************************************/
-void AlgoOpt::affiche(std::vector<vector<VitesseOpt>> v)
+void AlgoOpt::affiche(vector<vector<VitesseOpt>> v)
 {
     int i = 0;
     for (auto &it : v)
@@ -2280,7 +2285,7 @@ void AlgoOpt::affiche(std::vector<vector<VitesseOpt>> v)
     }
 }
 
-void AlgoOpt::affiche(std::pair<double, std::vector<vector<VitesseOpt>>> v)
+void AlgoOpt::affiche(pair<double, vector<vector<VitesseOpt>>> v)
 {
     affiche(v.second);
 }

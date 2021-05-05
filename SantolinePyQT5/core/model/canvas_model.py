@@ -1,5 +1,4 @@
 from . import model
-import math
 from qgis.core import *
 
 class CanvasModel(model.AModel):
@@ -166,12 +165,12 @@ class CanvasModel(model.AModel):
         return contour
 
     def obstacleJsonify(self):
-        list = []
+        liste = []
         for obstacle in self.listObstacle_:
             for segment in obstacle:
                 if segment:
                     seg = []
                     for point in segment:
                         seg.append([point.x(), point.y()])
-                    list.append(seg)
-        return list
+                    liste.append(seg)
+        return liste

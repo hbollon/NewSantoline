@@ -1,5 +1,3 @@
-from random import randrange
-
 from qgis.gui import * #QgsMapCanvas
 from qgis.core import * #QgsRasterLayer, QgsApplication
 from qgis.PyQt.QtWidgets import * #QMainWindow, QWidget, QTabWidget, QPushButton
@@ -26,10 +24,10 @@ class Santoline(QMainWindow, observable.Observer):
         self.left_toolbar_ = None
         self.simulation = None
         self.simuler = None
-        self.actionEmitPoint = None 
+        self.actionEmitPoint = None
         self.actionCancelContour = None
-        self.actions = None 
-        self.actionLargageCEau = None 
+        self.actions = None
+        self.actionLargageCEau = None
         self.actionLargageHEau = None
         self.actionLargageCRetardant = None
         self.actionLargageHRetardant = None
@@ -151,8 +149,6 @@ class Santoline(QMainWindow, observable.Observer):
 
         # Map tools
         toolPan = QgsMapToolPan(self.canvas_)
-        toolZoomIn = QgsMapToolZoom(self.canvas_, False)
-        toolZoomOut = QgsMapToolZoom(self.canvas_, True)
         toolEdit = QgsMapToolEmitPoint(self.canvas_)
         
         self.actionPan = QAction(QIcon("icons\\hand.png"), "Naviguer", self)
@@ -166,7 +162,6 @@ class Santoline(QMainWindow, observable.Observer):
 
         self.actionZoomOut = QAction(QIcon("icons\\zoom_out.png"), "Zoom arriere", self)
         self.actionZoomOut.setCheckable(False)
-        toolZoomOut.setAction(self.actionZoomOut)
         self.actionZoomOut.triggered.connect(self.zoomArriere)
 
         # Simulation
@@ -475,7 +470,6 @@ class Santoline(QMainWindow, observable.Observer):
             self.layers.remove(self.slopeLayer_)
         else:
             self.layers.insert(0,self.slopeLayer_)
-
         if self.windLayer_ in self.layers :
             self.layers.remove(self.windLayer_)
 
@@ -1039,7 +1033,7 @@ class Santoline(QMainWindow, observable.Observer):
             self.canvas_.refresh()
             #reset the progressBar to 0
             self.progress(0)
-        else: 
+        else:
             self.controller_.showPopup("Impossible de charger la carte", "Erreur")
         
     def progress(self, percent):
@@ -1059,25 +1053,25 @@ class MapLoader(QThread):
         
     def run(self):
         # get list of all files which finish with .ext into datas folder 
-        list = useful.allFiles(self.datas_, ".jp2")
-        if (len(list) == 0):
+        liste = useful.allFiles(self.datas_, ".jp2")
+        if (len(liste) == 0):
             # if list of files is empty, finish the thread
             # pass empty array to end fonction to say that there is an error
             self.end.emit([])
         else:
             layers = []
-            total_len = len(list)
+            total_len = len(liste)
             #function which will be called by the threads
             def runner():
                 try:
-                    while (len(list) > 0):
-                        i = list.pop()
+                    while (len(liste) > 0):
+                        i = liste.pop()
                         layer = QgsRasterLayer(i, i)
                         if (not layer.isValid()):
                             raise IOError("Fail to open the layer {}".format(i))
                         layers.append(layer)
                         #set the progressBar value
-                        self.progress.emit(100 - int((len(list) / total_len) * 100))
+                        self.progress.emit(100 - int((len(liste) / total_len) * 100))
                 except IndexError: # catch if we pop an empty list.
                     pass
             #create array of threads

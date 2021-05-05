@@ -41,13 +41,13 @@ def adapt_grid_square_coords_to_canvas(factor_height, factor_width, height_canva
     convertedGrid = json.loads(json.dumps(new_list))
     if 'orig_cellule_coords' in convertedGrid[0]:
         min_val = {"x": new_list[0]['orig_cellule_coords'][0], "y": new_list[0]['orig_cellule_coords'][1]}
-        for i in range(len(convertedGrid)):
+        for i in enumerate(convertedGrid):
             point = {"x": new_list[i]['orig_cellule_coords'][0], "y": new_list[i]['orig_cellule_coords'][1]}
             convertedGrid[i]['orig_cellule_coords'] = (point["x"], point["y"])
             convertedGrid[i]['cellule_coords'] = adapt_coords_to_canvas(factor, min_val, point, size_canvas)
     else:
         min_val = {"x": new_list[0]['cellule_coords'][0], "y": new_list[0]['cellule_coords'][1]}
-        for i in range(len(convertedGrid)):
+        for i in enumerate(convertedGrid):
             point = {"x": new_list[i]['cellule_coords'][0], "y": new_list[i]['cellule_coords'][1]}
             convertedGrid[i]['orig_cellule_coords'] = convertedGrid[i]['cellule_coords']
             convertedGrid[i]['cellule_coords'] = adapt_coords_to_canvas(factor, min_val, point, size_canvas)
@@ -62,7 +62,7 @@ def adapt_points_coords_to_canvas(factor_height, factor_width, height_canvas, ne
     size_canvas = {"x": width_canvas, "y": height_canvas}
     factor = {"x": factor_width, "y": factor_height}
     convertedPoints = json.loads(json.dumps(test_2))
-    for i in range(len(convertedPoints)):
+    for i in enumerate(convertedPoints):
         point = {"x": test_2[i][0], "y": test_2[i][1]}
         convertedPoints[i] = adapt_coords_to_canvas(factor, min_val, point, size_canvas)
     return convertedPoints
@@ -77,7 +77,7 @@ def adapt_points_with_details_coords_to_canvas(factor_height, factor_width, heig
     size_canvas = {"x": width_canvas, "y": height_canvas}
     factor = {"x": factor_width, "y": factor_height}
     convertedPointsDetails = json.loads(json.dumps(points_details))
-    for i in range(len(convertedPointsDetails)):
+    for i in enumerate(convertedPointsDetails):
         point_coords = {"x": points_details[i]['coordonnees_non_converties'][0],
                         "y": points_details[i]['coordonnees_non_converties'][1]}
         convertedPointsDetails[i] = {
@@ -102,7 +102,7 @@ def adapt_initial_outline_to_canvas(factor_height, factor_width, height_canvas, 
     min_val = {"x": new_list[0]['cellule_coords'][0], "y": new_list[0]['cellule_coords'][1]}
     size_canvas = {"x": width_canvas, "y": height_canvas}
     convertedInitial_outline = json.loads(json.dumps(initial_outline))
-    for i in range(len(convertedInitial_outline["contourInitial"])):
+    for i in enumerate(convertedInitial_outline["contourInitial"]):
         point = {"x": initial_outline["contourInitial"][i][0], "y": initial_outline["contourInitial"][i][1]}
         convertedInitial_outline["contourInitial"][i] = adapt_coords_to_canvas(factor, min_val, point, size_canvas)
     return convertedInitial_outline
@@ -141,7 +141,7 @@ def adapt_burning_points_to_canvas(factor_height, factor_width, height_canvas,
     size_canvas = {"x": width_canvas, "y": height_canvas}
     factor = {"x": factor_width, "y": factor_height}
     converted_burning_points = json.loads(json.dumps(burning_points))
-    for i in range(len(converted_burning_points)):
+    for i in enumerate(converted_burning_points):
         point_coords = {"x": burning_points[i]['coordonnees_non_converties'][0],
                         "y": burning_points[i]['coordonnees_non_converties'][1]}
         converted_burning_points[i] = {
