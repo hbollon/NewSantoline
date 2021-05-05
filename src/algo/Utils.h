@@ -11,8 +11,6 @@
 #include <vector>
 #include "Point.h"
 
-//seriously windows, what the actual fuck? when did you come up with the idea that PI is useless?
-
 /**
  * Permet d'effectuer la conversion de valeurs en degrés vers des radians.
  * @param degrees la valeur en degrés que l'on souhaite convertir en radian

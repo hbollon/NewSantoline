@@ -70,13 +70,6 @@ bool Epilobe::subzone(const string& tifPath)
     ymin = m_origin.second - (m_dimension.second / 2.0);
     xmax = m_origin.first + (m_dimension.first / 2.0);
     ymax = m_origin.second + (m_dimension.second / 2.0);
-    /*
-    //m_origin = point en haut à gauche :
-    xmin = m_origin.first;
-    ymin = m_origin.second;
-    xmax = m_origin.first + (m_dimension.first);
-    ymax = m_origin.second + (m_dimension.second);
-    */
 
     std::string command = "\"\"" + config->qgis_path + "\\bin\\gdalwarp.exe\" ";
 
