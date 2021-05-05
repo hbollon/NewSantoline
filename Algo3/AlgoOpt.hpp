@@ -11,7 +11,7 @@
 #include "PointOpt.hpp"
 #include "Choc.hpp"
 #include "EllipseOpt.hpp"
-#include "json.hpp"
+#include "../libs/json.hpp"
 #include "CoinCase.h"
 #include "Utils.h"
 

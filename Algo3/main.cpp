@@ -5,14 +5,13 @@
 #include "Point.h"
 #include "EllipseOpt.hpp"
 #include "AlgoOpt.hpp"
-#include "json.hpp"
+#include "../libs/json.hpp"
 
 using json = nlohmann::json;
 using namespace std;
 
 int main(int argc, char *argv[])
 {
-
     // ORIGINE => pied de la cellule (x,y) donnés par le fichier carteVent.json.
     // penser à la conversion
 

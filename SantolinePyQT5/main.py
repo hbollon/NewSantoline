@@ -6,10 +6,10 @@
 
 import sys
 import os
-from qgis.core import QgsApplication, QgsPoint
-from core.view import santoline_view
 import json
 import shutil
+from qgis.core import QgsApplication
+from core.view import santoline_view
 
 # getting qgis path
 
@@ -74,7 +74,6 @@ def initEnvironment():
         "./data/maps/map.json": None,
         "./data/communication/parametreAlgo.json": None
     }
-
     for file, template in files.items():
         if os.path.isfile(file):
             os.remove(file)
