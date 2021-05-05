@@ -7,4 +7,3 @@ public:
 	~MessageErreur();
 	virtual void handleMessage(nlohmann::json message);
 };
-

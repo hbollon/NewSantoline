@@ -3,7 +3,7 @@
 #include "useful.h"
 #include "ellipse.h"
 
-struct Datas 
+struct Datas
 {
 	Vector3D wind;
 	Vector3D slope;
@@ -16,7 +16,7 @@ struct Datas
 	Vector2D plan;
 };
 
-std::ostream& operator<<(std::ostream& os, const Datas& d);
+std::ostream &operator<<(std::ostream &os, const Datas &d);
 
 class DatasHandler
 {
@@ -36,9 +36,9 @@ public:
 	virtual bool is_border(Point2D p);
 	virtual bool is_angle(Point2D p);
 
-	void load(int angle, int speed, int size,std::string path,std::string test);
+	void load(int angle, int speed, int size, std::string path, std::string test);
 
-	friend std::ostream& operator<<(std::ostream& os, const DatasHandler& dh);
+	friend std::ostream &operator<<(std::ostream &os, const DatasHandler &dh);
 
 private:
 	std::string index(Point2D p);
@@ -47,4 +47,3 @@ private:
 
 	std::unordered_map<std::string, Datas> m_datas;
 };
-

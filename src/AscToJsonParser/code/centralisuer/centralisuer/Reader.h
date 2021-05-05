@@ -6,9 +6,8 @@
 class Reader : public Stream
 {
 public:
-	Reader(Tube::TubeMultiplexe* tube);
+	Reader(Tube::TubeMultiplexe *tube);
 	~Reader();
 	virtual std::string read() = 0;
 	virtual void write(std::string message) = 0;
 };
-

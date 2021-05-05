@@ -1,16 +1,18 @@
 #include "Configuration.h"
 
-
 Configuration::~Configuration() = default;
 
-nlohmann::json Configuration::fileToJson(string pathToFile) {
+nlohmann::json Configuration::fileToJson(string pathToFile)
+{
     nlohmann::json parsedJson;
-    try {
+    try
+    {
         //lecture
         std::ifstream i(pathToFile);
         i >> parsedJson;
     }
-    catch(const std::exception& e){
+    catch (const std::exception &e)
+    {
         std::cerr << "Configuration.cpp : Erreur lors de la lecture du fichier : "
                   << e.what()
                   << std::endl;
@@ -18,7 +20,8 @@ nlohmann::json Configuration::fileToJson(string pathToFile) {
     return parsedJson;
 }
 
-bool Configuration::readPaths(string pathtoPaths) {
+bool Configuration::readPaths(string pathtoPaths)
+{
     nlohmann::json json = fileToJson(std::move(pathtoPaths));
     this->qgis_path = json["qgis_path"];
     this->data_path = json["data_path"];
@@ -28,6 +31,7 @@ bool Configuration::readPaths(string pathtoPaths) {
     return true;
 }
 
-bool Configuration::readEpilobeParams(string pathToParams) {
+bool Configuration::readEpilobeParams(string pathToParams)
+{
     this->epilobe_params = fileToJson(std::move(pathToParams));
 }

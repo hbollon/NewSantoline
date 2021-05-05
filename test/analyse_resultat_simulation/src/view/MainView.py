@@ -44,7 +44,8 @@ class MainView:
         self.construct_and_display_interface()
 
     def construct_and_display_interface(self):
-        self.window = TkInterfaceWithTurtle(APP_TITLE, resizable=WINDOW_RESIZABLE)
+        self.window = TkInterfaceWithTurtle(
+            APP_TITLE, resizable=WINDOW_RESIZABLE)
         self.window \
             .add_canvas(width=CANVAS_WIDTH, height=CANVAS_HEIGHT, position=constants.TOP) \
             .add_turtle_to_canvas() \
@@ -62,25 +63,29 @@ class MainView:
         self.window.init_turtle()
         self.limites = self.window.get_extreme_coordinates_canvas_content()
         initial_outline, sorted_test_x_2, sorted_test_x_y, sorted_test_y_2, points, points_details, algorithm_details, \
-        vertex_list = create_everything()
+            vertex_list = create_everything()
         self.vertex_list = vertex_list
         points = sort_points_by_x_then_y(points)
         self.detail_algorithm = algorithm_details
-        cells_boundaries, minX, minY = get_extreme_points(sorted_test_x_2, sorted_test_y_2)
-        newList = remove_unused_cells_from_grid(cells_boundaries, sorted_test_x_y)
+        cells_boundaries, minX, minY = get_extreme_points(
+            sorted_test_x_2, sorted_test_y_2)
+        newList = remove_unused_cells_from_grid(
+            cells_boundaries, sorted_test_x_y)
         newList = sort_cells_by_x_then_y(newList)
-        factorHeight, factorWidth, heightCanvas, widthCanvas = get_useful_information(self.limites, newList)
+        factorHeight, factorWidth, heightCanvas, widthCanvas = get_useful_information(
+            self.limites, newList)
         self.set_factors(factorHeight, factorWidth)
         convertedGrid, convertedPoints, converted_detailed_points, converted_old_detailed_points, \
-        convertedInitial_outline, converted_burning_points = adapt_data_to_canvas(
-            self.factor_height, self.factor_width, heightCanvas, widthCanvas,
-            newList, points, self.saved_detailed_points, points_details, initial_outline
-        )
+            convertedInitial_outline, converted_burning_points = adapt_data_to_canvas(
+                self.factor_height, self.factor_width, heightCanvas, widthCanvas,
+                newList, points, self.saved_detailed_points, points_details, initial_outline
+            )
         self.points = points
         self.converted_points = convertedPoints
         self.saved_detailed_points.set(converted_old_detailed_points)
         self.initial_outline = convertedInitial_outline
-        self.converted_grid.set(squares=convertedGrid, factor=(factorWidth, factorHeight))
+        self.converted_grid.set(squares=convertedGrid,
+                                factor=(factorWidth, factorHeight))
         self.converted_detailed_points.set(points=converted_detailed_points)
         self.window \
             .set_on_click_event(lambda x, y: self.on_click_event(window=self.window,
@@ -105,15 +110,17 @@ class MainView:
             if self.zoom_grid.is_in_boundaries(converted):
                 zoom_points.append(point)
         d = []
-        c_d_p_copy = json.loads(json.dumps(self.converted_detailed_points.points))  # pb: ordre des points
+        # pb: ordre des points
+        c_d_p_copy = json.loads(json.dumps(
+            self.converted_detailed_points.points))
         for point in c_d_p_copy:
             if self.zoom_grid.is_in_boundaries(point["coordonnees"]):
                 d.append(point)
         convertedGrid, convertedPoints, cv_d_points, converted_old_detailed_points, \
-        convertedInitial_outline, converted_burning_points = adapt_data_to_canvas(
-            factorHeight, factorWidth, heightCanvas, widthCanvas,
-            self.zoom_grid.squares, zoom_points, burning_points=self.vertex_list
-        )
+            convertedInitial_outline, converted_burning_points = adapt_data_to_canvas(
+                factorHeight, factorWidth, heightCanvas, widthCanvas,
+                self.zoom_grid.squares, zoom_points, burning_points=self.vertex_list
+            )
         converted_d = adapt_points_with_details_coords_to_canvas(
             factor_height=factorHeight, factor_width=factorWidth, height_canvas=heightCanvas,
             new_list=self.zoom_grid.squares, points_details=d,
@@ -129,19 +136,22 @@ class MainView:
         self.display_burning_points(window=newW, burning_points=burning_points,
                                     factor_width=factorWidth, factor_height=factorHeight)
 
-        self.display_igni_points(newW, convertedPoints, factorWidth, factorHeight)
+        self.display_igni_points(
+            newW, convertedPoints, factorWidth, factorHeight)
 
         if PROPAGATION_SPEED_IS_SHOWN:
             self.display_propagation_speed(points=converted_d, window=newW,
                                            factor_width=factorWidth, factor_height=factorHeight)
 
         self.display_text_zone_text(window=newW,
-                                    actual_points_to_display=convert_to_displayable_data(converted_d),
+                                    actual_points_to_display=convert_to_displayable_data(
+                                        converted_d),
                                     old_points_to_display=convert_burning_p_to_displayable_data(burning_points))
         newW \
             .turtle_set_animation(activation=True) \
             .set_on_click_event(lambda x, y: self.zoom_on_click_event(window=newW,
-                                                                      points=PointContainer(converted_d),
+                                                                      points=PointContainer(
+                                                                          converted_d),
                                                                       x=x, y=y,
                                                                       burning_points=PointContainer(burning_points))) \
             .start()
@@ -181,13 +191,15 @@ class MainView:
         b_points_to_display = None
         if burning_points is not None:
             b_points = burning_points.get(x=x, y=y, radius=BURNING_DOT_SIZE)
-            b_points_to_display = convert_burning_p_to_displayable_data(b_points)
+            b_points_to_display = convert_burning_p_to_displayable_data(
+                b_points)
         self.display_text_zone_text(window=window,
                                     actual_points_to_display=actual_points_to_display,
                                     old_points_to_display=b_points_to_display)
 
     def on_right_click_event(self, x, y):
-        self.zoom_grid = self.converted_grid.get_squares_around(x, y, self.zoom_nb_squares)
+        self.zoom_grid = self.converted_grid.get_squares_around(
+            x, y, self.zoom_nb_squares)
         self.display_zoom_window()
 
     def display_text_zone_text(self, window, actual_points_to_display,
@@ -196,17 +208,20 @@ class MainView:
         if old_points_to_display is not None:
             old_p = convert_to_displayable_str(old_points_to_display)
         window.text_zone_change_text(self.ID_TEXT_ZONE,
-                                     convert_to_displayable_str(actual_points_to_display)
+                                     convert_to_displayable_str(
+                                         actual_points_to_display)
                                      + "\n---------------------------\n" + old_p)
 
     def display_everything_in_canvas(self, converted_grid, converted_initial_outline, converted_points):
         self.display_infos()
-        self.display_grid(self.window, converted_grid, self.factor_width, self.factor_height)
+        self.display_grid(self.window, converted_grid,
+                          self.factor_width, self.factor_height)
         self.display_init_outline(converted_initial_outline)
 
         if self.is_set_saved_detailed_points():
             self.display_saved_igni_points()
-        self.display_igni_points(self.window, converted_points, self.factor_width, self.factor_height)
+        self.display_igni_points(
+            self.window, converted_points, self.factor_width, self.factor_height)
 
         if PROPAGATION_SPEED_IS_SHOWN:
             self.display_propagation_speed(points=self.converted_detailed_points.points, window=self.window,
@@ -214,8 +229,10 @@ class MainView:
 
     def display_grid(self, window, converted_grid, factor_width, factor_height):
         window.turtle_set_animation(activation=False)
-        self.draw_grid_squares(window, converted_grid, factor_width, factor_height)
-        self.draw_rate_of_spread(window, converted_grid, factor_width, factor_height)
+        self.draw_grid_squares(window, converted_grid,
+                               factor_width, factor_height)
+        self.draw_rate_of_spread(
+            window, converted_grid, factor_width, factor_height)
         window.turtle_set_animation(activation=True)
 
     def draw_rate_of_spread(self, window, converted_grid, factor_width, factor_height):
@@ -229,9 +246,11 @@ class MainView:
             )
 
     def display_infos(self):
-        self.window.label_set_text(ident=self.ID_LABEL, text=json.dumps(self.detail_algorithm))
+        self.window.label_set_text(
+            ident=self.ID_LABEL, text=json.dumps(self.detail_algorithm))
         if self.window.is_checkbox_checked(self.ID_CHECKBOX):
-            self.window.label_set_text(ident=self.ID_SAVED_LABEL, text=json.dumps(self.saved_detail_algorithm))
+            self.window.label_set_text(
+                ident=self.ID_SAVED_LABEL, text=json.dumps(self.saved_detail_algorithm))
 
     def draw_grid_squares(self, window, converted_grid, factor_width, factor_height):
         window \
@@ -318,7 +337,8 @@ class MainView:
         if DOT_ANIMATION:
             window.turtle_set_speed(speed=DOT_ANIMATION_SPEED)
         for i in range(len(burning_points)):
-            set_correspondent_burning_point_color(burning_points[i], self.detail_algorithm[0]["temps"], window)
+            set_correspondent_burning_point_color(
+                burning_points[i], self.detail_algorithm[0]["temps"], window)
             window.turtle_write_dot(
                 x=burning_points[i]['coordonnees'][0], y=burning_points[i]['coordonnees'][1],
                 size=BURNING_DOT_SIZE

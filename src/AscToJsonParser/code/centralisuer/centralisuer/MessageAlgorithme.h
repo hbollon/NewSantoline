@@ -5,11 +5,11 @@
 
 #include "Message.h"
 
-enum EAlgorithme 
+enum EAlgorithme
 {
-	ALGORITHM_UNDEFINED, 
-	MAILLAGE_FIXE, 
-	MAILLAGE_VARIABLE, 
+	ALGORITHM_UNDEFINED,
+	MAILLAGE_FIXE,
+	MAILLAGE_VARIABLE,
 	OPTIMAL
 };
 
@@ -25,6 +25,7 @@ public:
 	EAlgorithme algorithm() const;
 	double dimension() const;
 	virtual void handleMessage(nlohmann::json message);
+
 private:
 	double m_temperature;
 	double m_water_reserve;

@@ -3,18 +3,16 @@
 
 #include <iostream>
 
-
 MessageContour::MessageContour()
 {
 	m_message = MessageType::CONTOUR;
 }
 
-
 MessageContour::~MessageContour()
 {
 }
 
-void MessageContour::handleMessage(nlohmann::json message) 
+void MessageContour::handleMessage(nlohmann::json message)
 {
 	m_contour_initial.clear();
 	for (nlohmann::json::iterator it = message["contour"].begin(); it != message["contour"].end(); ++it)

@@ -4,7 +4,8 @@ from analyse_resultat_simulation.src.view.config import SIZE_HEAD_ARROW, CELLS_S
 
 
 def draw_grid_square_rate_of_spread(axis, axis_dir, coords, factor_height, factor_width, window):
-    pos = {"x": coords[0] + (CELLS_SIZE * factor_width) / 2, "y": coords[1] + (CELLS_SIZE * factor_height) / 2}
+    pos = {"x": coords[0] + (CELLS_SIZE * factor_width) / 2,
+           "y": coords[1] + (CELLS_SIZE * factor_height) / 2}
     size_tail = {"x": axis_dir[0] * axis, "y": axis_dir[1] * axis}
     size_head = SIZE_HEAD_ARROW
 
@@ -30,7 +31,8 @@ def draw_grid_square(coords, factor_height, factor_width, window):
 def draw_burning_point(coords, factor_height, factor_width, window):
     window.turtle_set_color(color=BURNING_POINT_COLOR)
     pos = {"x": coords[0], "y": coords[1]}
-    size = {"x": BURNING_POINT_SIZE * factor_width, "y": BURNING_POINT_SIZE * factor_height}
+    size = {"x": BURNING_POINT_SIZE * factor_width,
+            "y": BURNING_POINT_SIZE * factor_height}
     draw_triangle(
         cx=pos["x"],
         cy=pos["y"],

@@ -65,7 +65,7 @@ def create_vertex_list():
         "coordonnees_calcul": x["coordonnees_calcul"],
         "coordonnees_non_converties": x["coordonnees"],
         "coordonnees": x["coordonnees"],
-		"indice_allume": x["indice_allume"],
+        "indice_allume": x["indice_allume"],
         "t_ignition": x["t_ignition"]
     }, file_content))
     return vertex_list

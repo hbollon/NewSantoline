@@ -35,13 +35,13 @@ int MessageAlgorithme::nbProcess() const
 EAlgorithme MessageAlgorithme::algorithm() const
 {
 	EAlgorithme result;
-	char* temp = _strdup(m_algorithm.c_str());
+	char *temp = _strdup(m_algorithm.c_str());
 	std::transform(temp, temp + strlen(temp), temp, tolower);
-	if (m_algorithm == "maillage fixe") 
+	if (m_algorithm == "maillage fixe")
 	{
 		result = MAILLAGE_FIXE;
 	}
-	else if (m_algorithm == "maillage variable") 
+	else if (m_algorithm == "maillage variable")
 	{
 		result = MAILLAGE_VARIABLE;
 	}
@@ -61,7 +61,7 @@ double MessageAlgorithme::dimension() const
 	return m_dimension;
 }
 
-void MessageAlgorithme::handleMessage(nlohmann::json message) 
+void MessageAlgorithme::handleMessage(nlohmann::json message)
 {
 	if (message["json"]["paramSim"].find("temperature") != message["json"]["paramSim"].end())
 	{

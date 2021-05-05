@@ -96,7 +96,8 @@ class TkInterface:
             scrollbar_width = 18
 
         self.text_zones[ident] = Text(entry_frame)
-        self.text_zones[ident].place(x=0, y=0, height=height, width=width - scrollbar_width)
+        self.text_zones[ident].place(
+            x=0, y=0, height=height, width=width - scrollbar_width)
 
         if scrollable:
             scrollbar = Scrollbar(entry_frame, orient=VERTICAL)

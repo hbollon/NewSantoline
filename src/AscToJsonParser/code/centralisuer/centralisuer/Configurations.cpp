@@ -6,17 +6,20 @@
 #include <fstream>
 #include <iostream>
 
-void parseLine(const std::string& line, Configs& confs)
+void parseLine(const std::string &line, Configs &confs)
 {
 	char sep = '=';
-	if (line.length() > 0 && line[0] != '#') {
+	if (line.length() > 0 && line[0] != '#')
+	{
 		int pos = 0;
 		std::string word = "";
-		while (line[pos] != sep && pos < line.length()) {
+		while (line[pos] != sep && pos < line.length())
+		{
 			word += line[pos];
 			++pos;
 		}
-		if (line[pos] != sep) return;
+		if (line[pos] != sep)
+			return;
 		++pos;
 		if (word.compare("datas_path") == 0)
 		{
@@ -37,12 +40,13 @@ void parseLine(const std::string& line, Configs& confs)
 	}
 }
 
-void parseConf(const std::string& filename, Configs& confs)
+void parseConf(const std::string &filename, Configs &confs)
 {
 	system("cd");
 	std::ifstream input_file(filename);
 	std::string line;
-	while (std::getline(input_file, line)) {
+	while (std::getline(input_file, line))
+	{
 		parseLine(line, confs);
 	}
 	std::cout << "confs : " << confs.datas_path << " : " << confs.qgis_path << " : " << confs.windninja_path << std::endl;

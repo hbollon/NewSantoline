@@ -15,9 +15,9 @@ enum MessageType
 	ERREUR
 };
 
-static MessageType messageTypeFromChar(const char* str)
+static MessageType messageTypeFromChar(const char *str)
 {
-	char* copy = _strdup(str);
+	char *copy = _strdup(str);
 	std::transform(copy, copy + strlen(copy), copy, std::tolower);
 	MessageType result = MessageType::MESSAGE_UNDEFINED;
 	if (strcmp(str, "parametrealgorithme") == 0)
@@ -47,6 +47,7 @@ static MessageType messageTypeFromChar(const char* str)
 	return result;
 }
 
-static MessageType messageTypeFromString(const std::string str) {
+static MessageType messageTypeFromString(const std::string str)
+{
 	return messageTypeFromChar(str.c_str());
 }

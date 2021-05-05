@@ -16,7 +16,7 @@
 #include "MessageErreur.h"
 #include "MessageSimulation.h"
 
-Handler::Handler(Reader* reader) : m_reader(reader)
+Handler::Handler(Reader *reader) : m_reader(reader)
 {
 }
 
@@ -24,9 +24,9 @@ Handler::~Handler()
 {
 }
 
-void Handler::run() 
+void Handler::run()
 {
-	
+
 	MessageAlgorithme algorithme;
 	MessageEpilobe epilobe;
 	MessageActions actions;
@@ -47,8 +47,9 @@ void Handler::run()
 
 	m_running = true;
 	nlohmann::json message;
-	while (m_running){
-		try 
+	while (m_running)
+	{
+		try
 		{
 			message = nlohmann::json::parse(m_reader->read());
 			algorithme.message(message);
@@ -57,8 +58,8 @@ void Handler::run()
 		{
 			std::cerr << "Handler::Run() Erreur de parsing : " << e.what() << std::endl;
 		}
-		catch (const nlohmann::json::parse_error e) 
-		{		
+		catch (const nlohmann::json::parse_error e)
+		{
 			std::cerr << "Handler::Run() Erreur de parsing : " << e.what() << std::endl;
 		}
 	}

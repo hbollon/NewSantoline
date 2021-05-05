@@ -12,11 +12,11 @@
 class Handler
 {
 public:
-	Handler(Reader* reader);
+	Handler(Reader *reader);
 	~Handler();
 	virtual void run();
+
 private:
 	bool m_running;
-	Reader* m_reader;
+	Reader *m_reader;
 };
-

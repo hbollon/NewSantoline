@@ -11,7 +11,7 @@ Message::~Message()
 {
 }
 
-Message* Message::set_next(Message* next)
+Message *Message::set_next(Message *next)
 {
 	m_next = next;
 	return m_next;
@@ -23,11 +23,11 @@ void Message::message(nlohmann::json message)
 	{
 		handleMessage(message);
 	}
-	else if (m_next != nullptr) 
+	else if (m_next != nullptr)
 	{
 		m_next->message(message);
 	}
-	else 
+	else
 	{
 		std::cerr << "message[\"type\"] = " << message["type"] << " : Type de message non reconnu" << std::endl;
 	}

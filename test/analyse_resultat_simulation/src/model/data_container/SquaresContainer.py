@@ -36,7 +36,8 @@ class SquaresContainer:
         return self.squares
 
     def get_squares_around(self, x: float, y: float, nb_squares: int):
-        rad = (nb_squares * CELLS_SIZE * self.factor[0], nb_squares * CELLS_SIZE * self.factor[1])
+        rad = (nb_squares * CELLS_SIZE *
+               self.factor[0], nb_squares * CELLS_SIZE * self.factor[1])
         squares = []
         for square in self.squares:
             if coords_in_range(square, rad[0], rad[1], (x, y)):

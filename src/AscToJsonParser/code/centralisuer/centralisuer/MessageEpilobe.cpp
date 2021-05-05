@@ -5,9 +5,8 @@
 
 #include <iostream>
 
-MessageEpilobe::MessageEpilobe() : 
-	m_axe("est"), m_direction(0), m_force(1), m_nb_process(1), 
-	m_origin(0,0), m_dimension(0,0)
+MessageEpilobe::MessageEpilobe() : m_axe("est"), m_direction(0), m_force(1), m_nb_process(1),
+								   m_origin(0, 0), m_dimension(0, 0)
 {
 	m_message = MessageType::EPILOBE;
 	parseConf("path.ini", m_configs);
@@ -26,12 +25,12 @@ bool MessageEpilobe::subzone()
 {
 	std::string raster_de_base = m_configs.datas_path + "\\maps\\var.tif";
 	std::string raster_resultant = m_configs.datas_path + "\\maps\\subzone.tif";
-	double xmin, xmax, ymin, ymax; 
+	double xmin, xmax, ymin, ymax;
 	xmin = m_origin.first - (m_dimension.first / 2.0);
 	ymin = m_origin.second - (m_dimension.second / 2.0);
 	xmax = m_origin.first + (m_dimension.first / 2.0);
 	ymax = m_origin.second + (m_dimension.second / 2.0);
-	
+
 	std::string commands = "\"" + m_configs.qgis_path + "\\bin\\gdalwarp.exe\"";
 	std::vector<std::string> params;
 	params.push_back("-overwrite");
@@ -53,17 +52,17 @@ bool MessageEpilobe::alti_to_ascii()
 	return cli_call(command, parameters);
 }
 
-bool MessageEpilobe::windninja() 
+bool MessageEpilobe::windninja()
 {
 	std::string input_map = "\"" + m_configs.datas_path + "\\maps\\subzone.tif\"";
 	std::string output_data = "\"" + m_configs.datas_path + "\\datas\"";
 	std::string command = "\"" + m_configs.windninja_path + "\\bin\\WindNinja_cli.exe\"";
 	std::vector<std::string> parameters;
 	parameters.push_back("--num_threads " + std::to_string(m_nb_process));
-	parameters.push_back("--elevation_file " + input_map); 
+	parameters.push_back("--elevation_file " + input_map);
 	parameters.push_back("--initialization_method domainAverageInitialization");
 	parameters.push_back("--input_speed " + std::to_string(m_force));
-	parameters.push_back("--input_speed_units mps"); 
+	parameters.push_back("--input_speed_units mps");
 	parameters.push_back("--output_speed_units mps");
 	parameters.push_back("--input_direction " + std::to_string(m_direction));
 	parameters.push_back("--output_wind_height 0 ");
@@ -85,7 +84,7 @@ void MessageEpilobe::generate()
 	windninja();
 }
 
-bool MessageEpilobe::is_generated() 
+bool MessageEpilobe::is_generated()
 {
 	return m_generated;
 }
@@ -110,7 +109,7 @@ std::pair<double, double> MessageEpilobe::dimension() const
 	return m_dimension;
 }
 
-void MessageEpilobe::handleMessage(nlohmann::json message) 
+void MessageEpilobe::handleMessage(nlohmann::json message)
 {
 	if (message["epilobe"].find("axeorigine") != message["epilobe"].end())
 	{

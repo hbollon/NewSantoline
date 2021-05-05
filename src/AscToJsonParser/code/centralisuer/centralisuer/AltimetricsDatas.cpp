@@ -38,7 +38,6 @@ Vector3D AltimetricsDatas::slope(Point2D p)
 	
 	return Vector3D(x, y, z) * norm;
 	*/
-	
 
 	/*
 	double a = aspect(p);
@@ -52,25 +51,22 @@ Vector3D AltimetricsDatas::slope(Point2D p)
 	
 	*/
 	Vector3D s = 10 * tanalpha(p) * Vector3D(g(p), h(p), tanalpha(p) * tanalpha(p)).normalized();
-		
 
-	if (s.norm() > 10) {
+	if (s.norm() > 10)
+	{
 		s = s.normalized() * 10;
 	}
 
-
 	double b = g(p) * s.x() + h(p) * s.y();
 
-	if (!compare(s.z(), b,0.0000001)) {
-		std::cout << std::fixed << "le vecteur de pente " << s << "au point "<<p<<" n'est pas dans le plan z ="<<g(p)<<" X + "<<h(p)<<" Y \n";
+	if (!compare(s.z(), b, 0.0000001))
+	{
+		std::cout << std::fixed << "le vecteur de pente " << s << "au point " << p << " n'est pas dans le plan z =" << g(p) << " X + " << h(p) << " Y \n";
 		std::cout << std::fixed << "z: " << s.z() << " != " << g(p) * s.x() + h(p) * s.y() << "\n";
 	}
 
 	return s;
-
 }
-
-
 
 /* La fonction slope_angle retourne la valeur de l'angle de la pente en radian
 de la cellule situe au point p. Les fonctions g et h sont detaillees plus bas.
@@ -81,12 +77,11 @@ double AltimetricsDatas::slope_angle(Point2D p)
 {
 	//Decommenter " * (180/M_PI); " ci-dessous permet d'obtenir l'angle en degres plutot qu'en radian
 	double percent_angle = sqrt(g(p) * g(p) + h(p) * h(p)) * 100;
-	double degree_angle = (360 / (2 * M_PI) * 100 * atan(percent_angle / 100))/100;
+	double degree_angle = (360 / (2 * M_PI) * 100 * atan(percent_angle / 100)) / 100;
 	double radian_angle = degree_angle * (M_PI / 180);
 
-	return radian_angle; 
+	return radian_angle;
 }
-
 
 /* La fonction aspect retourne la valeur de l'orientation de la pente en radian
 de la cellule situe au point p. Les fonctions g et h sont detaillees plus bas.
@@ -100,16 +95,17 @@ double AltimetricsDatas::aspect(Point2D p)
 	{
 		return 0;
 	}
-	else 
+	else
 	{
 
-		if (g(p) < 0) {
-			return atan(h(p) / g(p)) - (M_PI/2) ;
+		if (g(p) < 0)
+		{
+			return atan(h(p) / g(p)) - (M_PI / 2);
 		}
-		else {
-			return atan(h(p) / g(p)) - (3*M_PI / 2);
+		else
+		{
+			return atan(h(p) / g(p)) - (3 * M_PI / 2);
 		}
-		
 	}
 }
 
@@ -127,21 +123,22 @@ double AltimetricsDatas::get(Point2D p)
 	return result;
 }
 
-double AltimetricsDatas::height(Point2D p) {
+double AltimetricsDatas::height(Point2D p)
+{
 	return get(p);
 };
 
 void AltimetricsDatas::load(std::string path)
 {
-	
-	std::string altimetrie = path+"\\subzone.asc";
+
+	std::string altimetrie = path + "\\subzone.asc";
 	std::ifstream altimetrics(altimetrie);
 	std::string tmp;
-	double width, height, xcorner, ycorner, size, nodata, data; 
+	double width, height, xcorner, ycorner, size, nodata, data;
 	altimetrics >> tmp >> width >> tmp >> height >> tmp >> xcorner >> tmp >> ycorner >> tmp >> size >> tmp >> nodata;
-	for (int y = 0; y < height; ++y) 
+	for (int y = 0; y < height; ++y)
 	{
-		for (int x = 0; x < width; ++x) 
+		for (int x = 0; x < width; ++x)
 		{
 			altimetrics >> data;
 			Point2D p(xcorner + x * size, (ycorner + height * size) - (y + 1) * size);
@@ -176,26 +173,30 @@ double AltimetricsDatas::g(Point2D p)
 {
 
 	double northEast = get(p + Point2D(25, 25));
-	if (northEast == 0) northEast = get(p);
+	if (northEast == 0)
+		northEast = get(p);
 	double east = get(p + Point2D(25, 0));
-	if (east == 0) east = get(p);
+	if (east == 0)
+		east = get(p);
 	double southEast = get(p + Point2D(25, -25));
-	if (southEast == 0) southEast = get(p);
+	if (southEast == 0)
+		southEast = get(p);
 
 	double northWest = get(p + Point2D(-25, 25));
-	if (northWest == 0) northWest = get(p);
+	if (northWest == 0)
+		northWest = get(p);
 	double west = get(p + Point2D(-25, 0));
-	if (west == 0) west = get(p);
+	if (west == 0)
+		west = get(p);
 	double southWest = get(p + Point2D(-25, -25));
-	if (southWest == 0) southWest = get(p);
+	if (southWest == 0)
+		southWest = get(p);
 
 	double sumEast = northEast + 2 * east + southEast;
 	double sumWest = northWest + 2 * west + southWest;
 
 	return (sumEast - sumWest) / (8 * 25);
-
 }
-
 
 /* La fonction h est simillaire a la fonction g (ci-dessus) sur un axe nord/sud.
 Elle prend en argument un point p qui corespond a une cellule de la carte des altitudes.
@@ -212,44 +213,53 @@ double AltimetricsDatas::h(Point2D p)
 {
 
 	double northEast = get(p + Point2D(25, 25));
-	if (northEast == 0) northEast = get(p);
+	if (northEast == 0)
+		northEast = get(p);
 	double north = get(p + Point2D(0, 25));
-	if (north == 0) north = get(p);
+	if (north == 0)
+		north = get(p);
 	double northWest = get(p + Point2D(-25, 25));
-	if (northWest == 0) northWest = get(p);
+	if (northWest == 0)
+		northWest = get(p);
 
 	double southEast = get(p + Point2D(25, -25));
-	if (southEast == 0) southEast = get(p);
+	if (southEast == 0)
+		southEast = get(p);
 	double south = get(p + Point2D(0, -25));
-	if (south == 0) south = get(p);
+	if (south == 0)
+		south = get(p);
 	double southWest = get(p + Point2D(-25, -25));
-	if (southWest == 0) southWest = get(p);
+	if (southWest == 0)
+		southWest = get(p);
 
 	double sumNorth = northEast + 2 * north + northWest;
 	double sumSouth = southEast + 2 * south + southWest;
 
 	return (sumNorth - sumSouth) / (8 * 25);
-
 }
 
-double AltimetricsDatas::tanalpha(Point2D p) {
+double AltimetricsDatas::tanalpha(Point2D p)
+{
 	return sqrt(g(p) * g(p) + h(p) * h(p));
 }
 
-double AltimetricsDatas::phi(Point2D p) {
+double AltimetricsDatas::phi(Point2D p)
+{
 	double cosphi = -h(p) / tanalpha(p);
 	double sinphi = g(p) / tanalpha(p);
-	if (sinphi < 0) {
+	if (sinphi < 0)
+	{
 		return -acos(-g(p) / tanalpha(p));
 	}
-	else {
+	else
+	{
 		return acos(-g(p) / tanalpha(p));
 	}
 }
 
-std::ostream& operator<<(std::ostream& os, const AltimetricsDatas& ad)
+std::ostream &operator<<(std::ostream &os, const AltimetricsDatas &ad)
 {
-	for (std::unordered_map<std::string, double>::const_iterator it = ad.m_datas.begin(); it != ad.m_datas.end(); ++it) 
+	for (std::unordered_map<std::string, double>::const_iterator it = ad.m_datas.begin(); it != ad.m_datas.end(); ++it)
 	{
 		os << it->first << " = " << it->second << std::endl;
 	}

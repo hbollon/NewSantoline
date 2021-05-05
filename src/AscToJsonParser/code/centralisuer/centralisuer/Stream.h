@@ -4,10 +4,10 @@
 class Stream
 {
 public:
-	Stream(Tube::TubeMultiplexe* tube);
+	Stream(Tube::TubeMultiplexe *tube);
 	~Stream();
 	virtual bool connected();
-protected:
-	Tube::TubeMultiplexe* m_tube;
-};
 
+protected:
+	Tube::TubeMultiplexe *m_tube;
+};

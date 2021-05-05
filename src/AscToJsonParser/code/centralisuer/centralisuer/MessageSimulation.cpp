@@ -8,36 +8,34 @@
 #include "connector.h"
 #include "CentraliseurConnecteur.h"
 
-
 MessageSimulation::MessageSimulation()
 {
 	m_message = MessageType::SIMULATION;
 }
 
-
 MessageSimulation::~MessageSimulation()
 {
 }
 
-void MessageSimulation::handleMessage(nlohmann::json message) 
+void MessageSimulation::handleMessage(nlohmann::json message)
 {
-	if (m_epilobe->is_generated()) 
-	{ 
-		m_reader->write(vectorPointToJSON(execute()).dump()); 
+	if (m_epilobe->is_generated())
+	{
+		m_reader->write(vectorPointToJSON(execute()).dump());
 	}
 }
 
-
 std::vector<Point3D> MessageSimulation::execute()
 {
-	Algorithm* algorithm = nullptr;
+	Algorithm *algorithm = nullptr;
 
 	DatasHandler handler;
 	//handler.load((int)round(m_epilobe->direction()), (int)round(m_epilobe->force()), 25,std::string("fill"));
 
-	Connector* connector = new CentraliseurConnecteur(&handler);
+	Connector *connector = new CentraliseurConnecteur(&handler);
 	std::cout << "message algorithme : " << m_algorithme->algorithm() << std::endl;
-	switch (m_algorithme->algorithm()){
+	switch (m_algorithme->algorithm())
+	{
 	case MAILLAGE_FIXE:
 		algorithm = new MaillageFixe(connector, m_algorithme->duration(), (int)m_algorithme->dimension());
 		algorithm->get_starting_points() = m_contour->contour_initial();
@@ -61,20 +59,20 @@ std::vector<Point3D> MessageSimulation::execute()
 	return result;
 }
 
-void MessageSimulation::set_algorithm(MessageAlgorithme* algorithme)
+void MessageSimulation::set_algorithm(MessageAlgorithme *algorithme)
 {
 	m_algorithme = algorithme;
 }
-void MessageSimulation::set_epilobe(MessageEpilobe* epilobe)
+void MessageSimulation::set_epilobe(MessageEpilobe *epilobe)
 {
 	m_epilobe = epilobe;
 }
-void MessageSimulation::set_contour(MessageContour* contour)
+void MessageSimulation::set_contour(MessageContour *contour)
 {
 	m_contour = contour;
 }
 
-void MessageSimulation::set_reader(Reader* reader)
+void MessageSimulation::set_reader(Reader *reader)
 {
 	m_reader = reader;
 }

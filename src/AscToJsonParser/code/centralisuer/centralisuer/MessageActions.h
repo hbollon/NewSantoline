@@ -7,4 +7,3 @@ public:
 	~MessageActions();
 	void handleMessage(nlohmann::json message);
 };
-

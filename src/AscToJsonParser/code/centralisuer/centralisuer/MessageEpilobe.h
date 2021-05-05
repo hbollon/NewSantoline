@@ -21,6 +21,7 @@ public:
 	bool alti_to_ascii();
 	bool windninja();
 	virtual void handleMessage(nlohmann::json message);
+
 private:
 	bool m_generated;
 	std::string m_axe;

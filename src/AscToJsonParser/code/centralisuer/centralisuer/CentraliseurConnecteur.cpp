@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CentraliseurConnecteur.h"
 
-CentraliseurConnecteur::CentraliseurConnecteur(DatasHandler* handler) : m_handler(handler)
+CentraliseurConnecteur::CentraliseurConnecteur(DatasHandler *handler) : m_handler(handler)
 {
 }
 

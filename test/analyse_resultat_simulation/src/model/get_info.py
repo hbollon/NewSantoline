@@ -14,11 +14,15 @@ def get_useful_information(limites, new_list):
     widthCanvas = limites[1] - limites[0]
     heightCanvas = limites[3] - limites[2]
     if 'orig_cellule_coords' in new_list[0]:
-        widthGrid = new_list[-1]['orig_cellule_coords'][0] - new_list[0]['orig_cellule_coords'][0] + CELLS_SIZE
-        heightGrid = new_list[-1]['orig_cellule_coords'][1] - new_list[0]['orig_cellule_coords'][1] + CELLS_SIZE
+        widthGrid = new_list[-1]['orig_cellule_coords'][0] - \
+            new_list[0]['orig_cellule_coords'][0] + CELLS_SIZE
+        heightGrid = new_list[-1]['orig_cellule_coords'][1] - \
+            new_list[0]['orig_cellule_coords'][1] + CELLS_SIZE
     else:
-        widthGrid = new_list[-1]['cellule_coords'][0] - new_list[0]['cellule_coords'][0] + CELLS_SIZE
-        heightGrid = new_list[-1]['cellule_coords'][1] - new_list[0]['cellule_coords'][1] + CELLS_SIZE
+        widthGrid = new_list[-1]['cellule_coords'][0] - \
+            new_list[0]['cellule_coords'][0] + CELLS_SIZE
+        heightGrid = new_list[-1]['cellule_coords'][1] - \
+            new_list[0]['cellule_coords'][1] + CELLS_SIZE
     factorWidth = widthCanvas / widthGrid
     factorHeight = heightCanvas / heightGrid
     return factorHeight, factorWidth, heightCanvas, widthCanvas

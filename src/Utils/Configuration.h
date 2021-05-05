@@ -8,24 +8,26 @@
 
 using namespace std;
 
-struct Configuration { //classe singleton
+struct Configuration
+{ //classe singleton
 
-private :
-
-    Configuration() : data_path("0"), qgis_path("0"), windninja_path("0") {
+private:
+    Configuration() : data_path("0"), qgis_path("0"), windninja_path("0")
+    {
         this->epilobe_params["axeorigine"] = "0";
     }
 
     nlohmann::json fileToJson(string pathToFile);
 
-public :
+public:
     ~Configuration();
 
     Configuration(const Configuration &) = delete;
 
     Configuration &operator=(const Configuration &) = delete;
 
-    static Configuration *getInstance() {
+    static Configuration *getInstance()
+    {
         static Configuration instance;
         return &instance;
     }
@@ -41,4 +43,3 @@ public :
 
     bool readEpilobeParams(string pathToParams);
 };
-
