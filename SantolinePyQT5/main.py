@@ -6,10 +6,10 @@
 
 import sys
 import os
-from qgis.core import QgsApplication, QgsPoint
-from core.view import santoline_view
 import json
 import shutil
+from qgis.core import QgsApplication
+from core.view import santoline_view
 
     #getting qgis path
 def getQGISDirectory():
@@ -29,13 +29,10 @@ def getQGISDirectory():
 def createJsonPath():
     full_path = os.path.realpath(__file__)
     currentDirectory = os.path.dirname(full_path)
-
     dataDirectory = str(currentDirectory).replace('\SantolinePyQT5','') + "\data"
     windMapDirectory = str(dataDirectory) + "\maps"
     asctojsonparserDirectory = str(currentDirectory).replace('\SantolinePyQT5','') + "\src\AscToJsonParser"
-
     qgisDirectory = getQGISDirectory()
-
     #getting WindNinja path
     windNinja = "C:/WindNinja"
     windNinjaDirectory = next(os.walk(windNinja))[1];
@@ -47,7 +44,6 @@ def createJsonPath():
         raise Exception('Aucune version WindNinja!')
     windNinjaLastVersion = windNinjaVersions[len(windNinjaVersions)-1];
     windNinjaDirectory = str(windNinja).replace('/','\\') + "\\" +str(windNinjaLastVersion)
-
     #Create json
     data = {
         "data_path" : dataDirectory,
@@ -56,7 +52,6 @@ def createJsonPath():
         "asctojsonparser_path": asctojsonparserDirectory,
         "wind_map_generation_path" : windMapDirectory
     }
-
     #write Json
     with open('./paths.json', 'w') as outfile:
         json.dump(data, outfile)
@@ -67,7 +62,6 @@ def initEnvironment():
         "./data/maps/map.json": None,
         "./data/communication/parametreAlgo.json": None
     }
-
     for file, template in files.items():
         if os.path.isfile(file):
             os.remove(file)
