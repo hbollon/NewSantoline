@@ -1,4 +1,3 @@
-import re
 from pathlib import Path
 from ..model import *
 from ..libs import file_io

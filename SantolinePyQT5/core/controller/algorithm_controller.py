@@ -2,14 +2,9 @@ import os
 import subprocess
 
 from qgis._core import *
-
-from ..model import algorithm_model, canvas_model
-from ..libs import file_connector
+from ..model import algorithm_model
 from . import controller, canvas_controller
-from ..model import canvas_model
-
 import json
-import threading
 
 
 class AlgorithmController(controller.AController):

@@ -7,7 +7,7 @@ from qgis.PyQt.QtCore import *  # QSize
 from qgis.PyQt.QtGui import *  # QFrame
 # from Point import Point
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QApplication, QGridLayout, QLabel, QPushButton
+from PyQt5.QtWidgets import QApplication, QGridLayout, QLabel, QPushButton
 from PyQt5.QtGui import QMouseEvent, QPainter
 
 

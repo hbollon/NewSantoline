@@ -48,8 +48,6 @@ class WindModel(model.AModel):
         gt = ds.GetGeoTransform()
         minx = gt[0]
         miny = gt[3] + width * gt[4] + height * gt[5]
-        maxx = gt[0] + width * gt[1] + height * gt[2]
-        maxy = gt[3]
         point = canvas_model.CanvasModel(self.controler_).roseVents_
         widthtemp = self.east_+self.west_
         heighttemp = self.north_+self.south_

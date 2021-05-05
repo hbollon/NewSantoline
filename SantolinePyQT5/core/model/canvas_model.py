@@ -1,7 +1,5 @@
 from . import model
-import math
 from qgis.core import *
-
 
 class CanvasModel(model.AModel):
     def __init__(self, controller):
@@ -15,16 +13,14 @@ class CanvasModel(model.AModel):
         self.mapchange_ = False
         self.propagation_ = []
         self.propagation2_ = []
-
         self.largage_eau_HBE = [[]]
         self.largage_retardant_HBE = [[]]
         self.largage_eau_ABE = [[]]
         self.largage_retardant_ABE = [[]]
-
         self.listObstacle_ = []
 
-    def setRoseVents(self, point):
-        self.roseVents_ = point
+    def setRoseVents(self,point):
+        self.roseVents_=point
         self.notifyObservers()
 
     def addPointContour(self, point, button):
@@ -89,34 +85,33 @@ class CanvasModel(model.AModel):
         try:
             self.contour_feu_.remove(point)
             self.notifyObservers()
-        except:
+        except Exception:
             pass
 
     def removePointObstacle(self, point):
         try:
             self.obstacle_.remove(point)
             self.notifyObservers()
-        except:
+        except Exception:
             pass
 
     def removePointJalonnement(self, point):
         try:
             self.jalonnement_.remove(point)
             self.notifyObservers()
-        except:
+        except Exception:
             pass
 
     def removePointAppui(self, point):
         try:
             self.appui_.remove(point)
             self.notifyObservers()
-        except:
+        except Exception:
             pass
 
     def clearPointContour(self):
         self.contour_feu_ = []
         self.propagation_ = []
-
         self.notifyObservers()
 
     def clearPointAction(self):
@@ -172,12 +167,12 @@ class CanvasModel(model.AModel):
         return contour
 
     def obstacleJsonify(self):
-        list = []
+        liste = []
         for obstacle in self.listObstacle_:
             for segment in obstacle:
                 if segment:
                     seg = []
                     for point in segment:
                         seg.append([point.x(), point.y()])
-                    list.append(seg)
-        return list
+                    liste.append(seg)
+        return liste

@@ -1,7 +1,4 @@
 from . import model
-from qgis.PyQt.QtCore import QTime
-
-
 class AlgorithmModel(model.AModel):
     def __init__(self, controller):
         super().__init__(controller)
