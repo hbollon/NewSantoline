@@ -6,7 +6,7 @@ from qgis.core import *
 class CanvasModel(model.AModel):
     def __init__(self, controller):
         super().__init__(controller)
-        self.roseVents_ = QgsPointXY(0,0)
+        self.roseVents_ = QgsPointXY(0, 0)
         self.contour_feu_ = []
         self.obstacle_ = [[]]
         self.jalonnement_ = [[]]
@@ -23,15 +23,13 @@ class CanvasModel(model.AModel):
 
         self.listObstacle_ = []
 
-
-    def setRoseVents(self,point):
-        self.roseVents_=point
+    def setRoseVents(self, point):
+        self.roseVents_ = point
         self.notifyObservers()
 
     def addPointContour(self, point, button):
         self.contour_feu_.append(point)
         self.notifyObservers()
-
 
     def addPointLargageEauABE(self, point, button):
         if button == 1:
@@ -47,17 +45,18 @@ class CanvasModel(model.AModel):
         else:
             self.largage_eau_HBE.append([])
 
-
     def addPointLargageCRetartant(self, point, button):
         if button == 1:
-            self.largage_retardant_ABE[len(self.largage_retardant_ABE)-1].append(point)
+            self.largage_retardant_ABE[len(
+                self.largage_retardant_ABE)-1].append(point)
             self.notifyObservers()
         else:
             self.largage_retardant_ABE.append([])
 
     def addPointLargageHRetardant(self, point, button):
         if button == 1:
-            self.largage_retardant_HBE[len(self.largage_retardant_HBE)-1].append(point)
+            self.largage_retardant_HBE[len(
+                self.largage_retardant_HBE)-1].append(point)
             self.notifyObservers()
         else:
             self.largage_retardant_HBE.append([])
@@ -92,21 +91,21 @@ class CanvasModel(model.AModel):
             self.notifyObservers()
         except:
             pass
-        
+
     def removePointObstacle(self, point):
         try:
             self.obstacle_.remove(point)
             self.notifyObservers()
         except:
             pass
-        
+
     def removePointJalonnement(self, point):
         try:
             self.jalonnement_.remove(point)
             self.notifyObservers()
         except:
             pass
-        
+
     def removePointAppui(self, point):
         try:
             self.appui_.remove(point)
@@ -125,32 +124,32 @@ class CanvasModel(model.AModel):
         self.obstacle_ = [[]]
         self.jalonnement_ = [[]]
         self.appui_ = [[]]
-        self.largage_eau_ABE=[[]]
-        self.largage_eau_HBE=[[]]
-        self.largage_retardant_ABE=[[]]
-        self.largage_retardant_HBE=[[]]
+        self.largage_eau_ABE = [[]]
+        self.largage_eau_HBE = [[]]
+        self.largage_retardant_ABE = [[]]
+        self.largage_retardant_HBE = [[]]
         self.notifyObservers()
-        
+
     def map(self, departement):
         self.mapchange_ = self.map_ != departement
         self.map_ = departement
         self.notifyObservers()
-        
+
     def change(self):
         change = self.mapchange_
         if (self.mapchange_):
             self.mapchange_ = False
         return change
-        
+
     def addPropagation(self, points):
         qgspoints = []
         for point in points:
             qgspoints.append(QgsPointXY(point[0], point[1]))
         self.propagation_.append(qgspoints)
         self.notifyObservers()
-        
+
     def centroids(self):
-        result = [0,0]
+        result = [0, 0]
         for point in self.contour_feu_:
             result[0] += point.x()
             result[1] += point.y()
@@ -182,6 +181,3 @@ class CanvasModel(model.AModel):
                         seg.append([point.x(), point.y()])
                     list.append(seg)
         return list
-
-
-

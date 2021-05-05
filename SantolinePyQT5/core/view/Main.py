@@ -1,10 +1,10 @@
 import sys
 import math
-from qgis.gui import *#QgsMapCanvas
-from qgis.core import *#QgsRasterLayer, QgsApplication
-from qgis.PyQt.QtWidgets import *#QMainWindow, QWidget, QTabWidget, QPushButton
-from qgis.PyQt.QtCore import *#QSize
-from qgis.PyQt.QtGui import *#QFrame
+from qgis.gui import *  # QgsMapCanvas
+from qgis.core import *  # QgsRasterLayer, QgsApplication
+from qgis.PyQt.QtWidgets import *  # QMainWindow, QWidget, QTabWidget, QPushButton
+from qgis.PyQt.QtCore import *  # QSize
+from qgis.PyQt.QtGui import *  # QFrame
 # from Point import Point
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QApplication, QGridLayout, QLabel, QPushButton
@@ -12,11 +12,11 @@ from PyQt5.QtGui import QMouseEvent, QPainter
 
 
 class Point(object):
-    def __init__(self,xParam = 0.0,yParam = 0.0):
+    def __init__(self, xParam=0.0, yParam=0.0):
         self.x = xParam
         self.y = yParam
 
-    def distance (self,pt):
+    def distance(self, pt):
         xDiff = self.x - pt.x
         yDiff = self.y - pt.y
         return math.sqrt(xDiff ** 2 + yDiff ** 2)
@@ -32,9 +32,12 @@ class Example(QgsMapCanvasItem):
         self.nbGraphe = 0  # c'est le nombre de graphes
         self.isNewGraph = False  # sert à determiner si on commence un nouveau graphe ou non
         self.listeLargages = [[]]  # liste contenant les graphes des largages
-        self.text = "x: {0},  y: {1}".format(x, y)  # le texte qui va aller dans le label
-        self.labelPositionCurseur = QLabel(self.text, self)    # le label dans lequel on affiche le texte
-        self.pos = None     # position du curseur (contient un champ x et un champ y)
+        # le texte qui va aller dans le label
+        self.text = "x: {0},  y: {1}".format(x, y)
+        # le label dans lequel on affiche le texte
+        self.labelPositionCurseur = QLabel(self.text, self)
+        # position du curseur (contient un champ x et un champ y)
+        self.pos = None
         self.redb = QPushButton('Red', self)
 
         self.initUI()
@@ -42,7 +45,7 @@ class Example(QgsMapCanvasItem):
     def initUI(self):
         grid = QGridLayout()    # notre espace de jeu
         grid.addWidget(self.labelPositionCurseur, 0, 0, Qt.AlignTop)
-        
+
         grid.addWidget(self.redb)
         self.redb.setCheckable(True)
         # self.redb.move(10, 10)
@@ -50,7 +53,8 @@ class Example(QgsMapCanvasItem):
 
         self.setMouseTracking(True)
         self.setLayout(grid)
-        self.setGeometry(200, 100, 1000, 600)   # taille par défaut de la fenetre
+        # taille par défaut de la fenetre
+        self.setGeometry(200, 100, 1000, 600)
         self.setWindowTitle('Zhang Lei')
         self.show()
 
@@ -74,7 +78,7 @@ class Example(QgsMapCanvasItem):
             self.isNewGraph = True
             text = "click"
             self.labelPositionCurseur.setText(text)
-            b = Point(event.x(),event.y())
+            b = Point(event.x(), event.y())
             self.listeLargages[self.nbGraphe - 1].append(b)
         elif event.button() == Qt.RightButton:
             self.isNewGraph = False
@@ -87,23 +91,23 @@ class Example(QgsMapCanvasItem):
         if self.nbGraphe >= 2:
             for i in range(0, self.nbGraphe - 1):
                 for j in range(1, len(self.listeLargages[i])):
-                    self.trace_segment_typo_circle( self.listeLargages[i][j - 1],
-                                                    self.listeLargages[i][j])
+                    self.trace_segment_typo_circle(self.listeLargages[i][j - 1],
+                                                   self.listeLargages[i][j])
 
-        # le graphe courant           
+        # le graphe courant
         if len(self.listeLargages[self.nbGraphe - 1]) >= 0:
             for i in range(1, len(self.listeLargages[self.nbGraphe - 1])):
-                self.trace_segment_typo_circle( self.listeLargages[self.nbGraphe - 1][i - 1], 
-                                                self.listeLargages[self.nbGraphe - 1][i])
+                self.trace_segment_typo_circle(self.listeLargages[self.nbGraphe - 1][i - 1],
+                                               self.listeLargages[self.nbGraphe - 1][i])
 
         # Si on a au moins un point dans notre listeLargages de points alors on trace un segment entre le dernier
         # point placé et le curseur pour prévisualiser le tracé
         if self.isNewGraph:
             if len(self.listeLargages[self.nbGraphe - 1]) >= 1:
-                ptmp = Point(self.pos.x(),self.pos.y())
-                self.trace_segment_typo_circle(ptmp, self.listeLargages[self.nbGraphe - 1][len(self.listeLargages[self.nbGraphe]) - 1])
-    
-    
+                ptmp = Point(self.pos.x(), self.pos.y())
+                self.trace_segment_typo_circle(
+                    ptmp, self.listeLargages[self.nbGraphe - 1][len(self.listeLargages[self.nbGraphe]) - 1])
+
     def trace_segment_typo_circle(self, p1, p2):
         '''
         prend en parametre deux points et le contexte et trace une ligne entre les deux
@@ -118,7 +122,7 @@ class Example(QgsMapCanvasItem):
         q = QPainter(self)
 
         # LARGEUR du segmet dessiné
-        largeur = p2.x  - p1.x
+        largeur = p2.x - p1.x
 
         # HAUTEUR du segment dessiné
         hauteur = p2.y - p1.y
@@ -143,7 +147,7 @@ class Example(QgsMapCanvasItem):
             # est inclu dans un carré de 10 de coté
             q.drawEllipse(p1.x + dx - 5, p1.y + dy - 5, 10, 10)
 
-    def paint_line(x,y):
+    def paint_line(x, y):
         print("hello")
 
 
@@ -151,4 +155,3 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = Example()
     sys.exit(app.exec_())
-    

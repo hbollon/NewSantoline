@@ -1,5 +1,7 @@
 from . import model
 from qgis.PyQt.QtCore import QTime
+
+
 class AlgorithmModel(model.AModel):
     def __init__(self, controller):
         super().__init__(controller)
@@ -14,7 +16,7 @@ class AlgorithmModel(model.AModel):
         self.nbDivisionCellule_ = 25
         self.algorithm_choice_ = "2"
         self.courbe_choice_ = 1
-        
+
     def heure(self, heure):
         self.heure_ = heure
         self.notifyObservers()
@@ -24,17 +26,17 @@ class AlgorithmModel(model.AModel):
         self.notifyObservers()
 
     def heureIntervalle(self, heure):
-        self.heureIntervalle_ = heure;
+        self.heureIntervalle_ = heure
         self.notifyObservers()
 
     def minuteIntervalle(self, minute):
-        self.minuteIntervalle_=minute;
+        self.minuteIntervalle_ = minute
         self.notifyObservers()
-        
+
     def waterReserve(self, waterReserve):
         self.waterReserve_ = waterReserve
         self.notifyObservers()
-        
+
     def temperature(self, temperature):
         self.temperature_ = temperature
         self.notifyObservers()
@@ -42,7 +44,7 @@ class AlgorithmModel(model.AModel):
     def process(self, process):
         self.process_ = process
         self.notifyObservers()
-    
+
     def dimension(self, dimension):
         self.dimension_ = dimension
         self.notifyObservers()
@@ -62,21 +64,23 @@ class AlgorithmModel(model.AModel):
 
     def courbe_choice_button_convexe_clicked(self, value):
         self.courbe_choice_ = 2
-        
+
+    def courbe_choice_button_no_hull_clicked(self, value):
+        self.courbe_choice_ = 3
+
     def jsonify(self):
         duree = self.duree_.hour() + self.duree_.minute() / 60.
         return {
-            "type" : "parametrealgorithme",
-            "json" : {
-                "paramSim" : {
-                    "temperature" : round(self.temperature_,1),
-                    "waterReserve" : round(self.waterReserve_,1),
-                    "duration" : round(duree,1),
+            "type": "parametrealgorithme",
+            "json": {
+                "paramSim": {
+                    "temperature": round(self.temperature_, 1),
+                    "waterReserve": round(self.waterReserve_, 1),
+                    "duration": round(duree, 1),
                     "intervalle": self.heureIntervalle_,
-                    "nbProcess" : round(self.process_,1),
-                    "algorithm" : self.algorithm_choice_,
-                    "dimension" : round(25.0,1),
+                    "nbProcess": round(self.process_, 1),
+                    "algorithm": self.algorithm_choice_,
+                    "dimension": round(25.0, 1),
                 }
             }
         }
-    

@@ -3,6 +3,7 @@ from qgis.PyQt.QtWidgets import *
 from . import input_popup_view
 from ..controller import *
 
+
 class Popup_Window(input_popup_view.InputPopup):
     def __init__(self):
         self.close_ = None
@@ -26,4 +27,3 @@ class Popup_Window(input_popup_view.InputPopup):
     def update(self, textContent, title):
         self.setWindowTitle(title)
         self.label.setText(textContent)
-        

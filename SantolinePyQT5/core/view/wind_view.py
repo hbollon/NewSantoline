@@ -1,14 +1,15 @@
-from qgis.gui import *#QgsMapCanvas
-from qgis.core import *#QgsRasterLayer, QgsApplication
-from qgis.PyQt.QtWidgets import *#QMainWindow, QWidget, QTabWidget, QPushButton
-from qgis.PyQt.QtCore import *#QSize
-from qgis.PyQt.QtGui import *#QFrame
+from qgis.gui import *  # QgsMapCanvas
+from qgis.core import *  # QgsRasterLayer, QgsApplication
+from qgis.PyQt.QtWidgets import *  # QMainWindow, QWidget, QTabWidget, QPushButton
+from qgis.PyQt.QtCore import *  # QSize
+from qgis.PyQt.QtGui import *  # QFrame
 
 from . import input_popup_view
 from ..controller import *
 
+
 class WindWindow(input_popup_view.InputPopup):
-    def __init__(self,santolineView):
+    def __init__(self, santolineView):
         self.distance = None
         self.direction_left_direction_spinbox_ = None
         self.vitesse_ms_spinbox_ = None
@@ -21,10 +22,10 @@ class WindWindow(input_popup_view.InputPopup):
         self.valider_ = None
         self.annuler_ = None
 
-        super().__init__(wind_controller.WindController(self,santolineView))
+        super().__init__(wind_controller.WindController(self, santolineView))
 
     def initUI(self):
-        self.setWindowTitle ("Paramètres Épilobe")
+        self.setWindowTitle("Paramètres Épilobe")
         body = QVBoxLayout(self)
         parametres_zone = QGroupBox("Zone", self)
         parametres_layout = QVBoxLayout(parametres_zone)
@@ -48,15 +49,18 @@ class WindWindow(input_popup_view.InputPopup):
         direction_left = QWidget(direction_vent)
         direction_left_layout = QVBoxLayout(direction_left)
 
-
         direction_left_direction = QWidget(direction_left)
         direction_left_direction_layout = QHBoxLayout(direction_left_direction)
-        direction_left_direction_label = QLabel("Direction", direction_left_direction)
-        self.direction_left_direction_spinbox_ = QSpinBox(direction_left_direction)
+        direction_left_direction_label = QLabel(
+            "Direction", direction_left_direction)
+        self.direction_left_direction_spinbox_ = QSpinBox(
+            direction_left_direction)
         self.direction_left_direction_spinbox_.setMaximum(359)
         self.direction_left_direction_spinbox_.setWrapping(True)
-        direction_left_direction_layout.addWidget(direction_left_direction_label)
-        direction_left_direction_layout.addWidget(self.direction_left_direction_spinbox_)
+        direction_left_direction_layout.addWidget(
+            direction_left_direction_label)
+        direction_left_direction_layout.addWidget(
+            self.direction_left_direction_spinbox_)
         direction_left_direction.setLayout(direction_left_direction_layout)
 
         direction_left_layout.addWidget(direction_left_direction)
@@ -120,9 +124,11 @@ class WindWindow(input_popup_view.InputPopup):
 
         # Event binding
         self.distance.valueChanged.connect(self.controller_.distance)
-        self.direction_left_direction_spinbox_.valueChanged.connect(self.controller_.direction)
+        self.direction_left_direction_spinbox_.valueChanged.connect(
+            self.controller_.direction)
         self.vitesse_ms_spinbox_.valueChanged.connect(self.controller_.speed)
-        self.vitesse_kmh_spinbox_.valueChanged.connect(self.controller_.speedkmh)
+        self.vitesse_kmh_spinbox_.valueChanged.connect(
+            self.controller_.speedkmh)
         self.direction_dial_.valueChanged.connect(self.controller_.direction)
         self.vitesse_slider_.valueChanged.connect(self.controller_.speed)
         self.valider_.clicked.connect(self.controller_.accept)

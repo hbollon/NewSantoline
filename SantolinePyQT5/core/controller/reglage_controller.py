@@ -9,11 +9,10 @@ class ReglageController(controller.AController):
         super().__init__(view)
         self.model_ = reglage_model.ReglageModel(self)
 
-
     def accept(self):
         with open('..\\data\\reglage.json', 'w') as outfile:
             json.dump({"exentricite": self.model_.exentricite_,
-                        "rateOfSpread": self.model_.rateOfSpread_,
+                       "rateOfSpread": self.model_.rateOfSpread_,
                        "angle": self.model_.angle_,
                        "segment": self.model_.segment_,
                        "coef": self.model_.coef_,
@@ -42,5 +41,5 @@ class ReglageController(controller.AController):
     def segment(self, value):
         self.model_.segment(value)
 
-    def generations(self,value):
+    def generations(self, value):
         self.model_.generations(value)

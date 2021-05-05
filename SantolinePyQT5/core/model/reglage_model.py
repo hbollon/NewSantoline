@@ -30,11 +30,11 @@ class ReglageModel(model.AModel):
         self.segment_ = value
         self.notifyObservers()
 
-    def coef(self,value):
+    def coef(self, value):
         self.coef_ = value
         self.notifyObservers()
 
-    def generations(self,value):
+    def generations(self, value):
         self.generations_ = value
         self.notifyObservers()
 
@@ -48,4 +48,3 @@ class ReglageModel(model.AModel):
         self.segment_ = reglages['segment']
         self.coef_ = reglages['coef']
         self.generations_ = reglages['generations']
-

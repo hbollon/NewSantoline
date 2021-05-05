@@ -90,11 +90,14 @@ class ReglageWindow(input_popup_view.InputPopup):
         body.addWidget(angle)
         body.addWidget(boutons)
 
-        self.exentricite_value_.valueChanged.connect(self.controller_.exentricite)
-        self.rateOfSpread_value_.valueChanged.connect(self.controller_.rateOfSpread)
+        self.exentricite_value_.valueChanged.connect(
+            self.controller_.exentricite)
+        self.rateOfSpread_value_.valueChanged.connect(
+            self.controller_.rateOfSpread)
         self.angle_value_.valueChanged.connect(self.controller_.angle)
         self.ellipseCoef_value_.valueChanged.connect(self.controller_.coef)
-        self.generations_value_.valueChanged.connect(self.controller_.generations)
+        self.generations_value_.valueChanged.connect(
+            self.controller_.generations)
         self.segment_value_.valueChanged.connect(self.controller_.segment)
 
         self.valider_.clicked.connect(self.controller_.accept)
@@ -111,4 +114,3 @@ class ReglageWindow(input_popup_view.InputPopup):
         self.generations_value_.setValue(observable.generations_)
         self.angle_value_.setValue(observable.angle_)
         self.segment_value_.setValue(observable.segment_)
-
