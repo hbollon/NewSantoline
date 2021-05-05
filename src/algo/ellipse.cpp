@@ -1,13 +1,13 @@
 #include "ellipse.h"
 
-AEllipse::AEllipse(Vector3D wind,
-                   Vector3D slope,
-                   Vector3D windSlope,
-                   double aspect,
-                   double slope_value,
-                   double exentricite,
-                   double rateOfSpread,
-                   double temp, double swl, Point2D top_left, const Point2D plan)
+AEllipse::AEllipse(const Vector3D& wind,
+                   const Vector3D& slope,
+                   const Vector3D& windSlope,
+                   const double& aspect,
+                   const double& slope_value,
+                   const double& exentricite,
+                   const double& rateOfSpread,
+                   const double& temp, const double& swl, const Point2D& top_left, const Point2D& plan)
     : m_wind(wind), m_slope(slope), m_windSlope(windSlope), m_aspect(aspect),
       m_slope_value(slope_value), m_exentricite(exentricite), m_rateOfSpread(rateOfSpread),
       m_temperature(temp), m_water_level(swl), m_plan(plan),
@@ -15,22 +15,21 @@ AEllipse::AEllipse(Vector3D wind,
 {
 }
 
-AEllipse::AEllipse(Vector3D wind,
-                   Vector3D slope,
-                   Vector3D windSlope,
-                   double aspect,
-                   double slope_value,
-                   double exentricite,
-                   double rateOfSpread,
-                   Point2D top_left,
-                   const Point2D plan)
+AEllipse::AEllipse(const Vector3D& wind,
+                   const Vector3D& slope,
+                   const Vector3D& windSlope,
+                   const double& aspect,
+                   const double& slope_value,
+                   const double& exentricite,
+                   const double& rateOfSpread,
+                   const Point2D& top_left,
+                   const Point2D& plan)
     : m_wind(wind), m_slope(slope), m_windSlope(windSlope), m_aspect(aspect),
       m_slope_value(slope_value), m_exentricite(exentricite), m_rateOfSpread(rateOfSpread),
       m_temperature(30), m_water_level(40), m_plan(plan),
       m_top_left(Point2D((int)(top_left.x() - fmod(top_left.x(), 25.0)), (int)(top_left.y() - fmod(top_left.y(), 25.0))))
 {
-    m_top_left = Point2D((int)(top_left.x() - fmod(top_left.x(), 25.0)),
-                         (int)(top_left.y() - fmod(top_left.y(), 25.0)));
+    
 }
 
 AEllipse::AEllipse() {}

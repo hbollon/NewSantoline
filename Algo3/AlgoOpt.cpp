@@ -453,7 +453,7 @@ void AlgoOpt::initialiserEllipse(json cartevent, ofstream &sortie, int largeur, 
     cout << "Carte des ellipses initialisee !" << endl;
 }
 
-void AlgoOpt::initListff(vector<Point2D> listPointE)
+void AlgoOpt::initListff(const vector<Point2D>& listPointE)
 {
     listePointsDansCellule = map<string, vector<string>>();
     vector<PointOpt> listDef;
@@ -731,7 +731,7 @@ vector<Point2D> AlgoOpt::raffine(vector<Point2D> listPoint, double crit)
     return result;
 }
 
-pair<Point3D, Vector2D> AlgoOpt::mnplusun(Point3D point, VitesseOpt vitesse)
+pair<Point3D, Vector2D> AlgoOpt::mnplusun(const Point3D& point, const VitesseOpt& vitesse)
 {
     if (affichage)
         cout << "Debut mnplusun" << endl;
@@ -1188,7 +1188,7 @@ int AlgoOpt::supprimerCroisement(PointOpt mtp, std::string ind)
     return indic;
 }
 
-int AlgoOpt::supprimeCroisementRaj(PointOpt mvt, double tmin, const string ind)
+int AlgoOpt::supprimeCroisementRaj(const PointOpt& mvt, const double& tmin, const string& ind)
 {
     if (affichage)
         cout << "Debut supprimeCroisementRaj" << endl;
@@ -1310,7 +1310,7 @@ void AlgoOpt::supprimePointTropProche(string ind, double crit)
 /*********************************************************************************************
  *                              Fonction de gestion des vitesses                             *
  *********************************************************************************************/
-double AlgoOpt::azero(Vector2D tau, VitesseOpt Vit)
+double AlgoOpt::azero(const Vector2D& tau, const VitesseOpt& Vit)
 {
     /*Observations faites concernant la fonction azero*/
     /*azero a l'air de faire un synthese d'elements existants dans la cellule sortante*/
@@ -1653,7 +1653,7 @@ VitesseOpt AlgoOpt::vitesse0(Point2D p, Point2D s)
     return VitesseOpt();
 }
 
-VitesseOpt AlgoOpt::vitesse(const VitesseOpt vb, Point2D ij)
+VitesseOpt AlgoOpt::vitesse(const VitesseOpt& vb, const Point2D& ij)
 {
 
     EllipseOpt ellipse = carteEllipse[ij.x()][ij.y()];
@@ -1866,7 +1866,7 @@ pair<bool, vector<vector<VitesseOpt>>> AlgoOpt::vitesseNew1(vector<vector<Vitess
 /*********************************************************************************************
  *                              Fonction de gestion des bordures                             *
  *********************************************************************************************/
-bool AlgoOpt::testBordureBrulee(const PointOpt point)
+bool AlgoOpt::testBordureBrulee(const PointOpt& point)
 {
     if (affichage)
         cout << "Dans testBordureBrulee" << endl;
@@ -2308,7 +2308,7 @@ float AlgoOpt::det(Vector2D v1, Vector2D v2)
 
 //trouve un point avec son id
 //retourne null si pas trouvé
-PointOpt AlgoOpt::findPointOptByIndice(const vector<PointOpt> listDef, string indice)
+PointOpt AlgoOpt::findPointOptByIndice(const vector<PointOpt>& listDef, const string& indice)
 {
     for (auto &i : listDef)
     {

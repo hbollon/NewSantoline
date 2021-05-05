@@ -47,7 +47,7 @@ private:
 public:
     /*Fonctions principales*/
     std::vector<Point3D> propagation(std::vector<Point2D> listE, json m, json p, ofstream &sortie, ofstream &infos_algo, ofstream &etat_final_liste_sommets);
-    void initListff(std::vector<Point2D> listPointE);
+    void initListff(const std::vector<Point2D>& listPointE);
     void initialiserEllipse(json j, ofstream &sortie, int largeur, int hauteur, int water, int temp);
     void uneIteration(std::string num);
     int propage(string ind, vector<vector<VitesseOpt>> vits);
@@ -57,18 +57,18 @@ public:
     void rajoutePoint(string indice);
     void rajoutePoints(string indice);
     void insere(PointOpt point, std::string ind, bool indic);
-    std::pair<Point3D, Vector2D> mnplusun(Point3D point, VitesseOpt vitesse);
+    std::pair<Point3D, Vector2D> mnplusun(const Point3D& point, const VitesseOpt& vitesse);
     vector<Point2D> raffine(vector<Point2D> listPoint, double crit);
 
     /*Fonctions de suppression de point*/
-    int supprimeCroisementRaj(PointOpt mvt, double tmin, const string ind);
+    int supprimeCroisementRaj(const PointOpt& mvt, const double& tmin, const string& ind);
     void supprimePointTropProche(string ind, double crit);
     int supprimerCroisement(PointOpt point, std::string ind);
     void supprime(std::string ind);
     void supprimePlus(std::string ind, std::string num);
 
     /*Fonction de gestion des vitesses*/
-    double azero(Vector2D tau, VitesseOpt Vit);
+    double azero(const Vector2D& tau, const VitesseOpt& Vit);
     VitesseOpt vitessea0(double a0, Vector2D tau, Point2D coordonne);
     VitesseOpt vitesseMax(Vector2D direction, Point2D coordonne);
     std::vector<std::vector<VitesseOpt>> vitesseRajoutes(Point2D coordonne, Vector2D v0, Vector2D v1, int kmax);
@@ -77,10 +77,10 @@ public:
     pair<bool, vector<vector<VitesseOpt>>> vitesseChocNew(vector<vector<VitesseOpt>> vits, Vector2D tauperp);
     pair<bool, vector<vector<VitesseOpt>>> vitesseNew1(vector<vector<VitesseOpt>> vits, Vector2D tauperp);
     pair<bool, vector<vector<VitesseOpt>>> vitesseSommetNew(vector<vector<VitesseOpt>> vits, Vector2D tauperp);
-    VitesseOpt vitesse(const VitesseOpt vb, Point2D ij);
+    VitesseOpt vitesse(const VitesseOpt& vb, const Point2D& ij);
 
     /*Fonction de gestion des bordures*/
-    bool testBordureBrulee(const PointOpt point);
+    bool testBordureBrulee(const PointOpt& point);
     void actualiseCoin(string ind);
     void initialiserCoinContourDepart(PointOpt mvt);
 
@@ -104,7 +104,7 @@ public:
 
     /*Autre*/
     string getMinlisteCellulesBrulees();
-    PointOpt findPointOptByIndice(vector<PointOpt>, const string);
+    PointOpt findPointOptByIndice(const vector<PointOpt>&, const string&);
     float det(Vector2D v1, Vector2D v2);
     void triDesChocs();
 };

@@ -17,8 +17,8 @@ public:
     bool indic;
     Point2D pts;
 
-    SommetCase(const std::string newNumSommet, double newT, std::string newIndicePointAllume, bool newIndic, int x, int y);
-    SommetCase(const std::string newNumSommet, double newT, std::string newIndicePointAllume, bool newIndic, Point2D newPts);
+    SommetCase(const std::string& newNumSommet, const double& newT, const std::string& newIndicePointAllume, const bool& newIndic, const int& x, const int& y);
+    SommetCase(const std::string& newNumSommet, const double& newT, const std::string& newIndicePointAllume, const bool& newIndic, const Point2D& newPts);
 };
 
 #endif //ALGO3_SOMMETCASE_H

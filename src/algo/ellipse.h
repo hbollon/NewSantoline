@@ -24,10 +24,10 @@ class AEllipse
     Point2D m_plan;
 
 public:
-    AEllipse(Vector3D wind, Vector3D slope, Vector3D windSlope, double aspect, double slope_value, double exentricite, double rateOfSpread,
-             double temp, double swl, Point2D top_left, const Point2D plan);
-    AEllipse(Vector3D wind, Vector3D slope, Vector3D windSlope, double aspect, double slope_value, double exentricite, double rateOfSpread,
-             Point2D top_left, const Point2D plan);
+    AEllipse(const Vector3D& wind, const Vector3D& slope, const Vector3D& windSlope, const double& aspect, const double& slope_value, const double& exentricite, const double& rateOfSpread,
+             const double& temp, const double& swl, const Point2D& top_left, const Point2D& plan);
+    AEllipse(const Vector3D& wind, const Vector3D& slope, const Vector3D& windSlope, const double& aspect, const double& slope_value, const double& exentricite, const double& rateOfSpread,
+             const Point2D& top_left, const Point2D& plan);
     AEllipse();
 
     /**

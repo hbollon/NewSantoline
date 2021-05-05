@@ -4,11 +4,11 @@
 
 #include "SommetCase.h"
 
-SommetCase::SommetCase(const std::string newNumSommet, double newT, std::string newIndicePointAllume, bool newIndic, int x, int y)
+SommetCase::SommetCase(const std::string& newNumSommet, const double& newT, const std::string& newIndicePointAllume, const bool& newIndic, const int& x, const int& y)
     : numSommet(newNumSommet), tIgnitionSommet(newT), indicePointAllume(newIndicePointAllume), indic(newIndic), pts(Point2D(x, y))
 {
 }
-SommetCase::SommetCase(const std::string newNumSommet, double newT, std::string newIndicePointAllume, bool newIndic, Point2D newPts)
+SommetCase::SommetCase(const std::string& newNumSommet, const double& newT, const std::string& newIndicePointAllume, const bool& newIndic, const Point2D& newPts)
     : numSommet(newNumSommet), tIgnitionSommet(newT), indicePointAllume(newIndicePointAllume), indic(newIndic), pts(newPts)
 {
 }

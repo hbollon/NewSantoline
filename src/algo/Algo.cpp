@@ -43,7 +43,7 @@ json Algo::simulation()
     return resultat;
 }
 
-json Algo::simulation(const string type)
+json Algo::simulation(const string& type)
 {
 
     std::cout << "debut simulation \n";
@@ -318,7 +318,7 @@ int orientation(Point2D p, Point2D q, Point2D r)
     return (val > 0) ? 1 : 2; // clock or counterclock wise
 }
 
-bool doIntersect(const Point2D p1, const Point2D q1, const Point2D p2, const Point2D q2)
+bool doIntersect(const Point2D& p1, const Point2D& q1, const Point2D& p2, const Point2D& q2)
 {
 
     // Find the four orientations needed for general and
@@ -881,7 +881,7 @@ vector<Point3D> Algo::get_neighbor(Point2D p)
     return result;
 }
 
-vector<Point3D> Algo::get_neighbor_Fixe(const Point2D p)
+vector<Point3D> Algo::get_neighbor_Fixe(const Point2D& p)
 {
     // retourne tout les points touché par les arcs de l'ellipse(déterminée au point p) avec une date d'ignition = 200
 
@@ -950,7 +950,7 @@ string Algo::associated_id(const Point2D &p, double segment_size, double cell_di
     return result;
 }
 
-bool Algo::pointOnLine(const Point2D a, const Point2D b, const Point2D c)
+bool Algo::pointOnLine(const Point2D& a, const Point2D& b, const Point2D& c)
 {
     if (distanceP(a, b) + distanceP(b, c) == distanceP(a, b))
     {
@@ -997,7 +997,7 @@ void Algo::arcs(const Point2D &p, AEllipse &e, vector<Point2D> &result)
     }
 }
 
-vector<Point2D> Algo::handleImpossible(vector<Point2D> points, const Point2D point)
+vector<Point2D> Algo::handleImpossible(vector<Point2D> points, const Point2D& point)
 // déso mais j'arrive vraiment pas à comprendre cette fonction
 {
     // pour l'intant, on ne considère que la première ligne d'obstacle
@@ -1027,7 +1027,7 @@ vector<Point2D> Algo::handleImpossible(vector<Point2D> points, const Point2D poi
     return result;
 }
 
-inline pair<const string, pair<Point3D, Point3D>> Algo::get_min_key(map<string, pair<Point3D, Point3D>> &map)
+inline pair<string, pair<Point3D, Point3D>> Algo::get_min_key(map<string, pair<Point3D, Point3D>> &map)
 {
 
     map.end();

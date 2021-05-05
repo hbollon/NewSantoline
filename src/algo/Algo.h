@@ -65,7 +65,7 @@ public:
     }
 
     json simulation();
-    json simulation(const string type);
+    json simulation(const string& type);
 
     void afficheProgression(const double &currentValue);
 
@@ -107,7 +107,7 @@ private:
     double distanceP(Point3D p1, Point3D p2);
     double distanceP(Point2D p1, Point2D p2);
 
-    bool pointOnLine(const Point2D a, const Point2D b, const Point2D c);
+    bool pointOnLine(const Point2D& a, const Point2D& b, const Point2D& c);
     vector<Point3D> trier(vector<Point3D> list);
     vector<Point3D> trier2(vector<Point3D> list);
 
@@ -125,16 +125,16 @@ private:
 
     string associated_id(const Point2D &p, double segment_size, double cell_dimension);
     void arcs(const Point2D &p, AEllipse &e, vector<Point2D> &result);
-    vector<Point2D> handleImpossible(vector<Point2D> points, const Point2D point);
+    vector<Point2D> handleImpossible(vector<Point2D> points, const Point2D& point);
     vector<Point3D> get_neighbor(Point2D p);
-    pair<const string, pair<Point3D, Point3D>> get_min_key(map<string, pair<Point3D, Point3D>> &map);
+    pair<string, pair<Point3D, Point3D>> get_min_key(map<string, pair<Point3D, Point3D>> &map);
     vector<vector<Point3D>> propagation(ListeBurningPoint &burningPointInitiaux, vector<ListePoint2D> &listeObstacles);
 
     ListeBurningPoint getBurningPointInitiauxFixe(const ListePoint2D &pointsInitiaux, int dimention, int nbDivisionCellule);
 
     vector<vector<Point3D>> propagationFixe(ListeBurningPoint &burningPointInitiaux, vector<ListePoint2D> &listeObstacles);
     void updateVicinityFixe(map<string, pair<Point3D, Point3D>> *vicinity, map<string, Point3D> burning, Point3D p, double segment_size);
-    vector<Point3D> get_neighbor_Fixe(const Point2D p);
+    vector<Point3D> get_neighbor_Fixe(const Point2D& p);
 
     void arcs_Fixe(const Point2D &p, vector<Point2D> &result);
 

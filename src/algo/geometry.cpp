@@ -1,6 +1,6 @@
 #include "geometry.h"
 
-bool isLeft(const Point2D a, const Point2D b, const Point2D c)
+bool isLeft(const Point2D& a, const Point2D& b, const Point2D& c)
 {
     return Vector2D(b - a).determinant(c - a) > 0;
 }
@@ -33,7 +33,7 @@ std::vector<Point2D> convexeHull(std::vector<Point2D> entryPoint)
     return hull;
 }
 
-Point2D intersectionPoint(const Point2D a, const Point2D b, const Point2D c, const Point2D d)
+Point2D intersectionPoint(const Point2D& a, const Point2D& b, const Point2D& c, const Point2D& d)
 {
     Vector2D u = (b - a);
     Vector2D v = (d - c);

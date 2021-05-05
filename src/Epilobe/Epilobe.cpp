@@ -59,7 +59,7 @@ bool Epilobe::can_generate()
 }
 
 /*** Créé la subzone ***/
-bool Epilobe::subzone(const string tifPath)
+bool Epilobe::subzone(const string& tifPath)
 {
     std::string raster_de_base = "\"" + tifPath + "\"";
     std::string raster_resultant = "\"" + config->data_path + "\\subzone.tif\"";
@@ -139,7 +139,7 @@ bool Epilobe::windninja()
     return system((command + parameters).c_str()) == 0;
 }
 
-void Epilobe::generate(const string tifPath)
+void Epilobe::generate(const string& tifPath)
 {
     if (can_generate())
     {
