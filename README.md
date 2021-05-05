@@ -32,37 +32,37 @@ Voici un schéma expliquant l'architecture de ce projet, afin de bien comprendre
 
 Il faut installer les logiciels suivants:
 
-* [QGIS 3.2](https://qgis.org/downloads/)
-* [windNinja](https://firelab.org/document/windninja-software)
-* [mingw](https://sourceforge.net/projects/mingw/) **(cocher MinGW Base System/Autotools/g++)**
-* [cmake](https://cmake.org/download/) -> faire attention à ce que cmake soit ajouter dans le path
+- [QGIS 3.2](https://qgis.org/downloads/)
+- [windNinja](https://firelab.org/document/windninja-software)
+- [mingw](https://sourceforge.net/projects/mingw/) **(cocher MinGW Base System/Autotools/g++)**
+- [cmake](https://cmake.org/download/) -> faire attention à ce que cmake soit ajouter dans le path
 
 Bien faire attention à laisser les chemins par défaut de ces applications lors de l'installation (notre application ira directement récuperer leur chemin) :
 
-* WindNinja : racine de C: (__C:\WindNinja\WindNinja-x.x.x__)
-* Qgis : dans ProgramFiles (__C:\Program Files\QGIS 3.2__)
+- WindNinja : racine de C: (__C:\WindNinja\WindNinja-x.x.x__)
+- Qgis : dans ProgramFiles (__C:\Program Files\QGIS 3.2__)
 
 Assurez-vous que cmake et mingw ont bien été ajouté dans la variable environement "Path" (voir [ce lien](https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/) si vous ne savez pas comment interragir avec vos variables d'environnement).
 
 ### Installation
 
-* Télécharger les données des départements (carte et données altimétriques) et décompressez l'archive dans le répertoire:
+- Télécharger les données des départements (carte et données altimétriques) et décompressez l'archive dans le répertoire:
   
 ```batch
 C:\Users\<username>\NewSantoline\data\altimetrics
 ```
 
-* Lancer le script **build.bat** dans le dossier **Scripts** : qui permet de build automatiquement tout les sous-programmes C++ (en cas de soucis vérifiez que vos installation de cmake/mingw sont valides)
-* Lancer le fichier **run.bat**
+- Lancer le script **build.bat** dans le dossier **Scripts** : qui permet de build automatiquement tout les sous-programmes C++ (en cas de soucis vérifiez que vos installation de cmake/mingw sont valides)
+- Lancer le fichier **run.bat**
 
 ## Guide d'utilisation
 
-#### 1. Choix du département
+### 1. Choix du département
 
 ![screen_departement](doc/screens/screen_departements.png)
 ![screen_departement](doc/screens/departement_v2.png)
 
-#### 2. Carte des Vents
+### 2. Carte des Vents
 
 ![screen_vents](doc/screens/vents.png)
 
@@ -75,8 +75,8 @@ Une fois le point placé, appuyer sur l'icône du drapeau.
 
 Sélectionner les paramètres souhaités, à noter que :
 
-* la zone est carrée de taille ("distance" x "distance"), _ex : ici zone de 1000 par 1000_
-* orientation du vent : voir la chose comme une boussole
+- la zone est carrée de taille ("distance" x "distance"), _ex : ici zone de 1000 par 1000_
+- orientation du vent : voir la chose comme une boussole
 
 ![screen_vents_point](doc/screens/settings_vent.png)
 
@@ -90,7 +90,7 @@ Pour afficher la carte des vents, il vous suffit d'appuyer sur le bouton "V" dan
 
 Voici un résultat final que vous devriez obtenir.
 
-#### 3. Simulation des contours de feu
+### 3. Simulation des contours de feu
 
 Après avoir calculer les vents, l'étape qui suit est de réaliser une simulation pour calculer le contour des vents :
 
@@ -102,15 +102,15 @@ Appuyer sur le bouton "Dessiner contours" :
 
 Dessinez ensuite le contour, chaque clic que vous faites **(ATTENTION LES POINTS QUE VOUS DEVEZ PLACER DOIVENT ETRE DANS LA ZONE DES VENTS)** est un point, et le clic d'après reliera le point précédent avec celui que vous venez de faire, pour alors tracer des segments :
 
-* **Etape 1 :**
+- **Etape 1 :**
 
 ![screen_vents_point](doc/screens/etape1_contour.png)
 
-* **Etape 2 :**
+- **Etape 2 :**
   
 ![screen_vents_point](doc/screens/etape2_contour.png)
 
-* **Etape 3 :**
+- **Etape 3 :**
   
 ![screen_vents_point](doc/screens/etape3_contour.png)
 
@@ -126,8 +126,8 @@ Une fois le contour realisé, il vous suffira de lancer la simulation (en rensei
 
 Quelques petites informations sur les arguments de la simulation :
 
-* Saisir dans le champ "Algorithme", le numéro de l'algorithme que vous voulez utiliser : 2 ou 3 (pour l'instant)
-* Durée de propagation : temps de propagation, si vous dépassez 1h30, les temps de calcul risquent d'être longs
+- Saisir dans le champ "Algorithme", le numéro de l'algorithme que vous voulez utiliser : 2 ou 3 (pour l'instant)
+- Durée de propagation : temps de propagation, si vous dépassez 1h30, les temps de calcul risquent d'être longs
 
 ![screen_vents_point](doc/screens/arguments_simulation.png)
 
@@ -145,9 +145,9 @@ Et voici un exemple du résultat final, après que la simulation soit terminée.
 
 👤 **Hugo Bollon**
 
-* Github: [@hbollon](https://github.com/hbollon)
-* LinkedIn: [@Hugo Bollon](https://www.linkedin.com/in/hugobollon/)
-* Portfolio: [hugobollon.me](https://www.hugobollon.me)
+- Github: [@hbollon](https://github.com/hbollon)
+- LinkedIn: [@Hugo Bollon](https://www.linkedin.com/in/hugobollon/)
+- Portfolio: [hugobollon.me](https://www.hugobollon.me)
 
 👤 **Samuel Rodriguez-Lozano**
 
