@@ -2,7 +2,6 @@ from . import model
 import math
 from qgis.core import *
 
-
 class CanvasModel(model.AModel):
     def __init__(self, controller):
         super().__init__(controller)
@@ -15,14 +14,11 @@ class CanvasModel(model.AModel):
         self.mapchange_ = False
         self.propagation_ = []
         self.propagation2_ = []
-
         self.largage_eau_HBE = [[]]
         self.largage_retardant_HBE = [[]]
         self.largage_eau_ABE = [[]]
         self.largage_retardant_ABE = [[]]
-
         self.listObstacle_ = []
-
 
     def setRoseVents(self,point):
         self.roseVents_=point
@@ -31,7 +27,6 @@ class CanvasModel(model.AModel):
     def addPointContour(self, point, button):
         self.contour_feu_.append(point)
         self.notifyObservers()
-
 
     def addPointLargageEauABE(self, point, button):
         if button == 1:
@@ -46,7 +41,6 @@ class CanvasModel(model.AModel):
             self.notifyObservers()
         else:
             self.largage_eau_HBE.append([])
-
 
     def addPointLargageCRetartant(self, point, button):
         if button == 1:
@@ -90,34 +84,33 @@ class CanvasModel(model.AModel):
         try:
             self.contour_feu_.remove(point)
             self.notifyObservers()
-        except:
+        except Exception:
             pass
         
     def removePointObstacle(self, point):
         try:
             self.obstacle_.remove(point)
             self.notifyObservers()
-        except:
+        except Exception:
             pass
         
     def removePointJalonnement(self, point):
         try:
             self.jalonnement_.remove(point)
             self.notifyObservers()
-        except:
+        except Exception:
             pass
         
     def removePointAppui(self, point):
         try:
             self.appui_.remove(point)
             self.notifyObservers()
-        except:
+        except Exception:
             pass
 
     def clearPointContour(self):
         self.contour_feu_ = []
         self.propagation_ = []
-
         self.notifyObservers()
 
     def clearPointAction(self):
@@ -182,6 +175,3 @@ class CanvasModel(model.AModel):
                         seg.append([point.x(), point.y()])
                     list.append(seg)
         return list
-
-
-
