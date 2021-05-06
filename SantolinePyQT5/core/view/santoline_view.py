@@ -20,7 +20,7 @@ class Santoline(QMainWindow, observable.Observer):
         super().__init__()
         self.keys = []
         self.firstToolbar_ = None
-        self.secondToolbar_ = None 
+        self.secondToolbar_ = None
         self.left_toolbar_ = None
         self.simulation = None
         self.simuler = None
@@ -96,7 +96,6 @@ class Santoline(QMainWindow, observable.Observer):
         self.actionZoomOut = None
 
         self.initUI()
-        
 
     def initUI(self):
         self.setWindowTitle("Santoline")
@@ -396,7 +395,7 @@ class Santoline(QMainWindow, observable.Observer):
         self.afficheMoinsDense.setVisible(True)
         self.reloadMap.setVisible(True)
     
-    def affichageToolsSimulation(self) : 
+    def affichageToolsSimulation(self):
         self.cleanToolbar(self.left_toolbar_)
         self.actionEmitPoint.setVisible(True)
         self.actionEmitPoint.setChecked(False)
@@ -1052,7 +1051,7 @@ class MapLoader(QThread):
         self.wait()
         
     def run(self):
-        # get list of all files which finish with .ext into datas folder 
+        # get list of all files which finish with .ext into datas folder
         liste = useful.allFiles(self.datas_, ".jp2")
         if (len(liste) == 0):
             # if list of files is empty, finish the thread

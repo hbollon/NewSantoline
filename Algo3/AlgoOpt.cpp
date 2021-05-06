@@ -935,7 +935,6 @@ void AlgoOpt::rajoutePoint(string indice)
         {
             ms = ms + (t - ts) * vs;
             dm = ms - m;
-            mm = m;
         }
         else
         {

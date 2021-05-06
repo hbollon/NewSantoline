@@ -58,8 +58,6 @@ class Example(QgsMapCanvasItem):
     def mouseMoveEvent(self, e):
         self.pos = e.pos()
         if self.isNewGraph:
-            x = e.x()
-            y = e.y()
             text = "x: {0},  y: {1}".format(e.x(), e.y())
             self.labelPositionCurseur.setText(text)
             self.update()

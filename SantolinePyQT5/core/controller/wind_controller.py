@@ -2,7 +2,6 @@ from pathlib import Path
 from ..model import *
 from ..libs import file_io
 from . import controller
-from subprocess import PIPE
 import subprocess
 import json
 import os
