@@ -14,8 +14,6 @@ from ..model.sort import sort_cells_by_x_then_y, sort_points_by_x_then_y
 from .config import *
 import json
 
-from ..utils.drawing import draw_triangle
-
 
 class MainView:
     ID_TEXT_ZONE = "1"

@@ -9,8 +9,6 @@ from core.view import reglage_view
 from . import wind_view, algorithm_view, departements_choices_view, reglage_view, popup_view
 from ..controller import * #canvas_controller ...
 from ..libs import *
-from win32api import GetSystemMetrics
-
 import threading
 import json
 import os
