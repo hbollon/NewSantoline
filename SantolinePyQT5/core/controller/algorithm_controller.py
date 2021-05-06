@@ -1,9 +1,8 @@
-import os
 import subprocess
 
 from qgis._core import *
 from ..model import algorithm_model
-from . import controller, canvas_controller
+from . import controller
 import json
 
 

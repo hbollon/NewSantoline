@@ -538,6 +538,11 @@ vector<vector<Point3D>> Algo::propagation(ListeBurningPoint &burningPointInitiau
     {
         export3dPointsTo2dFile(finalContour);
         int retCode = system("..\\src\\algo\\concave.exe points.txt -out points2.txt");
+        if(retCode != 0)
+        {
+            cerr << "[ERROR] erreur pendant le calcul de la courbe enveloppe" << endl;
+            return contour;
+        }
         finalContour = import3dPointsTo2dFile();
         contour.push_back(finalContour);
     }

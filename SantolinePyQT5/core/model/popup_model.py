@@ -1,4 +1,4 @@
-from . import model, canvas_model
+from . import model
 
 
 class Popup_Model(model.AModel):
